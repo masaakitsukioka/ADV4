@@ -426,7 +426,8 @@ window.SAIKACHI_SCENARIO = {
             ]
           ]
         }
-      ]
+      ],
+      "room": "classroom"
     },
     "オカボーのスケッチブック": {
       "events": [
@@ -478,7 +479,8 @@ window.SAIKACHI_SCENARIO = {
             ]
           ]
         }
-      ]
+      ],
+      "room": "classroom"
     }
   },
   "topics": {},
@@ -734,7 +736,8 @@ window.SAIKACHI_SCENARIO = {
             "もう十分頼ってるだろ。",
             "通常"
           ]
-        ]
+        ],
+        "eventRelated": false
       },
       {
         "id": "chat-02",
@@ -760,7 +763,8 @@ window.SAIKACHI_SCENARIO = {
             "ここまで付き合ったんだからな。",
             "通常"
           ]
-        ]
+        ],
+        "eventRelated": false
       },
       {
         "id": "chat-03",
@@ -786,7 +790,8 @@ window.SAIKACHI_SCENARIO = {
             "消す前に、間違えた理由は覚えておけ。",
             "通常"
           ]
-        ]
+        ],
+        "eventRelated": false
       },
       {
         "id": "chat-04",
@@ -817,7 +822,8 @@ window.SAIKACHI_SCENARIO = {
             "それなら、しばらく答えは出ないね。",
             "通常"
           ]
-        ]
+        ],
+        "eventRelated": false
       },
       {
         "id": "chat-05",
@@ -843,7 +849,8 @@ window.SAIKACHI_SCENARIO = {
             "食堂の新メニューまで報告しなくていいぞ。",
             "通常"
           ]
-        ]
+        ],
+        "eventRelated": false
       },
       {
         "id": "chat-06",
@@ -869,7 +876,8 @@ window.SAIKACHI_SCENARIO = {
             "ほら、話してないで次を見よう。",
             "通常"
           ]
-        ]
+        ],
+        "eventRelated": false
       },
       {
         "id": "chat-07",
@@ -896,7 +904,8 @@ window.SAIKACHI_SCENARIO = {
             "通常"
           ]
         ],
-        "room": "classroom"
+        "room": "classroom",
+        "eventRelated": false
       },
       {
         "id": "chat-08",
@@ -923,7 +932,8 @@ window.SAIKACHI_SCENARIO = {
             "通常"
           ]
         ],
-        "room": "corridor"
+        "room": "corridor",
+        "eventRelated": false
       },
       {
         "id": "chat-09",
@@ -953,7 +963,8 @@ window.SAIKACHI_SCENARIO = {
         "when": {
           "sketchFound": true,
           "deductionDone": false
-        }
+        },
+        "eventRelated": true
       },
       {
         "id": "chat-10",
@@ -982,7 +993,50 @@ window.SAIKACHI_SCENARIO = {
         ],
         "when": {
           "deductionDone": true
-        }
+        },
+        "eventRelated": true
+      },
+      {
+        "id": "chat-layout",
+        "label": "同じモチーフ",
+        "eventRelated": true,
+        "when": {
+          "layoutChecked": true,
+          "deductionDone": false
+        },
+        "lines": [
+          [
+            "ハルキ",
+            "ナカコとオカボーは、同じ果物を描いていたんだね。",
+            "通常"
+          ],
+          [
+            "サイジ",
+            "よく似た絵でも、誰のものかは確かめないとな。",
+            "思案"
+          ]
+        ]
+      },
+      {
+        "id": "chat-duty",
+        "label": "当番の役割",
+        "eventRelated": true,
+        "when": {
+          "dutyChecked": true,
+          "deductionDone": false
+        },
+        "lines": [
+          [
+            "ハルキ",
+            "あの日の当番はオカボー。スケッチブックの出し入れもしていた。",
+            "通常"
+          ],
+          [
+            "サイジ",
+            "本人のスケッチブックと合わせて確かめよう。",
+            "思案"
+          ]
+        ]
       }
     ],
     "discoveryFlags": [

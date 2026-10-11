@@ -88,7 +88,7 @@
     "height": 941
   },
   "ui": {
-    "move": "assets/ui/move.png",
-    "menu": "assets/ui/menu.png"
+    "menu": "assets/ui/menu.png",
+    "location": "assets/ui/location-banner.png"
   }
 }

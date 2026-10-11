@@ -17,7 +17,7 @@ run(fs.readFileSync(root+'/data/story-ui.js','utf8'));
 assert.deepEqual(JSON.parse(JSON.stringify(sandbox.window.SAIKACHI_SCENARIO)),JSON.parse(fs.readFileSync(root+'/data/scenario.json')));
 const end=()=>run('for(let i=0;i<100&&state.mode==="dialogue"&&!choicesPending;i++)advance()');
 const click=label=>{const b=elements.panelBody?.children.find(b=>b.textContent===label)||elements.openingActions.children.find(b=>b.textContent===label);assert(b,'missing button '+label);b.onclick({stopPropagation(){}})};
-check('state.mode==="opening"');click('最初から');for(let i=0;i<3;i++)click('つづける');click('調査をはじめる');end();check('state.mode==="exploration" && state.flags.introSeen');
+check('state.mode==="opening"');click('最初から');for(let i=0;i<3;i++)click('▼');click('調査をはじめる');end();check('state.mode==="exploration" && state.flags.introSeen');
 run('examine("desk")');end();check('!state.flags.layoutChecked');run('moveTo("corridor")');end();run('examine("notice")');end();check('!state.flags.dutyChecked');run('moveTo("classroom")');
 for(const id of ['window','floor','prepDoor']){run(`examine('${id}')`);end()}
 run('examine("shelf")');end();check('state.flags.sketchFound && state.inventory.length===1');run('examine("shelf")');end();check('state.inventory.length===1');
@@ -58,7 +58,7 @@ assert.deepEqual(JSON.parse(run('JSON.stringify(state.visits)')),JSON.parse(run(
 check('state.selected===null && state.dialogue.length===0 && state.lineIndex===0 && state.afterDialogue===null && state.deductionStep===0 && state.errors===0 && !choicesPending');
 assert.equal(elements.openingText.textContent,run('SCENARIO.opening[0]'));
 assert.deepEqual(Array.from(storage.entries()),savedBeforeRestart);
-for(let i=0;i<3;i++)click('つづける');click('調査をはじめる');end();
+for(let i=0;i<3;i++)click('▼');click('調査をはじめる');end();
 check('state.mode==="exploration" && state.flags.introSeen && !state.flags.deductionDone && state.inventory.length===0');
 console.log('PASS: new game after completed save resets progress, replays opening, and preserves saved slots.');
 
@@ -81,11 +81,11 @@ for(const slot of [1,2,3]){
 console.log('PASS: title continue restores each of three independent saved states and settings; slots outside 1–3 rejected.');
 
 // Command-only investigation, dynamic clues/names, conversations and restored unlocks.
-run('startNewGame()');for(let i=0;i<3;i++)click('つづける');click('調査をはじめる');end();
+run('startNewGame()');for(let i=0;i<3;i++)click('▼');click('調査をはじめる');end();
 assert.equal(elements.targets.children.length,0);
 const commandClick=label=>{const button=[...(elements.commandChildren?.children||[]),...elements.commandRoots.children].find(b=>b.textContent===label);assert(button,'missing command '+label);button.onclick()};
 assert.deepEqual(JSON.parse(run('JSON.stringify(commandPeople().map(p=>p.name))')),['ナカコ','犯人']);
-commandClick('聞く');commandClick('ここには誰もいない');assert.equal(elements.line.textContent,'ここには誰もいない。');end();
+commandClick('聞く');assert.equal(elements.line.textContent,'ここには誰もいない。');end();
 commandClick('調べる');assert(!elements.commandChildren.children.some(b=>b.textContent==='モチーフの配置図'));
 commandClick('机');end();commandClick('調べる');assert(elements.commandChildren.children.some(b=>b.textContent==='モチーフの配置図'));
 commandClick('作品棚');end();commandClick('調べる');commandClick('モチーフの配置図');end();
@@ -97,11 +97,35 @@ commandClick('調べる');assert(elements.commandChildren.children.some(b=>b.tex
 run('const commandSaved=Saves.snapshot(state,textSettings);startNewGame();restoreSave(commandSaved)');
 assert(run('commandPeople().some(p=>p.name==="オカボー") && commandInvestigations().some(e=>e.label==="モチーフの配置図")'));
 commandClick('探す');commandClick('オカボー');end();check('!state.flags.deductionDone');
-assert.equal(run('SCENARIO.commands.conversations.length'),10);
+assert(run('SCENARIO.commands.conversations.length>=10'));
 const beforeChat=run('JSON.stringify(Saves.snapshot(state,textSettings).progress)');
-commandClick('会話');commandClick('いつもの役割');end();
+commandClick('会話');end();
 assert.equal(run('JSON.stringify(Saves.snapshot(state,textSettings).progress)'),beforeChat);
 commandClick('調べる');commandClick('オカボーのスケッチブック');end();check('state.mode==="deduction"');
 console.log('PASS: command investigation route, empty room listen, dynamic targets/names, search, ten conversations, save/load unlock restoration and deduction.');
 
 run('const legacySaved=JSON.parse(JSON.stringify(commandSaved));for(const key of SCENARIO.commands.discoveryFlags)delete legacySaved.progress.flags[key];restoreSave(legacySaved)');check('state.flags.personOkabo && state.flags.layoutSeen && state.flags.personNakako && state.mode==="exploration"');console.log('PASS: existing v0.14 saves retain compatibility and restore known command discoveries.');
+
+// Direct commands, incident-prioritized random chat and room-local clues.
+run('restoreSave(commandSaved)');
+const chosenChats=new Set();
+for(let i=0;i<10;i++){
+ commandClick('会話');check('state.mode==="dialogue"');
+ const id=run('lastConversationId');chosenChats.add(id);
+ assert(run('SCENARIO.commands.conversations.find(t=>t.id===lastConversationId).eventRelated'));
+ end();
+}
+assert(chosenChats.size>1);
+commandClick('移動');commandClick('旧校舎廊下');end();
+assert(!run('commandInvestigations().some(e=>e.label.includes("スケッチブック"))'));
+assert(!run('commandInvestigations().some(e=>e.label==="モチーフの配置図")'));
+commandClick('移動');commandClick('美術準備室');end();
+assert(run('commandInvestigations().some(e=>e.label==="ナカコのスケッチブック")'));
+run('menu()');assert(!elements.panelBody.children.some(b=>b.textContent==='セーブの持ち運び'));
+run('closePanel();inspectItem("オカボーのスケッチブック")');end();check('deductionActive && state.mode==="deduction"');
+assert(!elements.characterStage.classList.contains('hidden'));
+assert(!elements.dialogue.classList.contains('hidden'));
+assert.equal(elements.speaker.textContent,'サイジ');
+click('ナカコ');assert(elements.line.textContent.includes('もう一度'));
+click('調査にもどる');check('!deductionActive && state.mode==="exploration"');
+console.log('PASS: direct empty listen, random incident-prioritized chat, command movement, room-local items, transfer removal, persistent deduction portraits/message.');

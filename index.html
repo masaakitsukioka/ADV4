@@ -170,7 +170,34 @@
 .command-window .command-back{font-size:15px;border-top:1px solid #b5a78955;border-radius:0;margin-top:10px}
 @media(max-width:600px){#commandMain{left:4%;top:88px;width:155px;padding:12px}#commandDetail{left:calc(4% + 133px);top:112px;width:calc(92vw - 133px);padding:12px;max-height:calc(100dvh - 150px)}.command-window h2{font-size:19px;padding-left:8px}.command-window button{font-size:17px;padding:8px 10px}.command-footer{font-size:8px}}
 @media(max-height:460px) and (min-width:601px){#commandMain{top:82px;left:4%;width:175px;padding:10px 14px;max-height:calc(100dvh - 103px)}#commandDetail{top:96px;left:calc(4% + 153px);width:min(340px,calc(92vw - 175px));max-height:calc(100dvh - 117px);padding:10px 14px}.command-window h2{font-size:20px;margin-bottom:5px;padding-bottom:5px}.command-window button{font-size:17px;min-height:44px;padding:6px 12px;margin:0}.command-footer{margin:5px 0 0}}
-</style></head><body><main id="game" aria-label="サイカチADV 消えたスケッチ 試作版 v0.14.0"><div id="scene"><canvas id="pixelScene" width="320" height="180" aria-hidden="true"></canvas></div><div class="grain"></div><div class="title">皀角坂意匠學院</div><div class="location" id="location"></div><div id="targets"></div><div id="actions" class="actions hidden"></div><button id="move" class="tab left" type="button" aria-label="いどう"><img id="moveGraphic" src="assets/ui/move.png" alt="" aria-hidden="true">いどう</button><button id="menu" class="tab right" type="button" aria-label="メニュー"><img id="menuGraphic" src="assets/ui/menu.png" alt="" aria-hidden="true">メニュー</button><div class="hint">コマンドを選んで調査する</div><div id="characterStage" class="hidden" aria-hidden="true"><div id="harukiCard" class="character-card"><img class="character-art" id="harukiArt" alt="ハルキ"><span class="asset-fallback">ハルキ</span><span class="character-name">ハルキ</span><span class="emotion" id="harukiEmotion">通常</span></div><div id="saijiCard" class="character-card"><img class="character-art" id="saijiArt" alt="サイジ"><span class="asset-fallback">サイジ</span><span class="character-name">サイジ</span><span class="emotion" id="saijiEmotion">通常</span></div></div><div id="portraitRail" class="portrait-rail hidden"><span class="portrait" id="harukiFace">ハルキ</span><span class="portrait" id="saijiFace">サイジ</span></div><div id="textControls" class="hidden"><button id="speedButton" type="button">文字：ふつう</button><button id="autoButton" type="button">自動：OFF</button></div><div id="dialogue" class="dialogue hidden" role="dialog" aria-live="off"><div id="speaker" class="speaker"></div><div id="line" class="line"></div><div id="dialogueChoices"></div><span class="next" id="nextMark">▼</span></div><section id="panel" class="panel hidden" aria-label="メニュー"><button class="close" id="close">とじる</button><h2 id="panelTitle"></h2><div id="panelBody"></div></section><section id="commandWindows" class="hidden" aria-label="調査コマンド"><section id="commandMain" class="command-window" aria-labelledby="commandTitle"><h2 id="commandTitle">どうする？</h2><div id="commandRoots"></div><p class="command-footer">DETECTIVE COMMAND</p></section><section id="commandDetail" class="command-window hidden" aria-labelledby="commandHeading"><h2 id="commandHeading"></h2><div id="commandChildren"></div></section></section><section id="opening" aria-label="消えたスケッチ オープニング"><h1 id="openingTitle"></h1><p id="openingText"></p><div class="opening-actions" id="openingActions"></div></section></main><script src="data/scenario.js"></script><script src="data/events.js"></script><script src="data/saves.js"></script><script>
+
+/* Layout revision based on the supplied character/message reference. */
+:root{--message-height:26dvh}
+.location{top:max(0px,env(safe-area-inset-top));left:max(0px,env(safe-area-inset-left));transform:none;width:clamp(160px,27vw,340px);height:clamp(66px,12vw,140px);max-width:48%;display:flex;align-items:center;justify-content:center;padding:10px 18px;border:0;background: url('assets/ui/location-banner.png') center/100% 100% no-repeat;color:var(--paper);font-weight:900;font-style:italic;font-size:clamp(18px,2.6vw,32px);letter-spacing:.06em;text-shadow:2px 2px #020607,-1px -1px #020607;z-index:10}
+#characterStage{position:absolute;inset:auto 0 var(--message-height);height:65dvh;display:flex;justify-content:space-between;align-items:flex-end;pointer-events:none}
+.character-card{width:34vw;height:100%;padding:0;max-width:none;filter:brightness(.48)}
+.character-card.active{filter:brightness(1)}
+.character-art{left:0;transform:none;width:100%;height:100%;max-width:none;object-fit:contain;object-position:left bottom}
+#saijiCard .character-art{object-position:right bottom}
+.dialogue{left:1%;bottom:1%;width:98%;height:var(--message-height);min-height:0;max-height:var(--message-height);padding:clamp(16px,2.3vw,34px) clamp(20px,3vw,46px);grid-template-columns:clamp(85px,11vw,170px) minmax(0,1fr);column-gap:clamp(18px,2.5vw,40px);row-gap:0;overflow:auto;clip-path:none}
+.speaker{grid-column:1;grid-row:1;border-right:1px solid #b5a78988;border-bottom:0;font-size:clamp(20px,2.5vw,34px);padding:0 12px 0 0;letter-spacing:.1em;white-space:nowrap}
+.line{grid-column:2;grid-row:1;font-size:clamp(17px,2.2vw,29px);line-height:1.65;max-height:calc(var(--message-height) - 46px);margin:0}
+.dialogue.narration{grid-template-columns:1fr}.dialogue.narration .line{grid-column:1;grid-row:1}
+#commandTitle{font-size:12px;letter-spacing:.12em;white-space:nowrap;padding-left:10px}
+#commandMain{top:clamp(90px,18vh,155px)}
+#game.deduction-layout #characterStage{display:flex!important;z-index:4}
+#game.deduction-layout .character-art{display:block}
+#game.deduction-layout .panel{inset:12% 33% calc(var(--message-height) + 3%);padding:14px;box-shadow:4px 4px #030709aa}
+#game.deduction-layout .panel h2{margin-right:0;font-size:clamp(16px,1.8vw,23px);margin:0 0 10px;padding-bottom:8px;letter-spacing:.04em}
+#game.deduction-layout .panel .close{display:none}
+#game.deduction-layout .panel button{min-width:0;width:100%;font-size:15px;padding:8px;min-height:44px}
+#game.deduction-layout .answer-groups{grid-template-columns:1fr;gap:8px;margin:8px 0}
+#game.deduction-layout .answer-preview{font-size:14px}
+#game.deduction-layout #nextMark{display:none}
+#textControls{top:12px;bottom:auto}
+@media(max-width:600px){:root{--message-height:30dvh}.location{width:47%;height:76px;font-size:19px;max-width:49%;padding:8px}.character-card{width:42vw}#characterStage{height:44dvh}.dialogue{padding:16px 14px;grid-template-columns:72px minmax(0,1fr);column-gap:12px}.speaker{font-size:19px;padding-right:7px}.line{font-size:16px;max-height:calc(var(--message-height) - 36px)}#commandTitle{font-size:9px;padding-left:4px;letter-spacing:.04em}#game.deduction-layout .panel{inset:15% 19% calc(var(--message-height) + 3%);padding:10px}#game.deduction-layout .panel h2{margin-right:0;font-size:15px}#textControls{top:80px}#game.deduction-layout .character-card{width:31vw}}
+@media(max-height:460px) and (min-width:601px){:root{--message-height:29dvh}#characterStage{height:62dvh}.character-card{width:29vw}.location{height:74px;font-size:22px}.line{font-size:16px}.speaker{font-size:21px}.dialogue{padding:12px 20px}#game.deduction-layout .panel{inset:7% 30% calc(var(--message-height) + 3%)}#game.deduction-layout .panel button{min-height:38px;font-size:14px}#commandTitle{font-size:10px}}
+</style></head><body><main id="game" aria-label="サイカチADV 消えたスケッチ 試作版 v0.14.0"><div id="scene"><canvas id="pixelScene" width="320" height="180" aria-hidden="true"></canvas></div><div class="grain"></div><div class="title">皀角坂意匠學院</div><div class="location" id="location"></div><div id="targets"></div><div id="actions" class="actions hidden"></div><button id="menu" class="tab right" type="button" aria-label="メニュー"><img id="menuGraphic" src="assets/ui/menu.png" alt="" aria-hidden="true">メニュー</button><div class="hint">コマンドを選んで調査する</div><div id="characterStage" class="hidden" aria-hidden="true"><div id="harukiCard" class="character-card"><img class="character-art" id="harukiArt" alt="ハルキ"><span class="asset-fallback">ハルキ</span><span class="character-name">ハルキ</span><span class="emotion" id="harukiEmotion">通常</span></div><div id="saijiCard" class="character-card"><img class="character-art" id="saijiArt" alt="サイジ"><span class="asset-fallback">サイジ</span><span class="character-name">サイジ</span><span class="emotion" id="saijiEmotion">通常</span></div></div><div id="portraitRail" class="portrait-rail hidden"><span class="portrait" id="harukiFace">ハルキ</span><span class="portrait" id="saijiFace">サイジ</span></div><div id="textControls" class="hidden"><button id="speedButton" type="button">文字：ふつう</button><button id="autoButton" type="button">自動：OFF</button></div><div id="dialogue" class="dialogue hidden" role="dialog" aria-live="off"><div id="speaker" class="speaker"></div><div id="line" class="line"></div><div id="dialogueChoices"></div><span class="next" id="nextMark">▼</span></div><section id="panel" class="panel hidden" aria-label="メニュー"><button class="close" id="close">とじる</button><h2 id="panelTitle"></h2><div id="panelBody"></div></section><section id="commandWindows" class="hidden" aria-label="調査コマンド"><section id="commandMain" class="command-window" aria-labelledby="commandTitle"><h2 id="commandTitle">DETECTIVE COMMAND</h2><div id="commandRoots"></div></section><section id="commandDetail" class="command-window hidden" aria-labelledby="commandHeading"><h2 id="commandHeading"></h2><div id="commandChildren"></div></section></section><section id="opening" aria-label="消えたスケッチ オープニング"><h1 id="openingTitle"></h1><p id="openingText"></p><div class="opening-actions" id="openingActions"></div></section></main><script src="data/scenario.js"></script><script src="data/events.js"></script><script src="data/saves.js"></script><script>
  'use strict';
 const SCENARIO=window.SAIKACHI_SCENARIO;
 if(!SCENARIO||!SCENARIO.rooms||!SCENARIO.investigations){throw new Error('シナリオファイル data/scenario.js が読み込めません');}
@@ -218,7 +245,8 @@ function render(){
  drawScene(state.room);setSceneBackground(state.room);
  $('targets').replaceChildren();$('targets').classList.add('hidden');$('actions').classList.add('hidden');state.selected=null;
  const explore=state.mode==='exploration';
- for(const id of ['move','menu']){$(id).classList.toggle('hidden',!(explore||state.mode==='dialogue'));$(id).disabled=!explore;$(id).title=explore?'':'会話が終わると操作できます'}
+ for(const id of ['menu']){$(id).classList.toggle('hidden',!(explore||state.mode==='dialogue'));$(id).disabled=!explore;$(id).title=explore?'':'会話が終わると操作できます'}
+ $('game').classList.toggle('deduction-layout',typeof deductionActive!=='undefined'&&deductionActive);
  if(typeof renderCommands==='function')renderCommands();
 }
 function showActions(id){
@@ -229,7 +257,7 @@ function showActions(id){
  a.style.top=Math.max(8,Math.min(r.bottom-g.top+8,g.height-a.offsetHeight-8))+'px';
 }
 function say(lines,after=null){cancelTextTimers();state.mode='dialogue';state.dialogue=lines;state.lineIndex=0;state.afterDialogue=after;state.selected=null;$('panel').classList.add('hidden');$('actions').classList.add('hidden');$('dialogue').classList.remove('hidden');$('portraitRail').classList.remove('hidden');$('characterStage').classList.remove('hidden');$('textControls').classList.remove('hidden');const generation=++dialogueGeneration;requestAnimationFrame(()=>{if(generation===dialogueGeneration&&state.mode==='dialogue')$('dialogue').classList.add('open')});displayLine();render()}
-function displayLine(){cancelTextTimers();const v=state.dialogue[state.lineIndex];if(!v)return;const speaker=v[0],full=String(v[1]);$('speaker').textContent=speaker;if(typeof learnCommandNames==='function')learnCommandNames(full);$('characterStage').classList.toggle('hidden',!speaker);$('dialogue').classList.toggle('narration',!speaker);$('line').textContent='';$('line').scrollTop=0;$('nextMark').classList.remove('ready');$('dialogueChoices').replaceChildren();$('harukiFace').classList.toggle('active',speaker==='ハルキ');$('saijiFace').classList.toggle('active',speaker==='サイジ');updateCharacterCards(speaker,v[2]||'通常');typingDone=false;displayedChars=0;const chars=Array.from(full);const speed=textSettings.speeds[textSettings.index];function tick(){if(state.mode!=='dialogue')return;displayedChars=Math.min(chars.length,displayedChars+1);$('line').textContent=chars.slice(0,displayedChars).join('');if(displayedChars<chars.length){typingTimer=setTimeout(tick,speed)}else{typingDone=true;$('nextMark').classList.add('ready');onLineCompleted();scheduleAuto()}}if(speed===0||matchMedia('(prefers-reduced-motion: reduce)').matches){$('line').textContent=full;displayedChars=chars.length;typingDone=true;$('nextMark').classList.add('ready');onLineCompleted();scheduleAuto()}else tick()}
+function displayLine(){cancelTextTimers();const v=state.dialogue[state.lineIndex];if(!v)return;const speaker=v[0],full=String(v[1]);$('speaker').textContent=speaker;if(typeof learnCommandNames==='function')learnCommandNames(full);$('characterStage').classList.toggle('hidden',!speaker&&!(typeof deductionActive!=='undefined'&&deductionActive));$('dialogue').classList.toggle('narration',!speaker);$('line').textContent='';$('line').scrollTop=0;$('nextMark').classList.remove('ready');$('dialogueChoices').replaceChildren();$('harukiFace').classList.toggle('active',speaker==='ハルキ');$('saijiFace').classList.toggle('active',speaker==='サイジ');updateCharacterCards(speaker,v[2]||'通常');typingDone=false;displayedChars=0;const chars=Array.from(full);const speed=textSettings.speeds[textSettings.index];function tick(){if(!['dialogue','deduction'].includes(state.mode))return;displayedChars=Math.min(chars.length,displayedChars+1);$('line').textContent=chars.slice(0,displayedChars).join('');if(displayedChars<chars.length){typingTimer=setTimeout(tick,speed)}else{typingDone=true;$('nextMark').classList.add('ready');onLineCompleted();scheduleAuto()}}if(speed===0||matchMedia('(prefers-reduced-motion: reduce)').matches){$('line').textContent=full;displayedChars=chars.length;typingDone=true;$('nextMark').classList.add('ready');onLineCompleted();scheduleAuto()}else tick()}
 function onLineCompleted(){}
 function advance(){if(state.mode!=='dialogue')return;if(choicesPending)return;if(!typingDone){cancelTextTimers();$('line').textContent=state.dialogue[state.lineIndex][1];typingDone=true;$('nextMark').classList.add('ready');onLineCompleted();scheduleAuto();return}cancelTextTimers();state.lineIndex++;if(state.lineIndex>=state.dialogue.length){closeDialogueLayer();state.mode='exploration';const next=state.afterDialogue;state.afterDialogue=null;if(next)next();else render()}else displayLine()}
 const Events=window.SaikachiEvents;
@@ -255,8 +283,8 @@ function moveTo(id){
  if(changed)runEvent(Events.select(DATA.rooms[id].onEnter||[],state));
 }
 let panelRevision=0;
-function panel(title,buttons){$('panel').scrollTop=0;panelRevision++;state.mode='menu';state.selected=null;render();$('panelTitle').textContent=title;const body=$('panelBody');body.innerHTML='';buttons.forEach(([label,fn])=>{const b=document.createElement('button');b.textContent=label;b.onclick=fn;body.appendChild(b)});$('panel').classList.remove('hidden')}
-function closePanel(){if(!state.flags.introSeen){showTitle();return}panelRevision++;state.mode='exploration';$('panel').classList.add('hidden');render()}
+function panel(title,buttons){$('panel').scrollTop=0;panelRevision++;state.mode='menu';state.selected=null;render();$('panelTitle').textContent=title;$('panel').setAttribute('aria-label',title);const body=$('panelBody');body.innerHTML='';buttons.forEach(([label,fn])=>{const b=document.createElement('button');b.textContent=label;b.onclick=fn;body.appendChild(b)});$('panel').classList.remove('hidden')}
+function closePanel(){if(typeof deductionActive!=='undefined')deductionActive=false;closeDialogueLayer();if(!state.flags.introSeen){showTitle();return}panelRevision++;state.mode='exploration';$('panel').classList.add('hidden');render()}
 // 工程18: 保存はメニューから手動で行い、復帰は探索状態に統一する。
 const Saves=window.SaikachiSaves.create(SCENARIO,()=>window.localStorage);
 function saveMessage(message,back=menu){
@@ -273,7 +301,7 @@ function saveSlots(action){
   }
  }catch(e){saveMessage(e.message);return}
  buttons.push(['もどる',menu]);panel(action==='save'?'セーブ':'途中から',buttons);
- const note=document.createElement('p');note.textContent='セーブデータは3つまで、このブラウザに保存します。別端末へ移すときは「セーブの持ち運び」を使ってください。';$('panelBody').appendChild(note);
+ const note=document.createElement('p');note.textContent='セーブデータは3つまで、このブラウザに保存します。';$('panelBody').appendChild(note);
 }
 function selectSaveSlot(action,slot){
  const back=()=>saveSlots(action);
@@ -292,6 +320,7 @@ function selectSaveSlot(action,slot){
 }
 function restoreSave(saved){panelRevision++;
  let checked;try{checked=Saves.validate(saved)}catch(e){saveMessage(e.message);return}
+ if(typeof deductionActive!=='undefined')deductionActive=false;
  // 検証を完了してから置換。入室イベントや訪問回数更新は呼び出さない。
  $('opening').classList.add('hidden');
  closeDialogueLayer();choicesPending=false;typingDone=false;displayedChars=0;
@@ -300,85 +329,6 @@ function restoreSave(saved){panelRevision++;
   afterDialogue:null,deductionStep:0,errors:0});
  textSettings.index=checked.settings.textSpeed;textSettings.auto=checked.settings.auto;
  updateTextControls();$('panel').classList.add('hidden');$('actions').classList.add('hidden');render();
-}
-
-// 工程19: ファイルは端末内で処理し、検証済みの1記録だけを受け渡す。
-function transferMenu(){
- panel('セーブの持ち運び',[
-  ['今の進行を書き出す',()=>exportProgress()],
-  ['保存済みの記録を書き出す',exportSlots],
-  ['ファイルを読み込む',importPicker],['もどる',menu]
- ]);
- const note=document.createElement('p');note.textContent='JSONファイルとして保管できます。読み込み後に保存枠を選び、途中からから再開してください。';$('panelBody').appendChild(note);
-}
-function exportSlots(){
- const buttons=[];
- try{
-  for(let slot=1;slot<=3;slot++){
-   const value=Saves.raw(slot);let label='空き';
-   if(value!==null){try{const saved=Saves.decode(value);label=DATA.rooms[saved.progress.room].name+' / '+new Date(saved.savedAt).toLocaleString('ja-JP')}catch(e){label='読み込めないデータ'}}
-   buttons.push(['記録'+slot+'：'+label,()=>exportProgress(slot)]);
-  }
- }catch(e){saveMessage(e.message,transferMenu);return}
- buttons.push(['もどる',transferMenu]);panel('書き出す記録',buttons);
-}
-function exportProgress(slot){
- let url=null,link=null;
- try{
-  const saved=slot===undefined?Saves.snapshot(state,textSettings):Saves.read(slot);
-  if(!saved){saveMessage('この記録にはまだ保存されていません。',exportSlots);return}
-  const checked=Saves.validate(saved);
-  const blob=new Blob([JSON.stringify(checked,null,2)+'\n'],{type:'application/json;charset=utf-8'});
-  url=URL.createObjectURL(blob);link=document.createElement('a');link.href=url;
-  link.download='saikachi-save-'+(slot===undefined?'current':'slot'+slot)+'-'+checked.savedAt.replace(/[^0-9]/g,'')+'.json';
-  document.body.appendChild(link);link.click();
-  const release=url;setTimeout(()=>URL.revokeObjectURL(release),60000);url=null;
-  saveMessage('ファイルの書き出しをブラウザに依頼しました。ダウン途中から先にJSONファイルがあるか確認してください。',transferMenu);
- }catch(e){saveMessage('書き出せませんでした。'+e.message,transferMenu)}
- finally{if(link)link.remove();if(url)URL.revokeObjectURL(url)}
-}
-function importPicker(){
- panel('ファイルを読み込む',[['もどる',transferMenu]]);
- const label=document.createElement('label');label.textContent='セーブのJSONファイルを選択（1MBまで）';
- const input=document.createElement('input');input.type='file';input.accept='.json,application/json';
- input.style.maxWidth='100%';input.style.display='block';input.style.marginTop='12px';
- input.onchange=()=>{const file=input.files&&input.files[0];input.value='';if(file)readSaveFile(file)};
- label.appendChild(input);$('panelBody').appendChild(label);
-}
-async function readSaveFile(file){
- panel('ファイルを確認しています',[['やめる',transferMenu]]);
- const request=panelRevision;
- try{
-  if(file.size>1024*1024)throw new Error('ファイルが大きすぎます。1MB以下のセーブを選んでください。');
-  const text=await file.text();
-  if(request!==panelRevision)return;
-  if(text.length>1024*1024)throw new Error('ファイルが大きすぎます。');
-  const saved=Saves.decode(text.replace(/^\uFEFF/,''));
-  importPreview(saved);
- }catch(e){if(request===panelRevision)saveMessage('読み込めませんでした。'+e.message,importPicker)}
-}
-function importPreview(saved){
- // ボタンの操作で枠を確定するまでは、進行も保存領域も変更しない。
- const checked=Saves.validate(saved);
- const buttons=[];
- try{
-  for(let slot=1;slot<=3;slot++){
-   const exists=Saves.raw(slot)!==null;
-   buttons.push(['記録'+slot+'に保存（'+(exists?'記録あり':'空き')+'）',()=>confirmImport(checked,slot)]);
-  }
- }catch(e){saveMessage(e.message,transferMenu);return}
- buttons.push(['やめる',transferMenu]);panel('読み込む記録の確認',buttons);
- const note=document.createElement('p');note.textContent='場所：'+DATA.rooms[checked.progress.room].name+' / 保存日時：'+new Date(checked.savedAt).toLocaleString('ja-JP')+' / 持ち物：'+checked.progress.inventory.length+'点。現在のプレイは変更しません。';$('panelBody').appendChild(note);
-}
-function confirmImport(saved,slot){
- try{
-  const exists=Saves.raw(slot)!==null;
-  panel('記録'+slot+'に'+(exists?'上書き':'保存')+'しますか？',[
-   [exists?'上書きする':'保存する',()=>{
-    try{Saves.write(slot,saved);saveMessage('記録'+slot+'に取り込みました。「途中から」から再開できます。',transferMenu)}catch(e){saveMessage(e.message,transferMenu)}
-   }],['やめる',()=>importPreview(saved)]
-  ]);
- }catch(e){saveMessage(e.message,transferMenu)}
 }
 
 // v0.4: data-driven dialogue choices; placeholder portraits (not final character art)
@@ -412,6 +362,6 @@ function showTopicChoices(choices){
   render();
 }
 
-for(const id of ['move','menu']){$(id+'Graphic').addEventListener('error',()=>{$(id).classList.add('asset-missing')})}
-$('move').onclick=()=>panel('いどう',Object.entries(DATA.rooms).map(([id,r])=>[r.name,()=>moveTo(id)]));$('menu').onclick=()=>menu();$('close').onclick=closePanel;$('dialogue').onclick=e=>{if(e.target.closest('button'))return;advance()};$('game').addEventListener('click',e=>{if(e.target===$('scene')||e.target===$('pixelScene')||e.target===$('targets')||e.target.classList.contains('grain')){state.selected=null;$('actions').classList.add('hidden');render()}});window.addEventListener('resize',()=>{if(state.mode==='exploration'){render();if(state.selected)showActions(state.selected)}else{drawScene(state.room);setSceneBackground(state.room)}});document.addEventListener('keydown',e=>{if(e.isComposing)return;if((e.key==='Enter'||e.key===' ')&&state.mode==='dialogue'){if(e.target?.closest('button, input, textarea, select, [contenteditable]'))return;if(choicesPending)return;e.preventDefault();if(!e.repeat)advance()}else if(e.key==='Escape'&&state.mode==='exploration'&&typeof commandSelection!=='undefined'&&commandSelection){commandSelection=null;renderCommands()}else if(e.key==='Escape'&&['menu','deduction'].includes(state.mode))closePanel()});render();
+for(const id of ['menu']){$(id+'Graphic').addEventListener('error',()=>{$(id).classList.add('asset-missing')})}
+$('menu').onclick=()=>menu();$('close').onclick=closePanel;$('dialogue').onclick=e=>{if(e.target.closest('button'))return;advance()};$('game').addEventListener('click',e=>{if(e.target===$('scene')||e.target===$('pixelScene')||e.target===$('targets')||e.target.classList.contains('grain')){state.selected=null;$('actions').classList.add('hidden');render()}});window.addEventListener('resize',()=>{if(state.mode==='exploration'){render();if(state.selected)showActions(state.selected)}else{drawScene(state.room);setSceneBackground(state.room)}});document.addEventListener('keydown',e=>{if(e.isComposing)return;if((e.key==='Enter'||e.key===' ')&&state.mode==='dialogue'){if(e.target?.closest('button, input, textarea, select, [contenteditable]'))return;if(choicesPending)return;e.preventDefault();if(!e.repeat)advance()}else if(e.key==='Escape'&&state.mode==='exploration'&&typeof commandSelection!=='undefined'&&commandSelection){commandSelection=null;renderCommands()}else if(e.key==='Escape'&&['menu','deduction'].includes(state.mode))closePanel()});render();
 </script><script src="data/commands.js"></script><script src="data/story-ui.js"></script></body></html>
