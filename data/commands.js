@@ -54,11 +54,11 @@ function renderCommands(){
   if(!entries.length)entries=[{label:'ここには誰もいない',run:()=>commandSpeak([['','ここには誰もいない。']])}];
  }else if(commandSelection==='investigate')entries=commandInvestigations();
  else if(commandSelection==='search')entries=commandPeople().map(p=>({label:p.name,run:()=>searchPerson(p)}));
- else if(commandSelection==='move')entries=Object.entries(DATA.rooms).filter(([id])=>id!==state.room).map(([id,r])=>({label:r.name,run:()=>moveTo(id)}));
+ else if(commandSelection==='move')entries=Object.entries(DATA.rooms).filter(([id])=>id!==state.room).map(([id,r])=>({label:r.name,run:()=>{commandSelection=null;moveTo(id)}}));
  if(!entries.length){const p=document.createElement('p');p.textContent='まだ手がかりがない。';box.appendChild(p)}
  for(const entry of entries){const b=document.createElement('button');b.type='button';b.textContent=entry.label;b.onclick=()=>{if(state.mode==='exploration')entry.run()};box.appendChild(b)}
- const back=document.createElement('button');back.type='button';back.className='command-back';back.textContent='もどる';back.onclick=()=>{commandSelection=null;renderCommands();$('commandRoots').querySelector('button')?.focus()};box.appendChild(back);
+ const back=document.createElement('button');back.type='button';back.className='command-back';back.textContent='もどる';back.onclick=()=>{commandSelection=null;renderCommands();$('commandRoots').querySelector('button')?.focus()};box.appendChild(back);$('commandDetail').style.setProperty?.('--command-count',entries.length+1);if(window.innerHeight){const available=window.innerHeight-$('commandDetail').getBoundingClientRect().top-90;const row=Math.max(20,Math.min(42,available/(entries.length+1)));$('commandDetail').style.setProperty('--command-row',row+'px');$('commandDetail').style.setProperty('--command-font',Math.min(17,row*.53,$('commandDetail').getBoundingClientRect().width/15)+'px')}
 }
-for(const [kind,label] of [['listen','聞く'],['investigate','調べる'],['search','探す'],['chat','会話'],['move','移動']]){
+for(const [kind,label] of [['move','移動'],['listen','聞く'],['investigate','調べる'],['search','探す'],['chat','会話']]){
  const b=document.createElement('button');b.type='button';b.textContent=label;b.dataset.command=kind;b.setAttribute('aria-controls','commandDetail');b.onclick=()=>chooseCommand(kind);$('commandRoots').appendChild(b);
 }
