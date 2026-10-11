@@ -36,7 +36,7 @@ function menu(){
  if(state.flags.okaboChecked&&!state.flags.deductionDone)buttons.push(['推理を再開する',startDeduction]);
  if(state.flags.deductionDone)buttons.push(['エンディングを読み返す',()=>say(SCENARIO.ending,showEnding)]);
  buttons.push(['人物相関図（次工程）',()=>panel('人物相関図',[['もどる',menu]])],['メール（次工程）',()=>panel('メール',[['もどる',menu]])],['操作方法',()=>{
-  panel('操作方法',[['もどる',menu]]);note('対象をタップ →「しらべる」。持ち物は「メニュー → もちもの」から調べます。会話をタップすると全文表示、もう一度タップすると次へ進みます。会話・推理を終えた探索中に保存できます。推理を中断した場合はメニューから再開できます。');
+  panel('操作方法',[['もどる',menu]]);note('「聞く」「調べる」「探す」「会話」から行動を選びます。調べる対象や探す人物は、調査で手がかりが増えると追加されます。持ち物は「調べる」からも確認できます。会話をタップすると全文表示、もう一度タップすると次へ進みます。会話・推理を終えた探索中に保存できます。推理を中断した場合はメニューから再開できます。');
  }]);panel('メニュー',buttons);
 }
 function inventory(){
@@ -102,7 +102,7 @@ function deduction(){
  const back=document.createElement('button');back.textContent='調査にもどる';back.onclick=closePanel;$('panelBody').appendChild(back);
 }
 function showEnding(){
- panel('消えたスケッチ — 終わり',[['調査画面にもどる',closePanel],['メニュー',menu]]);
+ panel('消えたスケッチ — 終わり',[['調査にもどる',closePanel],['メニュー',menu]]);
  note('試作版をプレイしていただき、ありがとうございました。');
 }
 showTitle();

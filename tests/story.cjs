@@ -12,6 +12,7 @@ const sandbox={document,window:{addEventListener(){},localStorage:{getItem:k=>st
 vm.createContext(sandbox);const run=c=>vm.runInContext(c,sandbox);const check=c=>assert(run(c),c);
 for(const f of ['scenario.js','events.js','saves.js'])run(fs.readFileSync(root+'/data/'+f,'utf8'));
 const html=fs.readFileSync(root+'/index.html','utf8');for(const m of html.matchAll(/<script>([\s\S]*?)<\/script>/g))run(m[1]);
+run(fs.readFileSync(root+'/data/commands.js','utf8'));
 run(fs.readFileSync(root+'/data/story-ui.js','utf8'));
 assert.deepEqual(JSON.parse(JSON.stringify(sandbox.window.SAIKACHI_SCENARIO)),JSON.parse(fs.readFileSync(root+'/data/scenario.json')));
 const end=()=>run('for(let i=0;i<100&&state.mode==="dialogue"&&!choicesPending;i++)advance()');
@@ -78,3 +79,29 @@ for(const slot of [1,2,3]){
  check('state.mode==="exploration"');
 }
 console.log('PASS: title continue restores each of three independent saved states and settings; slots outside 1–3 rejected.');
+
+// Command-only investigation, dynamic clues/names, conversations and restored unlocks.
+run('startNewGame()');for(let i=0;i<3;i++)click('つづける');click('調査をはじめる');end();
+assert.equal(elements.targets.children.length,0);
+const commandClick=label=>{const button=[...(elements.commandChildren?.children||[]),...elements.commandRoots.children].find(b=>b.textContent===label);assert(button,'missing command '+label);button.onclick()};
+assert.deepEqual(JSON.parse(run('JSON.stringify(commandPeople().map(p=>p.name))')),['ナカコ','犯人']);
+commandClick('聞く');commandClick('ここには誰もいない');assert.equal(elements.line.textContent,'ここには誰もいない。');end();
+commandClick('調べる');assert(!elements.commandChildren.children.some(b=>b.textContent==='モチーフの配置図'));
+commandClick('机');end();commandClick('調べる');assert(elements.commandChildren.children.some(b=>b.textContent==='モチーフの配置図'));
+commandClick('作品棚');end();commandClick('調べる');commandClick('モチーフの配置図');end();
+assert(run('commandPeople().some(p=>p.name==="オカボー")'));
+run('moveTo("corridor")');end();commandClick('調べる');commandClick('掲示板');end();
+commandClick('調べる');assert(elements.commandChildren.children.some(b=>b.textContent==='クロ研の当番表'));
+run('moveTo("classroom")');end();commandClick('調べる');commandClick('作品棚');end();
+commandClick('調べる');assert(elements.commandChildren.children.some(b=>b.textContent==='オカボーのスケッチブック'));
+run('const commandSaved=Saves.snapshot(state,textSettings);startNewGame();restoreSave(commandSaved)');
+assert(run('commandPeople().some(p=>p.name==="オカボー") && commandInvestigations().some(e=>e.label==="モチーフの配置図")'));
+commandClick('探す');commandClick('オカボー');end();check('!state.flags.deductionDone');
+assert.equal(run('SCENARIO.commands.conversations.length'),10);
+const beforeChat=run('JSON.stringify(Saves.snapshot(state,textSettings).progress)');
+commandClick('会話');commandClick('いつもの役割');end();
+assert.equal(run('JSON.stringify(Saves.snapshot(state,textSettings).progress)'),beforeChat);
+commandClick('調べる');commandClick('オカボーのスケッチブック');end();check('state.mode==="deduction"');
+console.log('PASS: command investigation route, empty room listen, dynamic targets/names, search, ten conversations, save/load unlock restoration and deduction.');
+
+run('const legacySaved=JSON.parse(JSON.stringify(commandSaved));for(const key of SCENARIO.commands.discoveryFlags)delete legacySaved.progress.flags[key];restoreSave(legacySaved)');check('state.flags.personOkabo && state.flags.layoutSeen && state.flags.personNakako && state.mode==="exploration"');console.log('PASS: existing v0.14 saves retain compatibility and restore known command discoveries.');
