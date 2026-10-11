@@ -21,7 +21,15 @@ function openingLoad(){
  $('opening').classList.add('hidden');saveSlots('load');
  const b=document.createElement('button');b.textContent='タイトルにもどる';b.onclick=showTitle;$('panelBody').appendChild(b);
 }
-function showTitle(){openingView('消えたスケッチ','サイカチADV / 試作版',[['はじめる',()=>openingPage(0)],['ロード',openingLoad]])}
+function startNewGame(){
+ closeDialogueLayer();panelRevision++;choicesPending=false;typingDone=false;displayedChars=0;
+ Object.assign(state,{mode:'opening',room:SCENARIO.initial.room,flags:{...SCENARIO.initial.flags},
+  inventory:[],visits:{[SCENARIO.initial.room]:1},completedEvents:{},selected:null,
+  dialogue:[],lineIndex:0,afterDialogue:null,deductionStep:0,errors:0});
+ $('dialogueChoices').replaceChildren();$('panelBody').replaceChildren();
+ openingPage(0);
+}
+function showTitle(){openingView('消えたスケッチ','サイカチADV / 試作版',[['最初から',startNewGame],['ロード',openingLoad]])}
 function menu(){
  if(!state.flags.introSeen){showTitle();return}
  const buttons=[['セーブ',()=>saveSlots('save')],['ロード',()=>saveSlots('load')],['セーブの持ち運び',transferMenu],['もちもの',inventory],['ちょうさメモ',memo]];
