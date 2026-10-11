@@ -29,10 +29,10 @@ function startNewGame(){
  $('dialogueChoices').replaceChildren();$('panelBody').replaceChildren();
  openingPage(0);
 }
-function showTitle(){openingView('消えたスケッチ','サイカチADV / 試作版',[['最初から',startNewGame],['ロード',openingLoad]])}
+function showTitle(){openingView('消えたスケッチ','サイカチADV / 試作版',[['最初から',startNewGame],['途中から',openingLoad]])}
 function menu(){
  if(!state.flags.introSeen){showTitle();return}
- const buttons=[['セーブ',()=>saveSlots('save')],['ロード',()=>saveSlots('load')],['セーブの持ち運び',transferMenu],['もちもの',inventory],['ちょうさメモ',memo]];
+ const buttons=[['セーブ',()=>saveSlots('save')],['途中から',()=>saveSlots('load')],['セーブの持ち運び',transferMenu],['もちもの',inventory],['ちょうさメモ',memo]];
  if(state.flags.okaboChecked&&!state.flags.deductionDone)buttons.push(['推理を再開する',startDeduction]);
  if(state.flags.deductionDone)buttons.push(['エンディングを読み返す',()=>say(SCENARIO.ending,showEnding)]);
  buttons.push(['人物相関図（次工程）',()=>panel('人物相関図',[['もどる',menu]])],['メール（次工程）',()=>panel('メール',[['もどる',menu]])],['操作方法',()=>{

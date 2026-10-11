@@ -60,3 +60,21 @@ assert.deepEqual(Array.from(storage.entries()),savedBeforeRestart);
 for(let i=0;i<3;i++)click('つづける');click('調査をはじめる');end();
 check('state.mode==="exploration" && state.flags.introSeen && !state.flags.deductionDone && state.inventory.length===0');
 console.log('PASS: new game after completed save resets progress, replays opening, and preserves saved slots.');
+
+// All three title-screen slots restore their own progress and settings.
+run('moveTo("corridor")');end();
+run('textSettings.index=3;textSettings.auto=true;Saves.write(3,Saves.snapshot(state,textSettings))');
+assert.throws(()=>run('Saves.write(4,Saves.read(3))'));
+assert.throws(()=>run('Saves.read(0)'));
+for(const slot of [1,2,3]){
+ const expected=JSON.parse(run(`JSON.stringify(Saves.read(${slot}))`));
+ run('showTitle()');click('途中から');
+ assert.equal(elements.panelTitle.textContent,'途中から');
+ const slotButtons=elements.panelBody.children.filter(b=>/^記録[1-3]：/.test(b.textContent));
+ assert.equal(slotButtons.length,3);
+ slotButtons[slot-1].onclick();click('再開する');
+ assert.deepEqual(JSON.parse(run('JSON.stringify({room:state.room,flags:state.flags,inventory:state.inventory,visits:state.visits,completedEvents:state.completedEvents})')),expected.progress);
+ assert.deepEqual(JSON.parse(run('JSON.stringify({textSpeed:textSettings.index,auto:textSettings.auto})')),expected.settings);
+ check('state.mode==="exploration"');
+}
+console.log('PASS: title continue restores each of three independent saved states and settings; slots outside 1–3 rejected.');
