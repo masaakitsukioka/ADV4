@@ -1,0 +1,516 @@
+<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#111015"><title>サイカチADV | 消えたスケッチ 試作版 v0.14.0</title><style>
+:root{font-family:system-ui,'Hiragino Kaku Gothic ProN','Noto Sans JP',sans-serif;color:#f2eadb;background:#111015}*{box-sizing:border-box}body{margin:0;overflow:hidden}button{font:inherit;cursor:pointer;touch-action:manipulation}#game{position:relative;width:100vw;height:100dvh;overflow:hidden;background:#211f28}#scene{position:absolute;inset:0;background:linear-gradient(180deg,#292c3c 0 47%,#51483f 47% 50%,#322d31 50%);transition:opacity .2s}#scene:before{content:'';position:absolute;inset:9% 12% 44%;border:9px solid #151820;background:repeating-linear-gradient(90deg,#4b5161 0 20%,#272e39 20% 23%);box-shadow:0 0 0 8px #615a53}#scene.corridor{background:linear-gradient(125deg,#252934,#434452 58%,#28232d 58%)}#scene.corridor:before{inset:13% 26% 18% 30%;border:12px solid #171a22;background:linear-gradient(90deg,#47424b 50%,#312d39 50%)}.grain{position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,transparent 0 5px,#0001 5px 6px)}.title{position:absolute;top:5%;left:7%;font-weight:900;letter-spacing:.15em;font-size:clamp(16px,2.8vw,36px);text-shadow:2px 2px #15131a}.location{position:absolute;top:12%;left:7%;font-size:clamp(12px,1.4vw,17px);opacity:.8}.tab{position:absolute;top:42%;z-index:3;padding:14px 12px;border:0;background:#efe5d4;color:#15141b;font-weight:900;writing-mode:vertical-rl;letter-spacing:.18em;min-width:46px;min-height:110px}.tab.left{left:0}.tab.right{right:0}.tab:disabled{opacity:.35}#targets{position:absolute;inset:0;pointer-events:none;z-index:2}.target{pointer-events:auto;position:absolute;border:2px dashed #edb9a5;background:#b14d3a66;color:white;font-weight:800;min-width:84px;min-height:54px;border-radius:8px;text-shadow:1px 1px #000;padding:8px}.target.selected{outline:4px solid #c95439}.target[data-id="shelf"]{left:58%;top:38%}.target[data-id="desk"]{left:22%;top:65%}.target[data-id="notice"]{left:52%;top:36%}.target[data-id="door"]{left:31%;top:66%}.actions{position:absolute;z-index:4;background:#efe5d4;color:#111015;padding:8px;display:flex;gap:8px;border-left:6px solid #bb4c35;max-width:70%;flex-wrap:wrap}.actions button,.panel button{border:0;background:#1b1b25;color:#f6eee1;padding:10px 16px;font-weight:700;min-height:44px}.dialogue{position:absolute;bottom:0;left:0;width:100%;min-height:32%;background:#08090bdc;border-top:4px solid #b44b35;padding:20px max(8%,40px) 22px;z-index:6}.speaker{color:#f4b39e;font-weight:900;margin-bottom:8px}.line{font-size:clamp(16px,2.2vw,24px);line-height:1.65;white-space:pre-wrap}.next{position:absolute;right:7%;bottom:12px;color:#f4b39e}.panel{position:absolute;z-index:5;inset:10% 12%;background:#eee5d7;color:#16141a;padding:25px;overflow:auto;box-shadow:12px 12px #b84e39}.panel h2{margin:0 0 20px}.panel button{display:block;margin:8px 0;min-width:190px;text-align:left}.panel .close{position:absolute;right:16px;top:10px;background:#b44b35}.hint{position:absolute;bottom:8px;left:10px;font-size:12px;opacity:.65;z-index:2}.deduction-choice{width:100%;margin:6px 0!important}.status{font-size:13px;line-height:1.5}.hidden{display:none!important}@media(max-height:420px){.dialogue{min-height:42%;padding:8px 8% 18px}.speaker{margin:0}.line{font-size:15px}.title{top:3%}.location{top:15%}.tab{top:32%;min-height:80px}.panel{inset:5% 10%;padding:12px 20px}.panel h2{margin:0 0 10px}}
+
+/* v0.3 dialogue layer */
+.dialogue{transform:translateY(105%);opacity:0;transition:transform .24s ease,opacity .24s ease;pointer-events:none;min-height:33%;padding:18px max(7%,38px) 24px;background:rgba(5,7,11,.83);border-top:0;}
+.dialogue.hidden{display:none!important}.dialogue.open{transform:translateY(0);opacity:1;pointer-events:auto}
+.speaker{display:inline-block;background:#efe5d4;color:#17151c;padding:4px 18px;transform:skew(-9deg);margin-bottom:9px;border-left:6px solid #b44b35}
+.line{font-size:clamp(15px,2vw,23px);line-height:1.55;max-height:calc(33dvh - 56px);overflow-y:auto;white-space:pre-wrap}
+.next{visibility:hidden;animation:blink .85s steps(2,start) infinite}.next.ready{visibility:visible}@keyframes blink{to{opacity:.25}}
+.portrait-rail{position:absolute;bottom:calc(33% + 5px);left:4%;display:flex;gap:9px;z-index:6;pointer-events:none}.portrait{border:2px solid #a09a95;background:#16171bcf;padding:6px 12px;font-weight:800;font-size:12px;opacity:.55}.portrait.active{opacity:1;border-color:#b94b37;color:#fff0de}
+#dialogueChoices{display:flex;gap:8px;flex-wrap:wrap;margin-top:7px}#dialogueChoices button{background:#eee5d7;color:#18151a;border:0;padding:8px 14px;min-height:40px;font-weight:800}
+#textControls{position:absolute;z-index:8;right:7%;top:5%;display:flex;gap:8px}#textControls button{background:#14151bcc;color:#f4e8d8;border:1px solid #b44b35;padding:7px 9px;font-size:12px}
+#textControls.hidden{display:none!important}
+@media(max-height:420px){.dialogue{min-height:42%;padding:8px 8% 15px}.line{font-size:14px;max-height:calc(42dvh - 38px)}.portrait-rail{bottom:calc(42% + 4px)}.speaker{margin-bottom:3px;padding:2px 12px}}
+@media(prefers-reduced-motion:reduce){.dialogue{transition:none}.next{animation:none}}
+
+/* v0.4 character presentation and branching dialogue */
+#characterStage{position:absolute;inset:14% 8% 33%;z-index:3;pointer-events:none;display:flex;justify-content:space-between;align-items:end}
+#characterStage.hidden{display:none!important}
+.character-card{width:min(23vw,190px);height:min(43vh,250px);background:linear-gradient(145deg,#3e4150,#15151d);border:3px solid #b54b36;box-shadow:8px 8px 0 #0b0a0b88;clip-path:polygon(0 0,92% 0,100% 12%,100% 100%,0 100%);display:flex;flex-direction:column;justify-content:end;align-items:center;gap:8px;padding:14px 6px;opacity:.48;transition:opacity .15s,transform .15s}
+.character-card.active{opacity:1;transform:translateY(-5px)}.character-card .avatar{font-size:clamp(38px,7vw,76px);filter:grayscale(.15)}.character-card .character-name{font-weight:900;letter-spacing:.1em}.character-card .emotion{font-size:12px;color:#ffd5bd}
+#dialogueChoices{position:relative;z-index:7;flex-direction:column;align-items:stretch;max-width:620px}#dialogueChoices button{width:100%;text-align:left;border-left:5px solid #b54b36;min-height:44px}
+@media(max-height:420px){#characterStage{inset:8% 8% 42%}.character-card{height:100%;width:120px;padding:4px}.character-card .avatar{font-size:35px}.character-card .emotion{font-size:10px}}
+
+/* v0.5 visual system: ink / paper / vermilion, responsive full-bleed */
+:root{--ink:#111219;--paper:#f1e9db;--red:#b63e31;--line:#d2c2a9;--shadow:#09090e}
+#game{background:var(--ink);isolation:isolate}
+#scene{image-rendering:pixelated;background:linear-gradient(180deg,#151a2b 0 17%,#34384c 17% 49%,#171c27 49% 54%,#39353b 54% 100%)}
+#scene:before{inset:12% 16% 39%;border:10px solid #141823;background:repeating-linear-gradient(90deg,#414657 0 17%,#161a25 17% 20%);box-shadow:0 0 0 12px #696052,0 12px 0 12px #1d1d29}
+#scene:after{content:'';position:absolute;bottom:0;left:0;right:0;height:25%;background:repeating-linear-gradient(90deg,#40363a 0 8%,#27242b 8% 9%);clip-path:polygon(0 35%,100% 15%,100% 100%,0 100%);opacity:.8}
+#scene.corridor{background:linear-gradient(105deg,#171b29 0 24%,#393c4a 24% 54%,#22202d 54% 100%)}
+#scene.corridor:before{inset:11% 28% 13% 29%;background:linear-gradient(90deg,#333440 49%,#171a23 49% 54%,#36313a 54%);box-shadow:0 0 0 8px #5b5350}
+#scene.corridor:after{background:repeating-linear-gradient(90deg,#2b2931 0 9%,#4b4242 9% 10%);height:23%}
+.grain{z-index:1;opacity:.38;pointer-events:none}
+.title{z-index:2;top:4%;left:6%;font-size:clamp(17px,3.2vw,40px);letter-spacing:.12em;color:var(--paper);line-height:1.1;filter:drop-shadow(2px 3px 0 #17141a)}
+.title:before{content:'SAIKACHI / 1996';display:block;font-size:clamp(8px,.9vw,11px);letter-spacing:.25em;color:#f5b6a4;margin-bottom:6px}
+.location{z-index:2;top:calc(5% + clamp(28px,4vw,53px));left:6%;background:var(--red);color:white;opacity:1;padding:4px 14px;transform:skew(-8deg);font-weight:800;letter-spacing:.14em;font-size:clamp(11px,1.3vw,15px)}
+.tab{z-index:8;top:40%;border:0;background:transparent;color:var(--paper);font-size:clamp(15px,1.6vw,20px);font-weight:900;min-width:54px;min-height:112px;padding:13px 15px;letter-spacing:.25em;text-shadow:2px 2px var(--shadow);transition:transform .12s,color .12s}
+.tab:before{content:'';position:absolute;inset:0;z-index:-1;background:var(--red);clip-path:polygon(0 0,100% 8%,100% 100%,0 92%)}
+.tab.left{left:0}.tab.right{right:0}.tab:hover,.tab:focus-visible{color:#fff;transform:scale(1.05)}
+#targets{z-index:3}.target{background:rgba(11,13,18,.28);border:1px solid rgba(245,225,207,.55);border-radius:0;color:var(--paper);text-shadow:1px 2px #000;min-width:88px;min-height:48px;box-shadow:inset 0 0 0 2px #16192355;backdrop-filter:blur(1px);font-size:clamp(12px,1.3vw,16px)}
+.target:before{content:'◇';color:#e6ad9b;margin-right:5px}.target.selected{border-color:var(--red);outline:2px solid var(--red);outline-offset:3px;background:#14121dc9}
+.actions{z-index:9;max-width:min(70%,420px);background:var(--paper);border:0;border-left:7px solid var(--red);padding:8px;box-shadow:7px 7px #101016aa;clip-path:polygon(0 0,97% 0,100% 15%,100% 100%,0 100%)}
+.actions button,.panel button{border:0;border-radius:0;background:var(--ink);color:var(--paper);min-height:44px;letter-spacing:.08em}
+.actions button:hover,.panel button:hover,.actions button:focus-visible,.panel button:focus-visible{background:var(--red);color:white}
+.dialogue{z-index:11;background:rgba(5,7,11,.80);padding:17px max(7%,32px) 23px;min-height:33%;border-top:2px solid rgba(231,218,198,.6);box-shadow:0 -12px 30px #090a1166}
+.dialogue:before{content:'';position:absolute;left:0;top:-6px;width:30%;height:5px;background:var(--red);transform:skew(-30deg)}
+.speaker{background:var(--paper);color:var(--ink);border-left:7px solid var(--red);font-size:clamp(12px,1.5vw,17px);letter-spacing:.1em}
+.line{color:var(--paper);font-size:clamp(15px,2.1vw,23px);line-height:1.55;letter-spacing:.03em}
+.next{color:#ed8e78;font-size:16px}
+.portrait-rail{left:5%;z-index:11}.portrait{background:#14151ad9;border:1px solid #c8b9a8;clip-path:polygon(0 0,92% 0,100% 20%,100% 100%,0 100%)}.portrait.active{border-color:var(--red);background:var(--red)}
+.panel{z-index:12;inset:8% 11%;padding:clamp(15px,3vw,34px);background:var(--paper);color:var(--ink);box-shadow:12px 12px 0 var(--red);border-top:7px solid var(--ink);clip-path:polygon(0 0,98% 0,100% 4%,100% 100%,0 100%)}
+.panel h2{font-weight:900;font-size:clamp(21px,3vw,36px);letter-spacing:.13em;border-bottom:2px solid var(--ink);padding-bottom:10px;margin-right:65px}
+.panel button{max-width:100%;white-space:normal}.panel .close{position:sticky;float:right;right:0;top:0;background:var(--red);z-index:2}
+#dialogueChoices button{background:var(--paper);color:var(--ink);border-left:6px solid var(--red);min-height:44px;text-align:left}#dialogueChoices button:hover{background:#e5c9b7}
+#textControls{z-index:12}#textControls button{background:#13151bdc;border:1px solid #dfb5a4;color:var(--paper)}
+#characterStage{z-index:4;inset:12% 8% 33%}.character-card{border:0;border-left:6px solid var(--red);background:linear-gradient(145deg,#2e3446eb,#0d101ad9);clip-path:polygon(0 0,87% 0,100% 12%,100% 100%,0 100%)}.character-card.active{box-shadow:8px 8px 0 #a94032a8}.character-card .character-name{color:var(--paper)}
+.hint{z-index:2;left:6%;bottom:8px;color:var(--paper);background:#13151bb3;padding:4px 8px;max-width:85%}
+@media(max-height:460px){.title{top:3%;font-size:18px}.location{top:calc(3% + 27px)}.tab{top:35%;min-height:78px;min-width:44px;padding:8px 10px;font-size:13px}.dialogue{min-height:44%;padding:7px max(6%,24px) 14px}.line{font-size:14px;max-height:calc(44dvh - 38px)}.speaker{padding:1px 10px;margin-bottom:3px}.portrait-rail{bottom:calc(44% + 3px)}#characterStage{inset:8% 8% 44%}.panel{inset:4% 8%;padding:10px 17px}.panel h2{font-size:20px;margin-bottom:8px;padding-bottom:5px}.hint{display:none}}
+@media(max-width:650px){.panel{inset:6% 8%}.actions{max-width:75%}.title{left:8%}.location{left:8%}}
+@media(prefers-reduced-motion:reduce){.tab,.character-card{transition:none}}
+
+/* v0.6: pixel canvas, cover mapping and safe-area target placement */
+#scene{overflow:hidden;background-color:#181b28!important;background-image:none}
+#scene::before,#scene::after{display:none!important}
+#pixelScene{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;image-rendering:pixelated;image-rendering:crisp-edges}
+.target{transform:translate(-50%,-50%);min-width:72px;max-width:140px;min-height:44px;z-index:3}
+.tab.left{left:max(0px,env(safe-area-inset-left))}.tab.right{right:max(0px,env(safe-area-inset-right))}
+@media(max-height:380px){.target{font-size:12px;min-width:68px;min-height:44px}}
+
+/* v0.7 external portrait images; preserve left Haruki/right Saiji and fallback */
+.character-card{position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:flex-end}
+.character-art{display:none;position:absolute;bottom:0;left:50%;transform:translateX(-50%);height:100%;width:auto;max-width:100%;object-fit:contain;image-rendering:pixelated;opacity:.72;pointer-events:none}
+.character-card.active .character-art{opacity:1}
+.character-card .character-name,.character-card .emotion{position:relative;z-index:2;text-shadow:1px 2px 2px #000;background:#151720b8;padding:2px 6px}
+.asset-fallback{position:absolute;top:12%;left:40%}
+/* Reference art direction: charcoal, old paper, vermilion and rough pixels. */
+:root{--ink:#070e10;--paper:#e9ddc3;--red:#da391c;--line:#afa389;--shadow:#020607;font-family:'Hiragino Mincho ProN','Yu Mincho',serif}
+#game{background:var(--ink)}
+.grain{opacity:.2;background:repeating-linear-gradient(0deg,transparent 0 3px,#0002 3px 4px)}
+.title{display:none}
+.location{top:max(12px,env(safe-area-inset-top));left:50%;transform:translateX(-50%);padding:5px 12px;background:#071012ba;color:var(--paper);font-size:13px;letter-spacing:.14em;border-bottom:1px solid #b3a38555;max-width:44%;text-align:center}
+.tab{top:max(0px,env(safe-area-inset-top));width:clamp(128px,22vw,300px);height:clamp(62px,12vw,144px);min-width:0;min-height:48px;padding:0;border:0;background:none;color:transparent;font-size:0;writing-mode:horizontal-tb;z-index:10;transition:filter .12s;overflow:visible}
+.tab.left{left:max(0px,env(safe-area-inset-left))}.tab.right{right:max(0px,env(safe-area-inset-right))}
+.tab:before{display:none}.tab img{display:block;width:100%;height:100%;object-fit:contain;image-rendering:pixelated;pointer-events:none}
+.tab:hover,.tab:focus-visible{transform:none;filter:brightness(1.18)}
+.tab:focus-visible{outline:2px solid var(--paper);outline-offset:-5px}
+.target{color:var(--paper);background:#080f1066;border:1px solid #b9ac8d55;box-shadow:none;backdrop-filter:none;opacity:.72;letter-spacing:.09em;font-size:clamp(12px,1.3vw,16px)}
+.target:before{content:'◇';color:var(--red)}
+.target:hover,.target:focus-visible,.target.selected{opacity:1;background:#061013c9;border-color:var(--red);outline:1px solid var(--red);outline-offset:2px}
+.actions{background:#091012ed;color:var(--paper);border:1px solid #ad9d7d;border-left:4px solid var(--red);box-shadow:4px 4px #020708bb;clip-path:none}
+.actions button,.panel button{font-family:inherit;background:#0c1719;color:var(--paper);border:1px solid #80786266;letter-spacing:.08em}
+.actions button:hover,.actions button:focus-visible,.panel button:hover,.panel button:focus-visible{background:#682319;outline:2px solid var(--red);outline-offset:-2px}
+.dialogue{left:1%;bottom:2%;width:98%;min-height:24%;max-height:70dvh;padding:clamp(17px,2.2vw,34px) clamp(20px,3vw,48px);display:grid;grid-template-columns:clamp(78px,10vw,160px) minmax(0,1fr);column-gap:clamp(18px,2.5vw,40px);align-content:start;background:#03090ce6;border:2px solid #b5a789;box-shadow:3px 3px #121b1b,-2px -2px #efe1ba33;overflow:auto;z-index:11;clip-path:polygon(1% 0,98.8% 0,100% 5%,100% 98%,99% 100%,0 100%,0 7%)}
+.dialogue:before{left:0;top:0;width:95px;height:28px;background:var(--red);transform:none;clip-path:polygon(0 0,100% 0,75% 18%,42% 32%,18% 60%,5% 100%,0 85%);pointer-events:none}
+.speaker{grid-column:1;grid-row:1;align-self:stretch;display:block;margin:0;padding:0 8px 0 0;transform:none;background:none;border:0;border-right:1px solid #b5a78988;color:var(--red);font-size:clamp(19px,2.2vw,32px);font-weight:900;letter-spacing:.08em}
+.line{grid-column:2;grid-row:1;max-height:30dvh;overflow:auto;font-family:inherit;color:var(--paper);font-size:clamp(16px,2.1vw,28px);line-height:1.65;letter-spacing:.06em;text-shadow:1px 1px #050708}
+.next{right:3%;bottom:12px;color:var(--red);font-size:24px}
+#dialogueChoices{grid-column:2;margin-top:12px;max-width:none}
+#dialogueChoices button{background:#10191ae8;color:var(--paper);border:1px solid #a3977b;border-left:4px solid var(--red);font-family:inherit}
+#dialogueChoices button:hover,#dialogueChoices button:focus-visible{background:#5d221b;outline:2px solid var(--paper);outline-offset:-2px}
+.portrait-rail{display:none!important}
+#characterStage{inset:20% 8% 25%;align-items:end;z-index:4}
+.character-card{width:min(24vw,260px);height:100%;border:0;background:none;clip-path:none;box-shadow:none!important;opacity:1;filter:brightness(.45);transition:filter .15s;overflow:visible;padding:0}
+.character-card.active{opacity:1;filter:brightness(1);transform:none}
+.character-art{height:100%;max-width:100%;opacity:1;object-fit:contain;object-position:bottom;filter:saturate(.7) contrast(1.07)}
+.character-card .character-name,.character-card .emotion{display:none}
+.asset-fallback{left:0;top:auto;bottom:0;background:#0b1215;color:var(--paper);padding:5px 8px}
+#textControls{top:auto;right:2%;bottom:calc(26% + 10px);z-index:12}
+#textControls button{font-family:inherit;background:#080e11c9;border-color:#b8a68866;color:var(--paper);min-height:34px}
+.panel{inset:12% 12%;background:#071013f5;color:var(--paper);border:2px solid #b4a585;border-top:5px solid var(--red);box-shadow:6px 6px #030709aa;clip-path:none;font-family:inherit}
+.panel h2{border-color:#8d8069;color:var(--paper)}
+.panel .close{background:#8e2c1e;color:var(--paper)}
+.hint{font-family:inherit;color:#d7c9ad;opacity:.65;background:#050b10a8;font-size:11px;left:2%;bottom:2px;padding:3px 8px}
+@media(max-height:460px){
+ .tab{width:clamp(118px,21vw,180px);height:72px}
+ .location{top:8px;font-size:11px;max-width:45%}
+ .dialogue{min-height:27%;padding:15px 24px;grid-template-columns:76px minmax(0,1fr);column-gap:18px}
+ .speaker{font-size:20px}.line{font-size:16px;max-height:29dvh}
+ #characterStage{inset:15% 8% 29%}
+ #textControls{bottom:calc(29% + 10px)}
+ .panel{inset:8% 9%;padding:12px 20px}
+}
+@media(max-width:600px){
+ .tab{width:35%;height:78px}
+ .location{top:84px;max-width:80%;font-size:12px}
+ .dialogue{min-height:25%;padding:20px 17px;grid-template-columns:1fr;row-gap:9px}
+ .speaker{grid-column:1;grid-row:1;border-right:0;border-bottom:1px solid #b5a78977;padding-bottom:6px;font-size:21px}
+ .line{grid-column:1;grid-row:2;font-size:17px;max-height:27dvh}
+ #dialogueChoices{grid-column:1}
+ #characterStage{inset:27% 5% 28%}.character-card{width:40vw}
+ .panel{inset:15% 5%;padding:15px}.panel button{min-width:0;width:100%}.panel .close{width:auto}
+}
+@media(prefers-reduced-motion:reduce){.tab{transition:none}}
+
+.tab:disabled{opacity:.75;filter:none;cursor:default}
+.tab.asset-missing{color:var(--paper);font-size:clamp(22px,4vw,48px);background:#070e10e6;border-bottom:4px solid var(--red)}
+.tab.asset-missing img{display:none}.hint{display:none}
+#textControls{top:48px;bottom:auto;left:50%;right:auto;transform:translateX(-50%)}
+#textControls button{font-size:11px;min-height:28px;padding:4px 7px}
+@media(max-height:460px){#textControls{top:38px;bottom:auto}}
+@media(max-width:600px){#textControls{top:116px;bottom:auto}}
+
+.speaker:empty{display:none}.dialogue.narration{grid-template-columns:1fr}
+#opening{position:absolute;inset:0;z-index:30;background:#000;color:var(--paper);display:flex;flex-direction:column;justify-content:center;align-items:center;padding:max(24px,env(safe-area-inset-top)) max(28px,env(safe-area-inset-right)) max(24px,env(safe-area-inset-bottom)) max(28px,env(safe-area-inset-left));overflow:auto}
+#opening h1{font-size:clamp(26px,5vw,58px);font-weight:500;letter-spacing:.14em;margin:0 0 12px;text-align:center}
+#opening p{max-width:760px;font-size:clamp(16px,2.2vw,23px);line-height:1.9;white-space:pre-wrap;margin:12px 0 24px}
+#opening .opening-actions{display:flex;gap:16px;flex-wrap:wrap;justify-content:center}
+#opening button{background:#101719;color:var(--paper);border:1px solid #ad9d7d;padding:10px 22px;min-height:44px;font:inherit}
+#opening button:focus-visible{outline:2px solid var(--red);outline-offset:3px}
+.evidence-note{line-height:1.8;font-size:clamp(15px,1.7vw,20px)}
+.answer-groups{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:16px 0}
+.answer-groups label{display:flex;flex-direction:column;gap:7px}.answer-groups select{font:inherit;color:var(--paper);background:#0c1719;border:1px solid #ad9d7d;padding:8px;min-height:44px;max-width:100%}
+.answer-status{color:#ffd9b4;min-height:1.6em;line-height:1.6}.answer-preview{line-height:1.8;border-bottom:1px solid #ad9d7d;padding-bottom:12px}
+@media(max-width:600px) and (orientation:portrait){.answer-groups{grid-template-columns:1fr;gap:10px}#targets{display:grid;grid-template-columns:1fr 1fr;align-content:center;gap:22px;padding:140px 22px 30px}.target{position:static;transform:none;min-width:0;max-width:none;min-height:48px!important}#opening{justify-content:safe center}}
+@media(max-height:460px){#opening p{font-size:16px;line-height:1.65;margin:8px 0 14px}#opening h1{font-size:30px}.answer-groups{margin:8px 0}.panel .evidence-note{font-size:15px}}
+.panel .close{min-width:0;width:auto;padding:8px 14px}.answer-status:empty{display:none}
+
+/* Command windows: charcoal message frame, doubled borders and overlapping panes. */
+#commandWindows{position:absolute;inset:0;z-index:9;pointer-events:none}
+.command-window{position:absolute;pointer-events:auto;color:var(--paper);background:#03090ce8;border:2px solid #b5a789;border-radius:14px;box-shadow:0 0 0 3px #071013,0 0 0 4px #e9ddc377,6px 7px 0 #020607a8;padding:16px 18px;overflow:auto;max-height:calc(100dvh - 155px)}
+.command-window:before{content:'';position:absolute;left:8px;top:8px;bottom:8px;width:1px;background:#b5a78966;pointer-events:none}
+#commandMain{top:clamp(85px,18vh,155px);left:5%;width:230px}
+#commandDetail{top:clamp(107px,21vh,177px);left:calc(5% + 207px);width:min(350px,calc(90vw - 230px));max-height:calc(100dvh - 185px);z-index:1;background:#03090cf5}
+.command-window h2{font-size:clamp(20px,2.2vw,28px);font-weight:500;letter-spacing:.12em;margin:0 0 12px;padding:0 0 10px 14px;border-bottom:1px solid #b5a78988}
+.command-window button{display:block;width:100%;min-height:44px;text-align:left;font:inherit;font-size:clamp(17px,1.8vw,23px);letter-spacing:.1em;color:var(--paper);background:transparent;border:1px solid transparent;border-radius:22px;padding:8px 16px;margin:3px 0;cursor:pointer}
+.command-window button:hover,.command-window button:focus-visible,.command-window button.active{border-color:#e9ddc3;background:#e9ddc318;outline:none}
+.command-window button.active:before{content:'◉ ';color:var(--red)}
+.command-footer{font-size:10px;letter-spacing:.15em;text-align:center;margin:14px 0 0;color:#b5a789}
+.command-window .command-back{font-size:15px;border-top:1px solid #b5a78955;border-radius:0;margin-top:10px}
+@media(max-width:600px){#commandMain{left:4%;top:88px;width:155px;padding:12px}#commandDetail{left:calc(4% + 133px);top:112px;width:calc(92vw - 133px);padding:12px;max-height:calc(100dvh - 150px)}.command-window h2{font-size:19px;padding-left:8px}.command-window button{font-size:17px;padding:8px 10px}.command-footer{font-size:8px}}
+@media(max-height:460px) and (min-width:601px){#commandMain{top:82px;left:4%;width:175px;padding:10px 14px;max-height:calc(100dvh - 103px)}#commandDetail{top:96px;left:calc(4% + 153px);width:min(340px,calc(92vw - 175px));max-height:calc(100dvh - 117px);padding:10px 14px}.command-window h2{font-size:20px;margin-bottom:5px;padding-bottom:5px}.command-window button{font-size:17px;min-height:44px;padding:6px 12px;margin:0}.command-footer{margin:5px 0 0}}
+
+/* Layout revision based on the supplied character/message reference. */
+:root{--message-height:26dvh}
+.location{top:max(0px,env(safe-area-inset-top));left:max(0px,env(safe-area-inset-left));transform:none;width:clamp(160px,27vw,340px);height:clamp(66px,12vw,140px);max-width:48%;display:flex;align-items:center;justify-content:center;padding:10px 18px;border:0;background: url('assets/ui/location-banner.png') center/100% 100% no-repeat;color:var(--paper);font-weight:900;font-style:italic;font-size:clamp(18px,2.6vw,32px);letter-spacing:.06em;text-shadow:2px 2px #020607,-1px -1px #020607;z-index:10}
+#characterStage{position:absolute;inset:auto 0 var(--message-height);height:65dvh;display:flex;justify-content:space-between;align-items:flex-end;pointer-events:none}
+.character-card{width:34vw;height:100%;padding:0;max-width:none;filter:brightness(.48)}
+.character-card.active{filter:brightness(1)}
+.character-art{left:0;transform:none;width:100%;height:100%;max-width:none;object-fit:contain;object-position:left bottom}
+#saijiCard .character-art{object-position:right bottom}
+.dialogue{left:1%;bottom:1%;width:98%;height:var(--message-height);min-height:0;max-height:var(--message-height);padding:clamp(16px,2.3vw,34px) clamp(20px,3vw,46px);grid-template-columns:clamp(85px,11vw,170px) minmax(0,1fr);column-gap:clamp(18px,2.5vw,40px);row-gap:0;overflow:auto;clip-path:none}
+.speaker{grid-column:1;grid-row:1;border-right:1px solid #b5a78988;border-bottom:0;font-size:clamp(20px,2.5vw,34px);padding:0 12px 0 0;letter-spacing:.1em;white-space:nowrap}
+.line{grid-column:2;grid-row:1;font-size:clamp(17px,2.2vw,29px);line-height:1.65;max-height:calc(var(--message-height) - 46px);margin:0}
+.dialogue.narration{grid-template-columns:1fr}.dialogue.narration .line{grid-column:1;grid-row:1}
+#commandTitle{font-size:12px;letter-spacing:.12em;white-space:nowrap;padding-left:10px}
+#commandMain{top:clamp(90px,18vh,155px)}
+#game.deduction-layout #characterStage{display:flex!important;z-index:4}
+#game.deduction-layout .character-art{display:block}
+#game.deduction-layout .panel{inset:12% 33% calc(var(--message-height) + 3%);padding:14px;box-shadow:4px 4px #030709aa}
+#game.deduction-layout .panel h2{margin-right:0;font-size:clamp(16px,1.8vw,23px);margin:0 0 10px;padding-bottom:8px;letter-spacing:.04em}
+#game.deduction-layout .panel .close{display:none}
+#game.deduction-layout .panel button{min-width:0;width:100%;font-size:15px;padding:8px;min-height:44px}
+#game.deduction-layout .answer-groups{grid-template-columns:1fr;gap:8px;margin:8px 0}
+#game.deduction-layout .answer-preview{font-size:14px}
+#game.deduction-layout #nextMark{display:none}
+#textControls{top:12px;bottom:auto}
+@media(max-width:600px){:root{--message-height:30dvh}.location{width:47%;height:76px;font-size:19px;max-width:49%;padding:8px}.character-card{width:42vw}#characterStage{height:44dvh}.dialogue{padding:16px 14px;grid-template-columns:72px minmax(0,1fr);column-gap:12px}.speaker{font-size:19px;padding-right:7px}.line{font-size:16px;max-height:calc(var(--message-height) - 36px)}#commandTitle{font-size:9px;padding-left:4px;letter-spacing:.04em}#game.deduction-layout .panel{inset:15% 19% calc(var(--message-height) + 3%);padding:10px}#game.deduction-layout .panel h2{margin-right:0;font-size:15px}#textControls{top:80px}#game.deduction-layout .character-card{width:31vw}}
+@media(max-height:460px) and (min-width:601px){:root{--message-height:29dvh}#characterStage{height:62dvh}.character-card{width:29vw}.location{height:74px;font-size:22px}.line{font-size:16px}.speaker{font-size:21px}.dialogue{padding:12px 20px}#game.deduction-layout .panel{inset:7% 30% calc(var(--message-height) + 3%)}#game.deduction-layout .panel button{min-height:38px;font-size:14px}#commandTitle{font-size:10px}}
+
+/* Final stage layering, no-scroll text/commands and coordinated entrances. */
+:root{--message-height:27dvh;--frame-speed:.24s}
+#scene{z-index:0}.grain{z-index:1}.location,#menu{z-index:4;width:min(44vw,50dvh);height:16.667dvh;max-width:none;padding:0;transition:transform .45s ease}
+.location{background:none;display:block}.location img{width:100%;height:100%;object-fit:contain;image-rendering:pixelated}.location span{display:none}
+#characterStage{z-index:7;bottom:0;top:auto;height:66.667dvh;inset-inline:0}
+.character-card{width:min(45vw,48.2dvh);height:100%;transition:filter .15s}
+.character-art{width:100%;height:100%;object-fit:contain;object-position:center bottom}
+#characterStage.open #harukiCard{animation:characterLeft var(--frame-speed) ease .2s both}
+#characterStage.open #saijiCard{animation:characterRight var(--frame-speed) ease .2s both}
+@keyframes characterLeft{from{transform:translateX(-105%)}to{transform:translateX(0)}}
+@keyframes characterRight{from{transform:translateX(105%)}to{transform:translateX(0)}}
+.dialogue{z-index:10;background:#03090cbb;height:var(--message-height);max-height:none;overflow:hidden;transition:transform var(--frame-speed) ease,opacity var(--frame-speed) ease;grid-template-columns:clamp(75px,12vw,165px) minmax(0,1fr);padding:clamp(16px,2vw,26px) clamp(16px,2.5vw,40px);column-gap:clamp(12px,2vw,28px)}
+.line{overflow:hidden;overflow-y:hidden;max-height:none;height:auto;font-size:clamp(15px,2.2vw,28px);line-height:1.65;white-space:pre-wrap;word-break:break-all}
+.speaker{transform:none;margin:0;display:block;align-self:start;padding:0 12px 0 0;border-right:1px solid #b5a78988;border-left:0;background:none}
+.speaker img{display:block;width:100%;height:auto;max-height:70px;object-fit:contain}.speaker.empty{display:none}
+#textControls{z-index:11}
+#commandWindows{z-index:8}.command-window{background:#03090cbf;overflow:hidden;max-height:none}
+#commandDetail{background:#03090cbf;max-height:none}
+#commandChildren button{min-height:0;height:var(--command-row,38px);margin:0;padding:2px 10px;line-height:1.15;font-size:var(--command-font,17px);white-space:nowrap;letter-spacing:.02em}
+#commandChildren .command-back{margin-top:4px}
+#commandMain button{min-height:36px;padding:6px 14px;font-size:20px;margin:0}
+#opening{transition:opacity .6s ease}.opening-actions:empty{display:none}#opening.dissolve{opacity:0;pointer-events:none}
+#opening #openingSynopsis{width:min(760px,100%);max-width:760px;font-size:clamp(18px,2.2vw,28px);line-height:1.65;cursor:pointer;min-height:7em}
+#opening .next-inline{display:inline-block;position:static;vertical-align:baseline;margin:0 0 0 .4em;padding:0!important;background:none!important;border:0!important;color:var(--red);font-size:24px;min-height:0!important;min-width:0;visibility:hidden;animation:blink .85s steps(2,start) infinite}
+#opening .next-inline.ready{visibility:visible}
+#deductionStage{position:absolute;inset:0;z-index:3;pointer-events:none;overflow:hidden}
+.deduction-door{position:absolute;top:0;bottom:0;width:50%;background:#808080;transition:transform .65s cubic-bezier(.45,0,.15,1)}
+.deduction-door.left{left:0;transform:translateX(-100%)}.deduction-door.right{right:0;transform:translateX(100%)}
+#deductionStage.closing .deduction-door{transform:translateX(0)}
+#deductionFlash{position:absolute;inset:0;z-index:20;background:#fff;opacity:0;pointer-events:none}
+#deductionFlash.flash{animation:stageFlash .2s ease-out both}@keyframes stageFlash{from{opacity:.85}to{opacity:0}}
+#deductionStart{position:absolute;inset:0;z-index:21;display:flex;align-items:center;justify-content:center;pointer-events:none;opacity:0;font-family:'Hiragino Kaku Gothic ProN','Arial Black',sans-serif;font-size:clamp(45px,9vw,130px);font-weight:1000;font-style:italic;letter-spacing:.02em;color:#eee4c9;text-shadow:4px 4px #060708,-4px -4px #060708,8px 9px #da391c}
+#deductionStart.announce{animation:announce .95s ease both}@keyframes announce{0%{opacity:0;transform:scale(1.3) rotate(-4deg)}20%,65%{opacity:1;transform:scale(1) rotate(-4deg)}100%{opacity:0;transform:scale(.97) rotate(-4deg)}}
+#game.deduction-layout .location,#game.deduction-layout #menu{transform:translateY(-120%)}
+#game.deduction-layout #characterStage{z-index:7;height:66.667dvh;bottom:0}
+#game.deduction-layout #characterStage.open .character-card{animation:none}
+#game.deduction-layout .character-card{width:min(45vw,48.2dvh)}
+#game.deduction-layout .panel{z-index:6;inset:2.5% 19% calc(var(--message-height) + 2%);padding:clamp(12px,2vw,28px);background:#000c;border:1px solid #a99f8a;box-shadow:none;overflow:hidden;animation:problemIn .24s ease both}
+@keyframes problemIn{from{opacity:0;transform:translateY(-12px)}to{opacity:1;transform:translateY(0)}}
+#game.deduction-layout .panel h2{font-size:clamp(15px,1.8vw,23px);margin:0 0 10px;padding-bottom:8px}
+#game.deduction-layout .panel button:disabled{cursor:default;outline:none;opacity:.45}
+#game.deduction-layout .answer-sentence{display:grid;grid-template-columns:1fr auto 1fr auto;align-items:center;gap:8px;margin:5px 0 14px;font-size:clamp(13px,1.7vw,23px)}
+#game.deduction-layout .answer-slot{background:#e9ddc3;color:#b32d17;text-align:center;font-size:clamp(14px,2vw,26px);min-height:42px;margin:0;border:2px solid transparent;border-radius:0;white-space:normal}
+#game.deduction-layout .answer-slot.active{border-color:var(--red);box-shadow:0 0 0 2px #eadfc0}
+#game.deduction-layout .answer-slot[data-slot="2"]{grid-column:1 / 4}
+#game.deduction-layout .answer-pool{border:1px solid #b5a789;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;padding:12px;min-height:160px}
+#game.deduction-layout .answer-option{font-size:clamp(12px,1.5vw,20px);min-height:38px;margin:0;padding:6px 4px;text-align:center;background:#091012b3;white-space:normal}
+#game.deduction-layout .answer-option.used{background:#332c24;color:#eee4c9;opacity:1;border-color:#b5a789}
+#game.deduction-layout .answer-confirm{margin:12px auto 0;width:75%;text-align:center;min-height:40px}
+@media(max-width:600px){:root{--message-height:30dvh}#characterStage,#game.deduction-layout #characterStage{height:66.667dvh}.character-card,#game.deduction-layout .character-card{width:45vw}.dialogue{grid-template-columns:65px minmax(0,1fr);padding:15px 12px;column-gap:10px}.speaker img{max-height:45px}.line{font-size:16px}#commandMain button{font-size:17px;padding:5px 10px;min-height:35px}#game.deduction-layout .panel{inset:17% 6% calc(var(--message-height) + 2%);padding:10px}#game.deduction-layout .answer-pool{grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;padding:6px;min-height:0}#game.deduction-layout .answer-option{min-height:31px;font-size:12px}#game.deduction-layout .answer-sentence{gap:5px;font-size:12px;margin-bottom:9px}#game.deduction-layout .answer-slot{font-size:14px;min-height:32px}#game.deduction-layout .answer-confirm{margin-top:8px;min-height:33px}#game.deduction-layout .panel h2{font-size:14px;margin-bottom:7px}}
+@media(max-height:460px) and (min-width:601px){:root{--message-height:29dvh}#commandMain button{font-size:16px;min-height:30px;padding:3px 12px}#game.deduction-layout .panel{inset:2% 19% calc(var(--message-height) + 2%);padding:9px 16px}#game.deduction-layout .panel h2{font-size:15px;margin-bottom:5px;padding-bottom:4px}#game.deduction-layout .answer-sentence{margin:0 0 8px;gap:5px}#game.deduction-layout .answer-slot{min-height:30px;font-size:14px;padding:3px}#game.deduction-layout .answer-pool{min-height:0;gap:3px;padding:5px}#game.deduction-layout .answer-option{min-height:26px;font-size:12px;padding:2px}#game.deduction-layout .answer-confirm{min-height:28px;margin-top:6px;padding:4px}#game.deduction-layout .deduction-choice{min-height:34px;margin:3px 0!important}}
+@media(prefers-reduced-motion:reduce){#opening,.deduction-door,.location,#menu{transition:none}#characterStage.open .character-card,#deductionFlash.flash,#deductionStart.announce,.panel{animation:none!important}#opening .next-inline{animation:none}}
+
+#game.deduction-layout .dialogue.more-message #nextMark{display:block}
+
+#game.deduction-layout .panel .answer-slot{font-size:clamp(16px,2vw,26px);white-space:nowrap}
+#game.deduction-layout .panel .answer-option{font-size:clamp(14px,1.5vw,21px)}
+@media(max-width:600px){#game.deduction-layout .panel{inset:5% 6% calc(var(--message-height) + 2%)}#game.deduction-layout .panel .answer-slot{font-size:15px;min-height:32px;padding:4px;margin:0}#game.deduction-layout .panel .answer-option{font-size:12px;min-height:29px;padding:3px;margin:0}#game.deduction-layout .panel .answer-confirm{min-height:33px;padding:5px;margin-top:8px}#game.deduction-layout .answer-pool{gap:3px;padding:5px}#game.deduction-layout .answer-sentence{grid-template-columns:minmax(0,1fr) auto minmax(0,1fr) auto}.character-art{height:100%;width:auto;left:-15vw;max-width:none}#saijiCard .character-art{left:auto;right:-15vw}}
+@media(max-height:460px) and (min-width:601px){#game.deduction-layout .panel .answer-slot{font-size:14px;min-height:28px;padding:3px;margin:0}#game.deduction-layout .panel .answer-option{min-height:25px;font-size:12px;margin:0;padding:2px}#game.deduction-layout .panel .answer-confirm{min-height:28px;padding:4px;margin-top:6px}}
+
+#deductionStart:before{content:'';position:absolute;z-index:-1;width:80vw;height:25vw;max-height:40vh;background:url('assets/ui/location-banner.png') center/contain no-repeat}
+@media(max-width:600px){#game.deduction-layout .panel{z-index:8;background:#000b}}
+@media(max-height:360px) and (min-width:601px){#game.deduction-layout .panel .answer-slot{min-height:24px;padding:2px;font-size:12px}#game.deduction-layout .panel .answer-option{min-height:22px;padding:1px;font-size:11px}#game.deduction-layout .panel .answer-confirm{min-height:24px;padding:2px;margin-top:4px}}
+
+/* Inventory, dialogue exits, scaled sprites and chapter/result choreography. */
+.location,#menu{width:min(35.2vw,40dvh);height:13.3336dvh}.location{left:0!important;right:auto;padding:0;transform-origin:left top}#menu{transform-origin:right top}
+#characterStage,#game.deduction-layout #characterStage{height:86.6671dvh}
+.character-card,#game.deduction-layout .character-card{width:min(58.5vw,62.66dvh)}
+.character-talk{z-index:2;image-rendering:pixelated;pointer-events:none}
+.dialogue.leaving{transform:translateY(105%);opacity:0;pointer-events:none}
+#characterStage.leaving #harukiCard{animation:characterLeftOut var(--frame-speed) ease .2s both}
+#characterStage.leaving #saijiCard{animation:characterRightOut var(--frame-speed) ease .2s both}
+@keyframes characterLeftOut{from{transform:translateX(0)}to{transform:translateX(-105%)}}
+@keyframes characterRightOut{from{transform:translateX(0)}to{transform:translateX(105%)}}
+.window-in{animation:windowIn .24s ease both}.window-out{animation:windowOut .24s ease both;pointer-events:none!important}.window-out *{pointer-events:none!important}
+@keyframes windowIn{from{opacity:0;transform:translateY(-12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes windowOut{from{opacity:1;transform:translateY(0)}to{opacity:0;transform:translateY(-12px)}}
+#itemGraphic{position:absolute;z-index:9;left:50%;top:39%;transform:translate(-50%,-50%);width:min(30vw,34dvh);margin:0;background:#071013de;border:2px solid #b5a789;box-shadow:5px 5px #020607aa;pointer-events:none}
+#itemCanvas{display:block;width:100%;aspect-ratio:1;image-rendering:pixelated}#itemCaption{font-size:clamp(11px,1.2vw,16px);line-height:1.3;text-align:center;padding:7px;color:var(--paper)}
+#itemGraphic.window-in{animation:itemIn .24s ease both}#itemGraphic.window-out{animation:itemOut .24s ease both}
+@keyframes itemIn{from{opacity:0;transform:translate(-50%,-45%)}to{opacity:1;transform:translate(-50%,-50%)}}
+@keyframes itemOut{from{opacity:1;transform:translate(-50%,-50%)}to{opacity:0;transform:translate(-50%,-55%)}}
+.deduction-door{background-image:url('assets/backgrounds/saiji-notebook-deduction.png');background-repeat:no-repeat;background-size:200% 100%}
+.deduction-door.left{background-position:left center}.deduction-door.right{background-position:right center}
+#deductionStart.announce{animation:announceLong 2.48s ease both}
+@keyframes announceLong{0%{opacity:0;transform:scale(1.3) rotate(-4deg)}9.677%,90.323%{opacity:1;transform:scale(1) rotate(-4deg)}100%{opacity:0;transform:scale(.97) rotate(-4deg)}}
+#deductionStart.announce #deductionStartText{animation:titleLettersGlow .45s ease .85s both}
+@keyframes titleLettersGlow{0%,100%{filter:brightness(1);text-shadow:4px 4px #060708,-4px -4px #060708,8px 9px #da391c}45%{filter:brightness(1.7);text-shadow:0 0 12px #fff,0 0 30px #fff7,8px 9px #da391c}}
+#questionAnnouncement{position:absolute;z-index:15;left:50%;top:37%;transform:translate(-50%,-50%);width:min(78%,900px);text-align:center;color:var(--paper);background:#071013cf;border:2px solid #b5a789;padding:24px;pointer-events:none}
+#questionNumber{display:block;color:var(--red);font-size:clamp(28px,5vw,62px);font-weight:900}#questionText{font-size:clamp(18px,2.4vw,34px);line-height:1.5;margin:12px 0 0}
+.question-dissolve{animation:questionDissolve 2.48s ease both}@keyframes questionDissolve{0%{opacity:0}9.677%,90.323%{opacity:1}100%{opacity:0}}
+#deductionResult{position:absolute;z-index:19;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;font-family:'Hiragino Kaku Gothic ProN','Arial Black',sans-serif;font-size:clamp(52px,10vw,144px);font-weight:1000;font-style:italic;color:#eee4c9;text-shadow:4px 4px #060708,-4px -4px #060708,8px 9px #da391c}
+#deductionResult:before{content:'';position:absolute;z-index:-1;width:80vw;height:25vw;max-height:40vh;background:url('assets/ui/location-banner.png') center/contain no-repeat}
+.result-in{animation:resultIn .18s ease-out both}.result-out{animation:resultOut .18s ease-in both}
+@keyframes resultIn{from{opacity:0;transform:translateX(-90px)}to{opacity:1;transform:translateX(0)}}
+@keyframes resultOut{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(90px)}}
+#deductionResult.solved{font-size:clamp(65px,12vw,175px);letter-spacing:.07em}#deductionResult.solved #resultText{filter:drop-shadow(0 6px 0 #080a0e)}
+@media(max-width:600px){.character-card,#game.deduction-layout .character-card{width:58.5vw}.character-art{left:-20vw}#saijiCard .character-art{right:-20vw}#itemGraphic{width:min(50vw,30dvh);top:38%}#questionAnnouncement{width:88%;padding:18px}#questionText{font-size:18px}#commandMain button{min-height:30px;padding:4px 9px;font-size:16px}}
+@media(max-height:460px) and (min-width:601px){#commandMain button{min-height:27px;padding:3px 12px;font-size:15px}}
+@media(prefers-reduced-motion:reduce){.window-in,.window-out,.question-dissolve,.result-in,.result-out,#characterStage.leaving .character-card,#deductionStart.announce #deductionStartText{animation:none!important}}
+
+@media(min-width:601px){#game.deduction-layout .panel .deduction-choice{width:76%;margin-left:auto!important;margin-right:auto!important}#game.deduction-layout .panel .answer-pool{width:78%;margin-left:auto;margin-right:auto}}
+/* Conversation and deduction share the same portrait overlay. */
+.character-talk:not(.hidden){display:block}
+#game.ending-screen .location{transition:none;animation:none}
+#game.deduction-layout .panel .deduction-choice{text-align:center;font-size:clamp(20px,3.1dvh,30px);font-weight:700;line-height:1.25}
+#deductionResult.solved{font-family:'Hiragino Kaku Gothic StdN','Hiragino Sans','Arial Black',sans-serif;font-style:normal;font-weight:900;font-size:min(28vw,55dvh);letter-spacing:0;text-shadow:3px 3px #060708,-3px -3px #060708;-webkit-text-stroke:2px currentColor}
+#deductionResult.solved:before{display:none}
+#deductionResult.solved #resultText{display:flex;filter:none;animation:solvedGlow .8s ease 2s both}
+#deductionResult.solved #resultText span{display:block;animation:solvedLetter 1s ease-out both}
+#deductionResult.solved #resultText span:nth-child(2){animation-delay:1s}
+@keyframes solvedLetter{from{opacity:0;transform:scale(2)}to{opacity:1;transform:scale(1)}}
+@keyframes solvedGlow{0%,100%{filter:brightness(1);text-shadow:3px 3px #060708}45%{filter:brightness(1.8);text-shadow:0 0 15px #fff,0 0 45px #fff}}
+@media(prefers-reduced-motion:reduce){#deductionResult.solved #resultText,#deductionResult.solved #resultText span{animation:none}}
+</style></head><body><main id="game" aria-label="サイカチADV 消えたスケッチ 試作版 v0.14.0"><div id="scene"><canvas id="pixelScene" width="320" height="180" aria-hidden="true"></canvas></div><div class="grain"></div><div class="title">皀角坂意匠學院</div><div class="location" id="location" aria-label="現在の場所"><img id="locationGraphic" alt=""><span id="locationName"></span></div><div id="targets"></div><div id="actions" class="actions hidden"></div><button id="menu" class="tab right" type="button" aria-label="メニュー"><img id="menuGraphic" src="assets/ui/menu.png" alt="" aria-hidden="true">メニュー</button><div class="hint">コマンドを選んで調査する</div><div id="characterStage" class="hidden" aria-hidden="true"><div id="harukiCard" class="character-card"><img class="character-art" id="harukiArt" alt="ハルキ"><canvas id="harukiTalk" class="character-art character-talk hidden" width="104" height="144" aria-hidden="true"></canvas><span id="harukiFallback" class="asset-fallback">ハルキ</span><span class="character-name">ハルキ</span><span class="emotion" id="harukiEmotion">通常</span></div><div id="saijiCard" class="character-card"><img class="character-art" id="saijiArt" alt="サイジ"><canvas id="saijiTalk" class="character-art character-talk hidden" width="104" height="144" aria-hidden="true"></canvas><span id="saijiFallback" class="asset-fallback">サイジ</span><span class="character-name">サイジ</span><span class="emotion" id="saijiEmotion">通常</span></div></div><div id="portraitRail" class="portrait-rail hidden"><span class="portrait" id="harukiFace">ハルキ</span><span class="portrait" id="saijiFace">サイジ</span></div><div id="textControls" class="hidden"><button id="speedButton" type="button">文字：ふつう</button><button id="autoButton" type="button">自動：OFF</button></div><div id="dialogue" class="dialogue hidden" role="dialog" aria-live="off"><div id="speaker" class="speaker"></div><div id="line" class="line"></div><div id="dialogueChoices"></div><span class="next" id="nextMark">▼</span></div><section id="panel" class="panel hidden" aria-label="メニュー"><button class="close" id="close">とじる</button><h2 id="panelTitle"></h2><div id="panelBody"></div></section><div id="deductionStage" class="hidden" aria-hidden="true"><div class="deduction-door left"></div><div class="deduction-door right"></div></div><div id="deductionFlash" aria-hidden="true"></div><div id="deductionStart" aria-hidden="true"><span id="deductionStartText">推理開始！</span></div><div id="questionAnnouncement" class="hidden" role="status"><strong id="questionNumber"></strong><p id="questionText"></p></div><div id="deductionResult" class="hidden" role="status"><span id="resultText"></span></div><figure id="itemGraphic" class="hidden" aria-live="polite"><canvas id="itemCanvas" width="96" height="96"></canvas><figcaption id="itemCaption"></figcaption></figure><section id="commandWindows" class="hidden" aria-label="調査コマンド"><section id="commandMain" class="command-window" aria-labelledby="commandTitle"><h2 id="commandTitle">DETECTIVE COMMAND</h2><div id="commandRoots"></div></section><section id="commandDetail" class="command-window hidden" aria-labelledby="commandHeading"><h2 id="commandHeading"></h2><div id="commandChildren"></div></section></section><section id="opening" aria-label="消えたスケッチ オープニング"><h1 id="openingTitle"></h1><p id="openingText"></p><p id="openingSynopsis" class="hidden"><span id="openingCopy"></span><button id="openingNext" type="button" aria-label="次へ" class="next-inline">▼</button></p><div class="opening-actions" id="openingActions"></div></section></main><script src="data/scenario.js"></script><script src="data/events.js"></script><script src="data/saves.js"></script><script>
+ 'use strict';
+const SCENARIO=window.SAIKACHI_SCENARIO;
+if(!SCENARIO||!SCENARIO.rooms||!SCENARIO.investigations){throw new Error('シナリオファイル data/scenario.js が読み込めません');}
+const DATA={rooms:SCENARIO.rooms};
+
+// v0.7: external asset paths are replaceable; procedural backgrounds and emoji remain fallbacks.
+const ASSETS={resolution:{width:320,height:180},scenes:{
+ classroom:{background:'assets/backgrounds/classroom.png',targets:{shelf:{x:242,y:84},desk:{x:119,y:119},window:{x:35,y:70},prepDoor:{x:125,y:83},floor:{x:245,y:150}}},
+ corridor:{background:'assets/backgrounds/corridor.png',targets:{notice:{x:250,y:72},door:{x:145,y:104}}}
+},characters:{
+ haruki:{normal:'assets/characters/haruki_normal.png',surprised:'assets/characters/haruki_surprised.png',thinking:'assets/characters/haruki_thinking.png',confident:'assets/characters/haruki_confident.png'},
+ saiji:{normal:'assets/characters/saiji_normal.png',surprised:'assets/characters/saiji_surprised.png',thinking:'assets/characters/saiji_thinking.png',confident:'assets/characters/saiji_confident.png'}
+},emotionMap:{'通常':'normal','驚き':'surprised','困惑':'thinking','納得':'confident','思案':'thinking','疑問':'surprised','確信':'confident'},items:{'ナカコのスケッチブック':{image:null},'オカボーのスケッチブック':{image:null}}};
+function sceneAssetURL(path){return path.startsWith('assets/backgrounds/')?path+'?v=0.13.0':path}
+const imageCache=new Map();
+function loadImage(path){if(!path)return Promise.resolve(null);if(imageCache.has(path))return imageCache.get(path);const promise=new Promise(resolve=>{const im=new Image();im.onload=()=>resolve(im);im.onerror=()=>resolve(null);im.src=sceneAssetURL(path)});imageCache.set(path,promise);return promise}
+function setCharacterImage(id,emotion){const path=ASSETS.characters[id]?.[ASSETS.emotionMap[emotion]||'normal'];const img=$(id+'Art');if(!img)return;img.style.display='none';$(id+'Fallback').style.display='';loadImage(path).then(im=>{if(img.dataset.request!==path)return;if(im){img.src=path;img.style.display='block';$(id+'Fallback').style.display='none'}});img.dataset.request=path}
+function setSceneBackground(roomId){
+ const path=ASSETS.scenes[roomId]?.background,scene=$('scene');
+ if(scene.dataset.request!==path){scene.dataset.request=path;scene.style.backgroundImage='none';$('pixelScene').style.visibility='visible'}
+ if(!path)return;
+ loadImage(path).then(im=>{if(state.room!==roomId||scene.dataset.request!==path)return;
+  if(im){scene.style.backgroundImage=`url("${sceneAssetURL(path)}")`;scene.style.backgroundSize='cover';scene.style.backgroundPosition='center';$('pixelScene').style.visibility='hidden'}
+  else{scene.style.backgroundImage='none';$('pixelScene').style.visibility='visible'}
+ });
+}
+function coverGeometry(){const rect=$('scene').getBoundingClientRect(),w=ASSETS.resolution.width,h=ASSETS.resolution.height;const scale=Math.max(rect.width/w,rect.height/h);return {rect,scale,ox:(rect.width-w*scale)/2,oy:(rect.height-h*scale)/2}}
+function placeTarget(button,id){const target=ASSETS.scenes[state.room].targets[id];if(!target)return;const {rect,scale,ox,oy}=coverGeometry();const margin=50;const x=Math.max(margin,Math.min(rect.width-margin,ox+target.x*scale));const y=Math.max(36,Math.min(rect.height-30,oy+target.y*scale));button.style.left=x+'px';button.style.top=y+'px'}
+function drawScene(roomId){
+ const ctx=$('pixelScene').getContext('2d');ctx.imageSmoothingEnabled=false;
+ ctx.clearRect(0,0,320,180);ctx.fillStyle='#181b28';ctx.fillRect(0,0,320,180);
+}
+
+const state={mode:'exploration',room:SCENARIO.initial.room,flags:{...SCENARIO.initial.flags},inventory:[],visits:{[SCENARIO.initial.room]:1},completedEvents:{},selected:null,dialogue:[],lineIndex:0,afterDialogue:null,deductionStep:0,errors:0};
+const $=id=>document.getElementById(id), room=()=>DATA.rooms[state.room];
+const textSettings={speeds:[85,37,16,0],labels:['おそい','ふつう','はやい','一瞬'],index:1,auto:false};let typingTimer=null,autoTimer=null,typingDone=false,displayedChars=0,dialogueGeneration=0;
+function setSpeaker(name){
+ const box=$('speaker');box.replaceChildren();box.setAttribute('aria-label',name);
+ if(name==='ハルキ'||name==='サイジ'){const img=document.createElement('img');img.src='assets/ui/name-'+(name==='ハルキ'?'haruki':'saiji')+'.png';img.alt=name;box.appendChild(img)}else box.textContent=name;
+ box.classList.toggle('empty',!name);
+}
+function splitMessageText(text,width,fontSize,measure){
+ const max=width>0?width:600;const pages=[];let current='',lineWidth=0,rows=1;
+ for(const char of Array.from(text)){
+  const size=char==='\n'?max:measure?measure(char):fontSize;
+  if(char==='\n'||lineWidth+size>max){if(rows===3){pages.push(current);current='';rows=1}else{current+='\n';rows++}lineWidth=0;if(char==='\n')continue}
+  current+=char;lineWidth+=size;
+ }
+ if(current)pages.push(current);return pages.length?pages:[''];
+}
+function paginateDialogue(lines){
+ if(typeof getComputedStyle!=='function')return lines;
+ const line=$('line');line.style.fontSize='';
+ const style=getComputedStyle(line),panelHeight=$('dialogue').getBoundingClientRect().height;
+ const size=Math.max(12,Math.min(parseFloat(style.fontSize)||20,(panelHeight-42)/4.95));line.style.fontSize=size+'px';
+ const canvas=document.createElement('canvas'),ctx=canvas.getContext('2d');ctx.font=size+'px '+style.fontFamily;
+ const spacing=parseFloat(style.letterSpacing)||0;
+ const pages=lines.flatMap(v=>{$('dialogue').classList.toggle('narration',!v[0]);const width=$('line').getBoundingClientRect().width-2;return splitMessageText(String(v[1]),width,size,c=>ctx.measureText(c).width+spacing).map((t,i)=>[v[0],t,v[2]||'通常',i===0?v[3]:undefined])});
+ $('dialogue').classList.toggle('narration',!lines[0]?.[0]);return pages;
+}
+function cancelTextTimers(){clearTimeout(typingTimer);clearTimeout(autoTimer);typingTimer=null;autoTimer=null}
+function closeDialogueLayer(){if(typeof stopTalking==='function')stopTalking();if(typeof hideItemGraphic==='function')hideItemGraphic();if(!(typeof deductionActive!=='undefined'&&deductionActive))$('characterStage').classList.remove('open');$('dialogue').classList.remove('narration');dialogueGeneration++;cancelTextTimers();$('characterStage').classList.add('hidden');$('dialogue').classList.remove('open');$('dialogue').classList.add('hidden');$('portraitRail').classList.add('hidden');$('textControls').classList.add('hidden')}
+function updateTextControls(){$('speedButton').textContent='文字：'+textSettings.labels[textSettings.index];$('autoButton').textContent='自動：'+(textSettings.auto?'ON':'OFF')}
+$('speedButton').onclick=e=>{e.stopPropagation();textSettings.index=(textSettings.index+1)%textSettings.speeds.length;updateTextControls();if(state.mode==='dialogue'&&!typingDone)displayLine()};
+$('autoButton').onclick=e=>{e.stopPropagation();textSettings.auto=!textSettings.auto;updateTextControls();scheduleAuto()};
+function scheduleAuto(){clearTimeout(autoTimer);if(textSettings.auto&&typingDone&&state.mode==='dialogue'&&!choicesPending&&!$('dialogueChoices').children.length)autoTimer=setTimeout(advance,1350)};updateTextControls();
+function render(){
+ $('locationName').textContent=room().name;$('locationGraphic').src='assets/ui/location-'+state.room+'.png';$('locationGraphic').alt=room().name;$('scene').className=state.room==='corridor'?'corridor':'';
+ drawScene(state.room);setSceneBackground(state.room);
+ $('targets').replaceChildren();$('targets').classList.add('hidden');$('actions').classList.add('hidden');state.selected=null;
+ const explore=state.mode==='exploration';
+ for(const id of ['menu']){$(id).classList.toggle('hidden',!(explore||state.mode==='dialogue'));$(id).disabled=!explore;$(id).title=explore?'':'会話が終わると操作できます'}
+ $('game').classList.toggle('deduction-layout',typeof deductionActive!=='undefined'&&deductionActive);
+ if(typeof renderCommands==='function')renderCommands();if(typeof deductionActive!=='undefined'&&deductionActive&&$('panelBody').querySelectorAll){for(const b of $('panelBody').querySelectorAll('button'))b.disabled=state.mode!=='deduction'}
+}
+function showActions(id){
+ const a=$('actions');a.replaceChildren();const b=document.querySelector('[data-id="'+id+'"]');
+ const x=document.createElement('button');x.textContent='しらべる';x.onclick=()=>examine(id);a.appendChild(x);a.classList.remove('hidden');
+ const g=$('game').getBoundingClientRect(),r=b.getBoundingClientRect();
+ a.style.left=Math.max(8,Math.min(r.left-g.left,g.width-a.offsetWidth-8))+'px';
+ a.style.top=Math.max(8,Math.min(r.bottom-g.top+8,g.height-a.offsetHeight-8))+'px';
+}
+function say(lines,after=null){if(typeof hideItemGraphic==='function')hideItemGraphic();state.itemPresentation=null;cancelTextTimers();state.mode='dialogue';state.dialogue=lines;if(typeof learnCommandNames==='function')for(const v of lines)learnCommandNames(String(v[1]));state.lineIndex=0;state.afterDialogue=after;state.selected=null;if(!(typeof deductionActive!=='undefined'&&deductionActive))showWindow('panel',false);$('actions').classList.add('hidden');$('dialogue').classList.remove('hidden');$('portraitRail').classList.remove('hidden');$('characterStage').classList.remove('hidden');$('textControls').classList.remove('hidden');const generation=++dialogueGeneration;requestAnimationFrame(()=>{if(generation===dialogueGeneration&&state.mode==='dialogue'){$('dialogue').classList.add('open');$('characterStage').classList.add('open')}});$('dialogue').classList.toggle('narration',!lines[0]?.[0]);state.dialogue=paginateDialogue(lines);displayLine();render()}
+function displayLine(){cancelTextTimers();const v=state.dialogue[state.lineIndex];if(!v)return;const speaker=v[0],full=String(v[1]);$('dialogue').classList.toggle('more-message',state.mode==='deduction'&&state.lineIndex<state.dialogue.length-1);setSpeaker(speaker);if(typeof learnCommandNames==='function')learnCommandNames(full);$('characterStage').classList.remove('hidden');$('dialogue').classList.toggle('narration',!speaker);$('line').textContent='';$('line').scrollTop=0;$('nextMark').classList.remove('ready');$('dialogueChoices').replaceChildren();$('harukiFace').classList.toggle('active',speaker==='ハルキ');$('saijiFace').classList.toggle('active',speaker==='サイジ');if(speaker)updateCharacterCards(speaker,v[2]||'通常');typingDone=false;displayedChars=0;const chars=Array.from(full);const speed=textSettings.speeds[textSettings.index];function tick(){if(!['dialogue','deduction'].includes(state.mode))return;displayedChars=Math.min(chars.length,displayedChars+1);$('line').textContent=chars.slice(0,displayedChars).join('');if(displayedChars<chars.length){typingTimer=setTimeout(tick,speed)}else{typingDone=true;$('nextMark').classList.add('ready');onLineCompleted();scheduleAuto()}}if(speed===0||matchMedia('(prefers-reduced-motion: reduce)').matches){$('line').textContent=full;displayedChars=chars.length;typingDone=true;$('nextMark').classList.add('ready');onLineCompleted();scheduleAuto()}else tick();if(typeof presentDialogueLine==='function')presentDialogueLine(v)}
+function onLineCompleted(){}
+function advance(){
+ if(state.mode==='deduction'){if(!typingDone){cancelTextTimers();$('line').textContent=state.dialogue[state.lineIndex][1];typingDone=true;return}if(state.lineIndex<state.dialogue.length-1){state.lineIndex++;displayLine()}return}
+ if(state.mode!=='dialogue'||choicesPending)return;
+ if(!typingDone){cancelTextTimers();$('line').textContent=state.dialogue[state.lineIndex][1];typingDone=true;$('nextMark').classList.add('ready');onLineCompleted();scheduleAuto();return}
+ cancelTextTimers();state.lineIndex++;
+ if(state.lineIndex<state.dialogue.length){displayLine();return}
+ const next=state.afterDialogue;state.afterDialogue=null;
+ const finish=()=>{state.mode='exploration';if(next)next();else render()};
+ if(state.pendingDeduction||deductionActive){finish();return}
+ state.mode='dialogue-out';moveOutDialogue(finish);
+}
+const Events=window.SaikachiEvents;
+function runEvent(event){
+ if(!event||!Events.apply(event,state))return false;state.pendingDeduction=!!event.deduction;
+ const finish=()=>{
+  if(event.deduction){state.pendingDeduction=false;startDeduction();return}
+  if(event.topic){playTopic(event.topic);return}
+  if(event.next){playTopic(event.next);return}
+  if(event.choices){showTopicChoices(event.choices);return}
+  closeDialogueLayer();state.mode='exploration';render();
+ };
+ if(event.lines&&event.lines.length)say(event.lines,finish);else finish();
+ return true;
+}
+function examine(id){
+ if(state.mode!=='exploration')return;
+ runEvent(Events.select(SCENARIO.investigations[id]||[],state));
+}
+function moveTo(id){
+ if(!DATA.rooms[id])return;
+ if(typeof commandSelection!=='undefined')commandSelection=null;const changed=Events.enter(id,state);closePanel();
+ if(changed)runEvent(Events.select(DATA.rooms[id].onEnter||[],state));
+}
+let panelRevision=0;
+function panel(title,buttons){$('panel').scrollTop=0;panelRevision++;state.mode='menu';state.selected=null;render();$('panelTitle').textContent=title;$('panel').setAttribute('aria-label',title);const body=$('panelBody');body.innerHTML='';buttons.forEach(([label,fn])=>{const b=document.createElement('button');b.textContent=label;b.onclick=fn;body.appendChild(b)});showWindow('panel',true)}
+function closePanel(){if(typeof deductionActive!=='undefined'&&deductionActive)return;closeDialogueLayer();if(!state.flags.introSeen){showTitle();return}panelRevision++;state.mode='exploration';showWindow('panel',false);render()}
+// 工程18: 保存はメニューから手動で行い、復帰は探索状態に統一する。
+const Saves=window.SaikachiSaves.create(SCENARIO,()=>window.localStorage);
+function saveMessage(message,back=menu){
+ panel('セーブ・途中から',[['もどる',back]]);
+ const note=document.createElement('p');note.textContent=message;$('panelBody').appendChild(note);
+}
+function saveSlots(action){
+ const buttons=[];
+ try{
+  for(let slot=1;slot<=3;slot++){
+   const raw=Saves.raw(slot);let label='空き';
+   if(raw!==null){try{const saved=Saves.decode(raw);label=DATA.rooms[saved.progress.room].name+' / '+new Date(saved.savedAt).toLocaleString('ja-JP')}catch(e){label='読み込めないデータ'}}
+   buttons.push(['記録'+slot+'：'+label,()=>selectSaveSlot(action,slot)]);
+  }
+ }catch(e){saveMessage(e.message);return}
+ buttons.push(['もどる',menu]);panel(action==='save'?'セーブ':'途中から',buttons);
+ const note=document.createElement('p');note.textContent='セーブデータは3つまで、このブラウザに保存します。';$('panelBody').appendChild(note);
+}
+function selectSaveSlot(action,slot){
+ const back=()=>saveSlots(action);
+ try{
+  if(action==='save'){
+   const snapshot=Saves.snapshot(state,textSettings);
+   const save=()=>{try{Saves.write(slot,snapshot);saveMessage('記録'+slot+'に保存しました。',back)}catch(e){saveMessage(e.message,back)}};
+   if(Saves.raw(slot)!==null)panel('記録'+slot+'を上書きしますか？',[['上書きする',save],['やめる',back]]);else save();
+  }else{
+   const saved=Saves.read(slot);
+   if(!saved){saveMessage('この記録にはまだ保存されていません。',back);return}
+   panel('記録'+slot+'から再開しますか？',[['再開する',()=>restoreSave(saved)],['やめる',back]]);
+   const note=document.createElement('p');note.textContent='現在の未保存の進行は失われます。';$('panelBody').appendChild(note);
+  }
+ }catch(e){saveMessage(e.message,back)}
+}
+function restoreSave(saved){panelRevision++;
+ let checked;try{checked=Saves.validate(saved)}catch(e){saveMessage(e.message);return}
+ if(typeof resetPresentation==='function')resetPresentation();if(typeof deductionActive!=='undefined'){deductionActive=false;deductionTransitionGeneration++;$('deductionStage').classList.add('hidden')}
+ // 検証を完了してから置換。入室イベントや訪問回数更新は呼び出さない。
+ $('opening').classList.add('hidden');
+ closeDialogueLayer();choicesPending=false;typingDone=false;displayedChars=0;
+ $('dialogueChoices').replaceChildren();$('nextMark').classList.remove('ready');
+ Object.assign(state,checked.progress,{mode:'exploration',selected:null,dialogue:[],lineIndex:0,
+  afterDialogue:null,deductionStep:0,errors:0});
+ textSettings.index=checked.settings.textSpeed;textSettings.auto=checked.settings.auto;
+ updateTextControls();$('panel').classList.add('hidden');$('actions').classList.add('hidden');render();
+}
+
+// v0.4: data-driven dialogue choices; placeholder portraits (not final character art)
+let choicesPending=false;
+const CHARACTER_EMOTIONS={ 'ハルキ':['通常','驚き','困惑','納得'], 'サイジ':['通常','思案','疑問','確信'] };
+function updateCharacterCards(speaker,emotion){
+  for(const [name,id] of [['ハルキ','haruki'],['サイジ','saiji']]){
+    $(id+'Card').classList.toggle('active',name===speaker);
+    const shown=CHARACTER_EMOTIONS[name].includes(emotion)?emotion:'通常';$(id+'Emotion').textContent=shown;setCharacterImage(id,shown);
+  }
+}
+const TOPIC_DIALOGUE=SCENARIO.topics;
+function startTopicDialogue(){playTopic('intro')}
+function playTopic(id){
+ choicesPending=false;
+ if(!runEvent(TOPIC_DIALOGUE[id])){closeDialogueLayer();state.mode='exploration';render()}
+}
+function showTopicChoices(choices){
+  cancelTextTimers();
+  choices=choices.filter(option=>Events.available(option,state));
+  if(!choices.length){choicesPending=false;closeDialogueLayer();state.mode='exploration';render();return}
+  // Choice UI belongs to the dialogue layer, not the exploration/menu overlay.
+  choicesPending=true;state.mode='dialogue';state.afterDialogue=null;
+  $('dialogue').classList.remove('hidden');$('dialogue').classList.add('open');
+  $('characterStage').classList.remove('hidden');$('portraitRail').classList.remove('hidden');
+  $('textControls').classList.remove('hidden');
+  $('speaker').textContent='サイジ';$('line').textContent='どうする？';$('nextMark').classList.remove('ready');
+  updateCharacterCards('サイジ','疑問');
+  const container=$('dialogueChoices');container.replaceChildren();
+  for(const option of choices){const b=document.createElement('button');b.type='button';b.textContent=option.label;b.onclick=e=>{e.stopPropagation();choicesPending=false;container.replaceChildren();runEvent(option)};container.appendChild(b)}
+  render();
+}
+
+for(const id of ['menu']){$(id+'Graphic').addEventListener('error',()=>{$(id).classList.add('asset-missing')})}
+$('menu').onclick=()=>menu();$('close').onclick=closePanel;$('dialogue').onclick=e=>{if(e.target.closest('button'))return;advance()};$('game').addEventListener('click',e=>{if(e.target===$('scene')||e.target===$('pixelScene')||e.target===$('targets')||e.target.classList.contains('grain')){state.selected=null;$('actions').classList.add('hidden');render()}});window.addEventListener('resize',()=>{if(state.mode==='exploration'){render();if(state.selected)showActions(state.selected)}else{drawScene(state.room);setSceneBackground(state.room)}});document.addEventListener('keydown',e=>{if(e.isComposing)return;if((e.key==='Enter'||e.key===' ')&&state.mode==='dialogue'){if(e.target?.closest('button, input, textarea, select, [contenteditable]'))return;if(choicesPending)return;e.preventDefault();if(!e.repeat)advance()}else if(e.key==='Escape'&&state.mode==='exploration'&&typeof commandSelection!=='undefined'&&commandSelection){commandSelection=null;renderCommands()}else if(e.key==='Escape'&&state.mode==='menu')closePanel()});render();
+</script><script src="data/presentation.js"></script><script src="data/commands.js"></script><script src="data/story-ui.js"></script></body></html>

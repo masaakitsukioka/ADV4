@@ -1,0 +1,112 @@
+{
+  "resolution": {
+    "width": 320,
+    "height": 180
+  },
+  "drawOrder": [
+    "background",
+    "characterStage",
+    "targets",
+    "dialogue",
+    "panels"
+  ],
+  "scenes": {
+    "classroom": {
+      "background": "assets/backgrounds/classroom.png",
+      "fallback": "solid:#181b28",
+      "targets": {
+        "shelf": [
+          242,
+          84
+        ],
+        "desk": [
+          119,
+          119
+        ],
+        "window": {
+          "x": 35,
+          "y": 70
+        },
+        "prepDoor": {
+          "x": 125,
+          "y": 83
+        },
+        "floor": {
+          "x": 245,
+          "y": 150
+        }
+      }
+    },
+    "corridor": {
+      "background": "assets/backgrounds/corridor.png",
+      "fallback": "solid:#181b28",
+      "targets": {
+        "notice": [
+          250,
+          72
+        ],
+        "door": [
+          145,
+          104
+        ]
+      }
+    }
+  },
+  "characters": {
+    "haruki": {
+      "normal": "assets/characters/haruki_normal.png",
+      "surprised": "assets/characters/haruki_surprised.png",
+      "thinking": "assets/characters/haruki_thinking.png",
+      "confident": "assets/characters/haruki_confident.png"
+    },
+    "saiji": {
+      "normal": "assets/characters/saiji_normal.png",
+      "surprised": "assets/characters/saiji_surprised.png",
+      "thinking": "assets/characters/saiji_thinking.png",
+      "confident": "assets/characters/saiji_confident.png"
+    }
+  },
+  "emotionMap": {
+    "通常": "normal",
+    "驚き": "surprised",
+    "困惑": "thinking",
+    "納得": "confident",
+    "思案": "thinking",
+    "疑問": "surprised",
+    "確信": "confident"
+  },
+  "items": {
+    "ナカコのスケッチブック": {
+      "image": "assets/items/nakako-torn.png"
+    },
+    "オカボーのスケッチブック": {
+      "image": "assets/items/okabo-closed.png",
+      "examined": "assets/items/okabo-graffiti.png"
+    }
+  },
+  "backgroundDimensions": {
+    "width": 1672,
+    "height": 941
+  },
+  "ui": {
+    "menu": "assets/ui/menu.png",
+    "location": "assets/ui/location-banner.png",
+    "locations": {
+      "classroom": "assets/ui/location-classroom.png",
+      "corridor": "assets/ui/location-corridor.png"
+    },
+    "speakerNames": {
+      "ハルキ": "assets/ui/name-haruki.png",
+      "サイジ": "assets/ui/name-saiji.png"
+    }
+  },
+  "deductionBackground": "assets/backgrounds/saiji-notebook-deduction.png",
+  "mouthStrips": {
+    "saiji": {
+      "normal": "assets/characters/talk/saiji-normal-mouths.png",
+      "surprised": "assets/characters/talk/saiji-surprised-mouths.png",
+      "thinking": "assets/characters/talk/saiji-thinking-mouths.png",
+      "confident": "assets/characters/talk/saiji-confident-mouths.png"
+    }
+  }
+}
