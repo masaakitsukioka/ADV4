@@ -77,10 +77,11 @@
   },
   "items": {
     "ナカコのスケッチブック": {
-      "image": null
+      "image": "assets/items/nakako-torn.png"
     },
     "オカボーのスケッチブック": {
-      "image": null
+      "image": "assets/items/okabo-closed.png",
+      "examined": "assets/items/okabo-graffiti.png"
     }
   },
   "backgroundDimensions": {
@@ -97,6 +98,21 @@
     "speakerNames": {
       "ハルキ": "assets/ui/name-haruki.png",
       "サイジ": "assets/ui/name-saiji.png"
+    }
+  },
+  "deductionBackground": "assets/backgrounds/saiji-notebook-deduction.png",
+  "mouthStrips": {
+    "haruki": {
+      "normal": "assets/characters/talk/haruki-normal-mouths.png",
+      "surprised": "assets/characters/talk/haruki-surprised-mouths.png",
+      "thinking": "assets/characters/talk/haruki-thinking-mouths.png",
+      "confident": "assets/characters/talk/haruki-confident-mouths.png"
+    },
+    "saiji": {
+      "normal": "assets/characters/talk/saiji-normal-mouths.png",
+      "surprised": "assets/characters/talk/saiji-surprised-mouths.png",
+      "thinking": "assets/characters/talk/saiji-thinking-mouths.png",
+      "confident": "assets/characters/talk/saiji-confident-mouths.png"
     }
   }
 }

@@ -37,6 +37,7 @@ function openingLoad(){
  const b=document.createElement('button');b.textContent='タイトルにもどる';b.onclick=showTitle;$('panelBody').appendChild(b);
 }
 function startNewGame(){
+ resetPresentation();dailyConversationHistory.clear();
  deductionTransitionGeneration++;$('deductionStage').classList.add('hidden');$('deductionStage').classList.remove('closing');$('deductionFlash').classList.remove('flash');$('deductionStart').classList.remove('announce');deductionActive=false;lastConversationId=null;closeDialogueLayer();panelRevision++;choicesPending=false;typingDone=false;displayedChars=0;
  Object.assign(state,{mode:'opening',pendingDeduction:false,room:SCENARIO.initial.room,flags:{...SCENARIO.initial.flags},
   inventory:[],visits:{[SCENARIO.initial.room]:1},completedEvents:{},selected:null,
@@ -44,14 +45,14 @@ function startNewGame(){
  $('dialogueChoices').replaceChildren();$('panelBody').replaceChildren();
  openingPage(0);
 }
-function showTitle(){openingView('消えたスケッチ','サイカチADV / 試作版',[['最初から',startNewGame],['途中から',openingLoad]])}
+function showTitle(){resetPresentation();openingView('消えたスケッチ','サイカチADV / 試作版',[['最初から',startNewGame],['途中から',openingLoad]])}
 function menu(){
  if(!state.flags.introSeen){showTitle();return}
  const buttons=[['セーブ',()=>saveSlots('save')],['途中から',()=>saveSlots('load')],['もちもの',inventory],['ちょうさメモ',memo]];
  if(state.flags.okaboChecked&&!state.flags.deductionDone)buttons.push(['推理を再開する',startDeduction]);
  if(state.flags.deductionDone)buttons.push(['エンディングを読み返す',()=>say(SCENARIO.ending,showEnding)]);
  buttons.push(['人物相関図（次工程）',()=>panel('人物相関図',[['もどる',menu]])],['メール（次工程）',()=>panel('メール',[['もどる',menu]])],['操作方法',()=>{
-  panel('操作方法',[['もどる',menu]]);note('「聞く」「調べる」「探す」「会話」「移動」から行動を選びます。調べる対象や探す人物は、調査で手がかりが増えると追加されます。発見した持ち物は、その場所の「調べる」からも確認できます。会話は事件に関する話を優先してランダムに表示します。会話をタップすると全文表示、もう一度タップすると次へ進みます。会話・推理を終えた探索中に保存できます。推理パートでは答えを選んで進めます。');
+  panel('操作方法',[['もどる',menu]]);note('「移動」「聞く」「調べる」「探す」「見せる」「会話」から行動を選びます。調べる対象や探す人物は、調査で手がかりが増えると追加されます。発見した持ち物は、その場所の「調べる」からも確認できます。会話は事件に関する話を一度ずつ優先し、その後は場所ごとの日常会話に切り替わります。会話をタップすると全文表示、もう一度タップすると次へ進みます。会話・推理を終えた探索中に保存できます。推理パートでは答えを選んで進めます。');
  }]);panel('メニュー',buttons);
 }
 function inventory(){
@@ -80,8 +81,8 @@ function memo(){
 }
 function startDeduction(){
  if(!state.flags.okaboChecked||deductionActive)return;
- cancelTextTimers();deductionActive=true;state.deductionStep=0;state.errors=0;state.mode='deduction-transition';
- $('panel').classList.add('hidden');$('textControls').classList.add('hidden');$('characterStage').classList.remove('hidden');$('characterStage').classList.add('open');
+ cancelTextTimers();hideItemGraphic();deductionActive=true;state.deductionStep=0;state.errors=0;state.mode='deduction-transition';
+ showWindow('panel',false);$('textControls').classList.add('hidden');$('characterStage').classList.remove('hidden');$('characterStage').classList.add('open');
  $('dialogue').classList.remove('hidden');$('dialogue').classList.add('open');render();
  $('deductionStage').classList.remove('closing');$('deductionStage').classList.remove('hidden');$('deductionStage').getBoundingClientRect();
  const generation=++deductionTransitionGeneration;
@@ -90,16 +91,17 @@ function startDeduction(){
  requestAnimationFrame(()=>{$('deductionStage').classList.add('closing')});
  setTimeout(()=>{if(generation===deductionTransitionGeneration)$('deductionFlash').classList.add('flash')},650);
  setTimeout(()=>{if(generation===deductionTransitionGeneration)$('deductionStart').classList.add('announce')},850);
- setTimeout(finish,1850);
+ setTimeout(finish,2850);
 }
 function deductionMessage(text){
  closeDialogueLayer();choicesPending=false;
  state.dialogue=[['サイジ',text,'思案']];state.lineIndex=0;state.afterDialogue=null;
  $('dialogue').classList.remove('hidden');$('dialogue').classList.add('open');
- $('characterStage').classList.remove('hidden');$('textControls').classList.add('hidden');
+ $('characterStage').classList.remove('hidden');$('characterStage').classList.add('open');$('textControls').classList.add('hidden');
  state.dialogue=paginateDialogue(state.dialogue);displayLine();if(state.dialogue.length===1)$('nextMark').classList.remove('ready');
 }
-function deduction(){
+function deduction(){questionPresentation(buildDeduction)}
+function buildDeduction(){
  panel('謎'+(state.deductionStep+1)+' / 5：'+questions[state.deductionStep].q,[]);
  state.mode='deduction';render();
  const q=questions[state.deductionStep];
@@ -109,8 +111,10 @@ function deduction(){
  const correct=()=>{
   if(state.mode!=='deduction')return;
   state.errors=0;
-  if(q.type==='compose'){say(SCENARIO.ending,()=>{state.flags.deductionDone=true;showEnding()});return}
-  say(q.lines,()=>{state.deductionStep++;deduction()});
+  correctPresentation(q.type==='compose',()=>{
+   if(q.type==='compose'){say(SCENARIO.ending,()=>{state.flags.deductionDone=true;showEnding()});return}
+   say(q.lines,()=>{state.deductionStep++;deduction()});
+  });
  };
  if(q.type==='compose'){
   const selected=[null,null,null];let active=0;
@@ -141,8 +145,7 @@ function deduction(){
 
 }
 function showEnding(){
- deductionActive=false;$('deductionStage').classList.add('hidden');closeDialogueLayer();
- panel('消えたスケッチ — 終わり',[['タイトルへ',showTitle]]);
- note('試作版をプレイしていただき、ありがとうございました。');
+ deductionActive=false;state.mode='ending-out';
+ moveOutDialogue(()=>{$('deductionStage').classList.add('hidden');panel('消えたスケッチ — 終わり',[['タイトルへ',showTitle]]);note('試作版をプレイしていただき、ありがとうございました。')});
 }
 showTitle();
