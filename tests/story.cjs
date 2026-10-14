@@ -50,10 +50,11 @@ check('state.deductionStep===4 && state.mode==="deduction"');
 click('この答えで決定');check('!state.flags.deductionDone');
 const sentence=elements.panelBody.children.find(e=>e.className==='answer-sentence');const slots=sentence.children.filter(e=>e.className==='answer-slot');
 const pool=elements.panelBody.children.find(e=>e.className==='answer-pool');assert.equal(pool.children.length,12);
-const choose=(i,label)=>{slots[i].onclick();click(label)};
+const choose=(i,label)=>{slots[i].onclick();const option=pool.children.find(b=>b.textContent===label);assert(option&&!option.disabled);option.onclick()};
 choose(0,'ハルキ');choose(1,'面白がって');choose(2,'仕返し');click('この答えで決定');check('state.errors===1 && !state.flags.deductionDone');
-choose(0,'オカボー');assert(pool.children.find(b=>b.textContent==='オカボー').disabled);assert(!pool.children.find(b=>b.textContent==='ハルキ').disabled);
+choose(0,'オカボー');assert(!pool.children.find(b=>b.textContent==='オカボー').disabled);assert(!pool.children.find(b=>b.textContent==='ハルキ').disabled);
 const unchanged=slots[0].textContent;pool.children.find(b=>b.textContent==='オカボー').onclick();assert.equal(slots[0].textContent,unchanged);
+choose(1,'オカボー');assert.equal(slots[0].textContent,'面白がって');assert.equal(slots[1].textContent,'オカボー');choose(0,'オカボー');
 choose(1,'間違って');choose(2,'落書き');click('この答えで決定');end();check('state.flags.deductionDone && !deductionActive');
 run('closePanel();textSettings.index=3;textSettings.auto=true;Saves.write(3,Saves.snapshot(state,textSettings))');
 for(const slot of [1,2,3]){
@@ -73,9 +74,9 @@ assert.equal(pages.join('').replace(/\n/g,''),'あ'.repeat(100));assert(pages.ev
 run('closePanel();deductionActive=false;state.flags.okaboChecked=true;state.mode="dialogue"');
 const timed=[];sandbox.matchMedia=()=>({matches:false});sandbox.setTimeout=(fn,ms)=>{timed.push({fn,ms});return timed.length};
 run('startDeduction()');check('state.mode==="deduction-transition"');assert(!elements.dialogue.classList.contains('hidden'));assert(!elements.characterStage.classList.contains('hidden'));
-for(const ms of [650,850,2850]){const task=timed.find(t=>t.ms===ms);assert(task);task.fn()}
-const questionTask=timed.find(t=>t.ms===1480);assert(questionTask);questionTask.fn();check('state.mode==="deduction"');
-console.log('PASS: command-only story, room-local discovery, random chat, transition ordering, no deduction exit, persistent problem window, ABC placement/disabled choices, three saves, restart, legacy saves, three-line message pagination.');
+for(const ms of [650,850,3330]){const task=timed.find(t=>t.ms===ms);assert(task);task.fn()}
+const questionTask=timed.find(t=>t.ms===2480);assert(questionTask);questionTask.fn();check('state.mode==="deduction"');
+console.log('PASS: command-only story, room-local discovery, random chat, transition ordering, no deduction exit, persistent problem window, ABC replacement/swapping, three saves, restart, legacy saves, three-line message pagination.');
 // New command, per-room dialogue decks, item timing and cancellable exits/results.
 sandbox.matchMedia=()=>({matches:true});run('restoreSave(Saves.read(2))');
 for(const roomId of ['classroom','corridor'])assert.equal(run(`SCENARIO.commands.conversations.filter(t=>t.room==='${roomId}'&&!t.eventRelated).length`),10);
@@ -98,5 +99,7 @@ const oldHide=timed.filter(t=>t.ms===240).at(-1);assert(oldHide);run('showWindow
 let resultDone=0;sandbox.resultCallback=()=>resultDone++;run('correctPresentation(false,resultCallback)');assert.equal(elements.resultText.textContent,'正解！');assert.equal(resultDone,0);
 timed.filter(t=>t.ms===1180).at(-1).fn();assert(elements.deductionResult.classList.contains('result-out'));assert.equal(resultDone,0);
 timed.filter(t=>t.ms===1360).at(-1).fn();assert.equal(resultDone,1);
-run('correctPresentation(true,resultCallback)');assert.equal(elements.resultText.textContent,'解明！');assert(elements.deductionResult.classList.contains('solved'));
+run('correctPresentation(true,resultCallback)');assert.deepEqual(elements.resultText.children.map(e=>e.textContent),['解','明']);assert(elements.deductionResult.classList.contains('solved'));
 console.log('PASS: no-repeat incident priority then ten daily chats per scene, saveable chat history, show excludes Saiji, item discovery/inspection/show variants, narration portraits, cancellable move-out, success/reveal choreography.');
+
+assert(timed.some(t=>t.ms===2800));

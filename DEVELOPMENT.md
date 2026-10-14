@@ -17,8 +17,8 @@ node tests/story.cjs
 ```
 
 `data/scenario.js` と `data/scenario.json` は同じ内容を保ちます。
-過去版の配布ファイル・素材・テストは履歴とともに残しています。
-単体HTMLとZIPは現行の編集用ファイルから自動更新されません。
+旧版の単体HTML・ZIPと未使用画像は整理済みです。過去版はGitの履歴から参照できます。
+最新版は index.html と assets/・data/ を使用します。素材の元データとテストは保持します。
 
 場所の追加時は、`assets/ui/location-<roomId>.png` を必ず用意します。
 `assets/ui/menu.png` を参照し、極太の文字・生成り／朱色・黒と朱色の筆跡を統一します。

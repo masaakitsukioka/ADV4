@@ -102,12 +102,6 @@
   },
   "deductionBackground": "assets/backgrounds/saiji-notebook-deduction.png",
   "mouthStrips": {
-    "haruki": {
-      "normal": "assets/characters/talk/haruki-normal-mouths.png",
-      "surprised": "assets/characters/talk/haruki-surprised-mouths.png",
-      "thinking": "assets/characters/talk/haruki-thinking-mouths.png",
-      "confident": "assets/characters/talk/haruki-confident-mouths.png"
-    },
     "saiji": {
       "normal": "assets/characters/talk/saiji-normal-mouths.png",
       "surprised": "assets/characters/talk/saiji-surprised-mouths.png",

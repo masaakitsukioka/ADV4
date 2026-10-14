@@ -7,7 +7,7 @@ function note(text,cls='evidence-note'){
  const p=document.createElement('p');p.className=cls;p.textContent=text;$('panelBody').appendChild(p);return p;
 }
 function openingView(title,text,actions){
- cancelTextTimers();openingGeneration++;$('openingSynopsis').classList.add('hidden');$('opening').classList.remove('dissolve');closeDialogueLayer();state.mode='opening';render();$('panel').classList.add('hidden');
+ $('game').classList.remove('ending-screen');cancelTextTimers();openingGeneration++;$('openingSynopsis').classList.add('hidden');$('opening').classList.remove('dissolve');closeDialogueLayer();state.mode='opening';render();$('panel').classList.add('hidden');
  $('opening').classList.remove('hidden');$('openingTitle').textContent=title;$('openingText').textContent=text;
  const box=$('openingActions');box.replaceChildren();
  for(const [label,fn] of actions){const b=document.createElement('button');b.textContent=label;if(label==='▼')b.setAttribute('aria-label','次へ');b.onclick=fn;box.appendChild(b)}
@@ -91,7 +91,7 @@ function startDeduction(){
  requestAnimationFrame(()=>{$('deductionStage').classList.add('closing')});
  setTimeout(()=>{if(generation===deductionTransitionGeneration)$('deductionFlash').classList.add('flash')},650);
  setTimeout(()=>{if(generation===deductionTransitionGeneration)$('deductionStart').classList.add('announce')},850);
- setTimeout(finish,2850);
+ setTimeout(finish,3330);
 }
 function deductionMessage(text){
  closeDialogueLayer();choicesPending=false;
@@ -130,8 +130,8 @@ function buildDeduction(){
   const options=[...new Set(q.groups.flatMap(g=>g.opts))];
   for(let i=options.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[options[i],options[j]]=[options[j],options[i]]}
   const buttons=[];
-  for(const option of options){const b=document.createElement('button');b.className='answer-option';b.type='button';b.textContent=option;b.onclick=()=>{if(state.mode!=='deduction'||selected.includes(option))return;selected[active]=option;refresh()};buttons.push(b);pool.appendChild(b)}
-  function refresh(){slots.forEach((b,i)=>{b.textContent=selected[i]||String.fromCharCode(65+i);b.classList.toggle('active',i===active);b.setAttribute('aria-pressed',String(i===active))});for(const b of buttons){b.disabled=selected.includes(b.textContent);b.classList.toggle('used',b.disabled)}}
+  for(const option of options){const b=document.createElement('button');b.className='answer-option';b.type='button';b.textContent=option;b.onclick=()=>{if(state.mode!=='deduction')return;const previous=selected.indexOf(option);if(previous!==-1&&previous!==active)selected[previous]=selected[active];selected[active]=option;refresh()};buttons.push(b);pool.appendChild(b)}
+  function refresh(){slots.forEach((b,i)=>{b.textContent=selected[i]||String.fromCharCode(65+i);b.classList.toggle('active',i===active);b.setAttribute('aria-pressed',String(i===active))});for(const b of buttons){b.disabled=false;b.classList.toggle('used',selected.includes(b.textContent))}}
   refresh();
   const confirm=document.createElement('button');confirm.className='answer-confirm';confirm.textContent='この答えで決定';confirm.onclick=()=>{
    if(state.mode!=='deduction')return;
@@ -145,7 +145,7 @@ function buildDeduction(){
 
 }
 function showEnding(){
- deductionActive=false;state.mode='ending-out';
+ $('game').classList.add('ending-screen');deductionActive=false;state.mode='ending-out';
  moveOutDialogue(()=>{$('deductionStage').classList.add('hidden');panel('消えたスケッチ — 終わり',[['タイトルへ',showTitle]]);note('試作版をプレイしていただき、ありがとうございました。')});
 }
 showTitle();
