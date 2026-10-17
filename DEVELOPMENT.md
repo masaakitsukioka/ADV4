@@ -14,6 +14,7 @@ SSDの接続パスはPCごとに異なるため、実際のADV4フォルダを�
 ```sh
 node tests/conditions.cjs
 node tests/story.cjs
+node tests/menu-phs.cjs
 ```
 
 `data/scenario.js` と `data/scenario.json` は同じ内容を保ちます。
@@ -24,3 +25,5 @@ node tests/story.cjs
 `assets/ui/menu.png` を参照し、極太の文字・生成り／朱色・黒と朱色の筆跡を統一します。
 場所名は画像内に含め、roomIdと画像ファイル名を一致させます。
 キャラクター名の生成素材と場所名の生成プロンプトは `art_sources/stage-ui-prompts.json` に記録。
+
+手帳UIのブラウザ検証：tests/menu-phs-browser.cjs（Playwright、127.0.0.1:8777でHTTP配信）。ADV_URL／CHROME_PATHで環境を指定できます。

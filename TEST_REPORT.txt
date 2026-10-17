@@ -67,3 +67,18 @@ Codex内蔵ブラウザ、ローカルHTTP配信、844×390。
 旧版のゲームとそのセーブは変更していません。
 
 2026-10-14 更新：見せる、ムーブアウト、表示サイズ調整、各シーン日常会話10種、アイテム3画像、各表情の3口形、ノート背景、お題・正解・解明演出。詳細 art_sources/upgrade-notes.md。条件判定と物語進行検証に合格、実ブラウザで全5問を完走。
+
+2026-10-17 捜査手帳・PHS・人物相関図
+PASS：conditions.cjs / story.cjs / menu-phs.cjs。既存の物語・推理5問、3枠セーブ、旧セーブ、シナリオJS/JSON一致を維持。
+PASS：一度きりの条件受信、未読／既読、本名の独立条件、未登場の手がかり、故人データ、関係の更新、判明記録の保存と復帰、不正な記録の拒否。
+PASS（Chrome / Playwright）：会話中は通知せず、会話終了後に表示し2.5秒で消去。
+PASS：↑↓・Enter・Esc、Tabによる手帳内移動、マウス、タップ。受信メールを開くと既読になり、反応会話後にPHSへ復帰。
+PASS：手帳から保存、タイトルからロード、旧形式から復帰、推理中のメニュー禁止。
+PASS：1280×720、844×390、375×667。手帳・PHS拡大本文・相関図を確認。
+小さい縦画面は手帳を上下配置し、メモなどはページ内スクロール。相関図は可読性を保つ横スクロール。
+PASS：prefers-reduced-motionで追加UIのアニメーションなし。通常設定の0.24秒開閉と素早い開き直しも確認。
+PASS：実ブラウザでJavaScriptエラーなし。
+画面写真：design/menu-phs-relations/result-{notebook,phs,relations}-{1280x720,844x390,375x667}.png。
+画像：内蔵image_genで4点生成。PNGの寸法と外側アルファ、PHSの液晶開口のアルファを確認。故人印はCSS。
+フォント：DotGothic16-Regular.ttf（Google Fonts公式配布）、SIL OFLライセンス文をassets/fonts/に同梱。
+未確認：iPhone/Androidの実機、Safari。タップ検証はChromeのタッチエミュレーション。

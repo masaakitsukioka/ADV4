@@ -1,0 +1,34 @@
+{
+  "generator": "built-in image_gen",
+  "date": "2026-10-17",
+  "promptSource": "art_sources/menu-phs-prompts.json",
+  "reference": "assets/ui/menu.png",
+  "generatedAssets": [
+    {
+      "path": "assets/ui/menu-title-notebook.png",
+      "width": 2172,
+      "height": 724,
+      "prompt": "Transparent Japanese detective-game title badge, exact text 捜査手帳. 捜査 in ivory, 手帳 in vermilion. Heavy brushy gothic lettering on tilted charcoal ink strip with vermilion shadow and distressed pixel edges. Menu reference is style only."
+    },
+    {
+      "path": "assets/ui/notebook-cover.png",
+      "width": 1672,
+      "height": 941,
+      "prompt": "Transparent 16:9 open detective notebook frame, deep navy leather, dashed vermilion stitching, worn corners, chunky hard square pixel texture. Two transparent inner page holes, thin center gutter, five blank right tabs. No text or props."
+    },
+    {
+      "path": "assets/ui/phs-body.png",
+      "width": 1024,
+      "height": 1536,
+      "prompt": "Transparent generic 1996 Japanese straight PHS sprite, upright front view for CSS rotation. Dark gray plastic, upper-left antenna with vermilion tip, earpiece, PERSONAL HANDY engraving only. Fully transparent rectangular LCD aperture. Oval select key, 4x3 numeric keypad. Chunky pixel clusters, 12–16 flat colors. No hands or scenery. Requested LCD bounds x16–84%, y24–53%; actual generated aperture is used in CSS at x31–71%, y28–46%."
+    },
+    {
+      "path": "assets/ui/phs-mini.png",
+      "width": 971,
+      "height": 1619,
+      "prompt": "Tiny transparent generic dark gray 1996 straight PHS icon, upright front view, greenish LCD, upper-left antenna with vermilion tip, dark select key and keypad. Readable at 24x40 logical pixels, chunky hard pixels, no text or logos."
+    }
+  ],
+  "alphaValidation": "All four have transparent exterior. PHS LCD center is alpha=0. Original generated phone selected after alpha inspection; targeted alpha-only variant was not used.",
+  "optionalDeceasedBadge": "CSS"
+}

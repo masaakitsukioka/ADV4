@@ -5,7 +5,14 @@
     "id": "missing-sketch-notion-20261010",
     "saveRevision": 1,
     "source": "https://app.notion.com/p/3f441826315c80c3adf3e8ff24a71e02",
-    "sourceEditedAt": "2026-10-10T11:12:00.071Z"
+    "sourceEditedAt": "2026-10-10T11:12:00.071Z",
+    "calendar": {
+      "day": 1,
+      "date": "1996-07-19",
+      "weekday": "金",
+      "label": "放課後",
+      "time": "夕"
+    }
   },
   "initial": {
     "room": "classroom",
@@ -1508,6 +1515,159 @@
       "chatSeen_chat_10",
       "chatSeen_chat_layout",
       "chatSeen_chat_duty"
+    ]
+  },
+  "mails": [
+    {
+      "id": "mail-nakako-01",
+      "from": "ﾅｶｺ",
+      "date": "7/19",
+      "time": "16:08",
+      "body": "ﾉｰﾄ ﾐﾂｶｯﾀ? ｱｽ ﾌﾞｼﾂ",
+      "when": {
+        "sketchFound": true
+      },
+      "lines": [
+        [
+          "ハルキ",
+          "ナカコからだ。「ノート見つかった？　明日、部室」か。まずは破かれたページを調べよう。",
+          "通常"
+        ]
+      ]
+    },
+    {
+      "id": "mail-saiji-01",
+      "from": "ｻｲｼﾞ",
+      "date": "7/19",
+      "time": "16:12",
+      "body": "ﾄｳﾊﾞﾝ ｵｶﾎﾞｰ ﾀﾞｯﾃ",
+      "when": {
+        "dutyChecked": true
+      },
+      "lines": [
+        [
+          "ハルキ",
+          "サイジ、すぐ隣にいるのにメールで当番の名前を送ってきた。記録しておこう。",
+          "困惑"
+        ]
+      ]
+    },
+    {
+      "id": "mail-nakako-02",
+      "from": "ﾅｶｺ",
+      "date": "7/19",
+      "time": "16:20",
+      "body": "ｱﾘｶﾞﾄ ｱｽ ﾊﾅｼ ｷｶｾﾃ",
+      "when": {
+        "deductionDone": true
+      }
+    }
+  ],
+  "relations": {
+    "nodes": [
+      {
+        "id": "haruki",
+        "name": "ハルキ",
+        "realName": "前野春樹",
+        "color": "#8a6e52",
+        "face": "assets/characters/haruki_normal.png",
+        "when": {},
+        "realNameWhen": {},
+        "x": 50,
+        "y": 46
+      },
+      {
+        "id": "saiji",
+        "name": "サイジ",
+        "realName": "佐藤齊治",
+        "color": "#2c3e66",
+        "face": "assets/characters/saiji_normal.png",
+        "when": {},
+        "realNameWhen": {},
+        "x": 24,
+        "y": 72
+      },
+      {
+        "id": "nakako",
+        "name": "ナカコ",
+        "realName": "廣村奈加子",
+        "color": "#c8322a",
+        "when": {},
+        "realNameWhen": {},
+        "x": 24,
+        "y": 23
+      },
+      {
+        "id": "okabo",
+        "name": "オカボー",
+        "color": "#6d4a8a",
+        "when": {
+          "dutyChecked": true
+        },
+        "x": 77,
+        "y": 23
+      },
+      {
+        "id": "bunji",
+        "name": "ブンジ先生",
+        "color": "#e8e0cc",
+        "when": {
+          "layoutChecked": true
+        },
+        "x": 77,
+        "y": 72
+      }
+    ],
+    "edges": [
+      {
+        "from": "haruki",
+        "to": "saiji",
+        "label": "相棒",
+        "style": "solid",
+        "when": {},
+        "labelX": 38,
+        "labelY": 65
+      },
+      {
+        "from": "haruki",
+        "to": "nakako",
+        "label": "同級生",
+        "style": "solid",
+        "when": {},
+        "labelX": 39,
+        "labelY": 30
+      },
+      {
+        "from": "saiji",
+        "to": "nakako",
+        "label": "同級生",
+        "style": "solid",
+        "when": {},
+        "labelX": 21,
+        "labelY": 47
+      },
+      {
+        "from": "nakako",
+        "to": "okabo",
+        "label": "クロ研の当番",
+        "style": "dashed",
+        "when": {
+          "dutyChecked": true
+        },
+        "labelX": 52,
+        "labelY": 18
+      },
+      {
+        "from": "haruki",
+        "to": "bunji",
+        "label": "配置図を記した顧問",
+        "style": "dotted",
+        "when": {
+          "layoutChecked": true
+        },
+        "labelX": 67,
+        "labelY": 61
+      }
     ]
   }
 }

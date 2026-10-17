@@ -1,0 +1,34 @@
+{
+  "generator": "built-in image_gen",
+  "reference": "assets/ui/menu.png",
+  "notes": "Match the existing ADV4 UI style: distressed pixel edges, ivory/vermilion/charcoal palette, no real brand names or logos, no copyrighted characters.",
+  "assets": [
+    {
+      "path": "assets/ui/menu-title-notebook.png",
+      "transparent_background": true,
+      "text": "捜査手帳",
+      "prompt": "Transparent Japanese detective-game menu title badge matching the menu reference: exact text 捜査手帳 only, one horizontal line. Heavy brushy gothic Japanese lettering; 捜査 in ivory, 手帳 in vermilion; set on a slightly tilted charcoal-black ink strip with a hard vermilion offset shadow; distressed pixel edges. No other text."
+    },
+    {
+      "path": "assets/ui/notebook-cover.png",
+      "transparent_background": true,
+      "prompt": "Transparent 16:9 game UI frame (1672x941): an opened detective's pocket notebook seen flat from above, deep navy leather cover around a two-page spread, dashed vermilion stitching inset along the cover edge, worn corners, subtle pixel-art texture with hard square pixel clusters. The two inner pages must be fully transparent (they are drawn by CSS). A thin dark gutter shadow in the center. Five small blank paper index tabs sticking out from the right edge (no text). No text anywhere, no props."
+    },
+    {
+      "path": "assets/ui/phs-body.png",
+      "transparent_background": true,
+      "prompt": "Transparent pixel-art sprite of a generic 1996 Japanese straight-type PHS mobile phone, front view tilted 4 degrees, tall portrait shape. Dark gray plastic body with simple highlights, short stub antenna on the upper left with a small vermilion tip, earpiece slits, tiny engraved text PERSONAL HANDY only (no real brand or logo), a rectangular monochrome LCD window whose screen area is fully transparent, an oval center select key, and a 4x3 numeric keypad with ivory digits 1-9 * 0 #. Chunky hard pixel clusters, 12-16 flat colors, no antialiasing, no photorealism, no hand."
+    },
+    {
+      "path": "assets/ui/phs-mini.png",
+      "transparent_background": true,
+      "prompt": "Tiny transparent pixel-art icon of the same generic straight-type PHS phone, front view, small greenish lit LCD, short antenna with vermilion tip, readable at 24x40 logical pixels. Hard pixels, no text, no logo."
+    },
+    {
+      "path": "assets/ui/relation-deceased.png",
+      "transparent_background": true,
+      "text": "故",
+      "prompt": "Tiny transparent badge: a solid charcoal-black circle with the single ivory kanji 故 in bold, slightly rough pixel edge, matching the game's ivory/charcoal palette. Exact text 故 only."
+    }
+  ]
+}

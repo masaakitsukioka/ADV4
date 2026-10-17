@@ -10,7 +10,7 @@ class Element{
 const elements={},storage=new Map(),document={getElementById:id=>elements[id]||(elements[id]=new Element()),createElement:()=>new Element(),addEventListener(){},querySelector:()=>new Element(),body:new Element()};
 const sandbox={document,window:{addEventListener(){},localStorage:{getItem:k=>storage.get(k)??null,setItem:(k,v)=>storage.set(k,v)}},Image:class{},setTimeout:()=>1,clearTimeout(){},requestAnimationFrame:f=>f(),matchMedia:()=>({matches:true}),console,Blob,URL};
 vm.createContext(sandbox);const run=c=>vm.runInContext(c,sandbox);const check=c=>assert(run(c),c);
-for(const f of ['scenario.js','events.js','saves.js'])run(fs.readFileSync(root+'/data/'+f,'utf8'));
+for(const f of ['scenario.js','events.js','notebook-model.js','saves.js'])run(fs.readFileSync(root+'/data/'+f,'utf8'));
 const html=fs.readFileSync(root+'/index.html','utf8');for(const m of html.matchAll(/<script>([\s\S]*?)<\/script>/g))run(m[1]);
 run(fs.readFileSync(root+'/data/presentation.js','utf8'));
 run(fs.readFileSync(root+'/data/commands.js','utf8'));
@@ -60,14 +60,14 @@ run('closePanel();textSettings.index=3;textSettings.auto=true;Saves.write(3,Save
 for(const slot of [1,2,3]){
  const expected=JSON.parse(run(`JSON.stringify(Saves.read(${slot}))`));run('showTitle()');click('途中から');
  const b=elements.panelBody.children.find(b=>b.textContent.startsWith('記録'+slot+'：'));assert(b);b.onclick();click('再開する');
- assert.deepEqual(JSON.parse(run('JSON.stringify({room:state.room,flags:state.flags,inventory:state.inventory,visits:state.visits,completedEvents:state.completedEvents})')),expected.progress);
+ assert.deepEqual(JSON.parse(run('JSON.stringify({room:state.room,flags:state.flags,inventory:state.inventory,visits:state.visits,completedEvents:state.completedEvents,notebook:state.notebook})')),expected.progress);
  assert.deepEqual(JSON.parse(run('JSON.stringify({textSpeed:textSettings.index,auto:textSettings.auto})')),expected.settings);
 }
 const storageBefore=Array.from(storage.entries());begin();assert.deepEqual(Array.from(storage.entries()),storageBefore);
 check('state.inventory.length===0 && !state.flags.deductionDone && state.visits.classroom===1');
 run('const legacy=JSON.parse(JSON.stringify(Saves.read(2)));for(const key of SCENARIO.commands.discoveryFlags)delete legacy.progress.flags[key];restoreSave(legacy)');check('state.flags.personOkabo && state.flags.layoutSeen');
 assert.throws(()=>run('Saves.write(4,Saves.read(2))'));assert.throws(()=>run('Saves.read(0)'));assert.throws(()=>run('Saves.decode("bad json")'));
-run('menu()');assert(!allButtons().some(b=>b.textContent==='セーブの持ち運び'));
+run('function openNotebook(){panel("捜査手帳",[])};menu()');assert(!allButtons().some(b=>b.textContent==='セーブの持ち運び'));
 const pages=JSON.parse(run('JSON.stringify(splitMessageText("あ".repeat(100),100,10))'));
 assert.equal(pages.join('').replace(/\n/g,''),'あ'.repeat(100));assert(pages.every(p=>p.split('\n').length<=3));
 // Production transition timers preserve the dialogue and defer the problem until after the announcement.

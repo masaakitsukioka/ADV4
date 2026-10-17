@@ -1,0 +1,23 @@
+'use strict';
+const fs=require('fs'),vm=require('vm'),assert=require('assert'),path=require('path');
+const root=path.resolve(__dirname,'..'),context={window:{}};vm.createContext(context);
+for(const file of ['scenario.js','events.js','notebook-model.js','saves.js'])vm.runInContext(fs.readFileSync(path.join(root,'data',file),'utf8'),context);
+const scenario=context.window.SAIKACHI_SCENARIO,E=context.window.SaikachiEvents,N=context.window.SaikachiNotebook;
+assert.deepStrictEqual(JSON.parse(JSON.stringify(scenario)),JSON.parse(fs.readFileSync(path.join(root,'data/scenario.json'))));
+const state={mode:'exploration',room:scenario.initial.room,flags:{...scenario.initial.flags,introSeen:true},inventory:[],visits:{classroom:1},completedEvents:{},notebook:N.empty()};
+const settings={index:1,auto:false},memory=new Map(),S=context.window.SaikachiSaves.create(scenario,()=>({getItem:k=>memory.get(k)??null,setItem:(k,v)=>memory.set(k,v)}));
+assert.equal(N.sync(scenario,state,E).length,0);assert.equal(N.unread(state).length,0);assert.equal(state.notebook.nodes.length,3);
+assert(!N.relations(scenario,state).nodes.some(n=>n.id==='okabo'));
+state.flags.sketchFound=true;assert.equal(N.sync(scenario,state,E).length,1);assert.equal(N.sync(scenario,state,E).length,0);assert.equal(N.unread(state).length,1);
+assert(!N.read(state,'mail-saiji-01'));assert(N.read(state,'mail-nakako-01'));assert.equal(N.unread(state).length,0);
+state.flags.dutyChecked=true;state.flags.layoutChecked=true;N.sync(scenario,state,E);assert.equal(state.notebook.nodes.length,5);assert.equal(N.unread(state).length,1);assert.equal(N.relations(scenario,state).nodes.find(n=>n.id==='bunji').displayRealName,'？？？');
+state.notebook.seenRelations=N.tokens(state.notebook);state.notebook.seenMemo=['sketchFound'];
+const snapshot=S.snapshot(state,settings);S.write(1,snapshot);assert.deepStrictEqual(S.read(1).progress.notebook,snapshot.progress.notebook);
+const legacy=JSON.parse(JSON.stringify(snapshot));delete legacy.progress.notebook;assert.equal(S.validate(legacy).progress.notebook.received.length,0);
+for(const key of scenario.commands.discoveryFlags)delete legacy.progress.flags[key];assert(S.validate(legacy).progress.flags.personOkabo);
+const bad=JSON.parse(JSON.stringify(snapshot));bad.progress.notebook.read.push('unknown-mail');assert.throws(()=>S.validate(bad));
+state.mode='dialogue';assert.throws(()=>S.snapshot(state,settings));
+// 個別条件・複合条件・訪問/アイテム条件と、未登場・本名・故人のデータ拡張。
+const extra={...scenario,relations:{nodes:[{id:'mystery',name:'人物',hint:'手がかりの名前',realName:'本名',when:{all:[{flags:{met:true}},{visits:{classroom:{min:2}}}]},realNameWhen:{items:['証拠']},deceased:true}],edges:[]},mails:[]};
+const probe={...state,flags:{},visits:{classroom:1},inventory:[],notebook:N.empty()};N.sync(extra,probe,E);assert.equal(N.relations(extra,probe).nodes[0].displayName,'？？？');probe.flags.met=true;probe.visits.classroom=2;N.sync(extra,probe,E);assert.equal(N.relations(extra,probe).nodes[0].displayName,'人物');assert.equal(N.relations(extra,probe).nodes[0].displayRealName,'？？？');probe.inventory.push('証拠');N.sync(extra,probe,E);assert.equal(N.relations(extra,probe).nodes[0].displayRealName,'本名');
+console.log('PASS: conditional one-time receipt, unread/read, undiscovered nodes, conditional real names, hinted/deceased records, relation update tokens, save roundtrip, old saves, invalid notebook rejection, scenario equality.');

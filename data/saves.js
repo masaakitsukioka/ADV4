@@ -45,14 +45,14 @@
    if(p.inventory.some(i=>typeof i!=='string'||!items.has(i))||new Set(p.inventory).size!==p.inventory.length)fail();
    if(!Number.isInteger(settings.textSpeed)||settings.textSpeed<0||settings.textSpeed>3||typeof settings.auto!=='boolean')fail();
    return {format:FORMAT,scenarioId:data.scenarioId,saveRevision:data.saveRevision,savedAt:data.savedAt,
-    progress:{room:p.room,flags,inventory:[...p.inventory],visits,completedEvents},
+    progress:{room:p.room,flags,inventory:[...p.inventory],visits,completedEvents,notebook:global.SaikachiNotebook.validate(p.notebook,scenario)},
     settings:{textSpeed:settings.textSpeed,auto:settings.auto}};
   }
   function snapshot(state,settings){
    if(!['exploration','menu'].includes(state.mode))throw new Error('会話や推理を終えてから保存してください。');
    return validate({format:FORMAT,scenarioId:scenario.meta.id,saveRevision:scenario.meta.saveRevision,
     savedAt:new Date().toISOString(),progress:{room:state.room,flags:state.flags,inventory:state.inventory,
-     visits:state.visits,completedEvents:state.completedEvents},settings:{textSpeed:settings.index,auto:settings.auto}});
+     visits:state.visits,completedEvents:state.completedEvents,notebook:state.notebook},settings:{textSpeed:settings.index,auto:settings.auto}});
   }
   function key(slot){if(!Number.isInteger(slot)||slot<1||slot>3)throw new Error('保存枠が正しくありません。');return PREFIX+scenario.meta.id+'.'+slot;}
   function raw(slot){

@@ -98,7 +98,11 @@
     "speakerNames": {
       "ハルキ": "assets/ui/name-haruki.png",
       "サイジ": "assets/ui/name-saiji.png"
-    }
+    },
+    "notebookTitle": "assets/ui/menu-title-notebook.png",
+    "notebookCover": "assets/ui/notebook-cover.png",
+    "phsBody": "assets/ui/phs-body.png",
+    "phsMini": "assets/ui/phs-mini.png"
   },
   "deductionBackground": "assets/backgrounds/saiji-notebook-deduction.png",
   "mouthStrips": {
@@ -107,6 +111,13 @@
       "surprised": "assets/characters/talk/saiji-surprised-mouths.png",
       "thinking": "assets/characters/talk/saiji-thinking-mouths.png",
       "confident": "assets/characters/talk/saiji-confident-mouths.png"
+    }
+  },
+  "fonts": {
+    "phs": {
+      "path": "assets/fonts/DotGothic16-Regular.ttf",
+      "license": "assets/fonts/OFL.txt",
+      "source": "https://github.com/google/fonts/tree/main/ofl/dotgothic16"
     }
   }
 }

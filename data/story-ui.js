@@ -37,6 +37,7 @@ function openingLoad(){
  const b=document.createElement('button');b.textContent='タイトルにもどる';b.onclick=showTitle;$('panelBody').appendChild(b);
 }
 function startNewGame(){
+ if(typeof resetNotebookUI==='function')resetNotebookUI();state.notebook=window.SaikachiNotebook.empty();
  resetPresentation();dailyConversationHistory.clear();
  deductionTransitionGeneration++;$('deductionStage').classList.add('hidden');$('deductionStage').classList.remove('closing');$('deductionFlash').classList.remove('flash');$('deductionStart').classList.remove('announce');deductionActive=false;lastConversationId=null;closeDialogueLayer();panelRevision++;choicesPending=false;typingDone=false;displayedChars=0;
  Object.assign(state,{mode:'opening',pendingDeduction:false,room:SCENARIO.initial.room,flags:{...SCENARIO.initial.flags},
@@ -45,15 +46,11 @@ function startNewGame(){
  $('dialogueChoices').replaceChildren();$('panelBody').replaceChildren();
  openingPage(0);
 }
-function showTitle(){resetPresentation();openingView('消えたスケッチ','サイカチADV / 試作版',[['最初から',startNewGame],['途中から',openingLoad]])}
+function showTitle(){if(typeof resetNotebookUI==='function')resetNotebookUI();resetPresentation();openingView('消えたスケッチ','サイカチADV / 試作版',[['最初から',startNewGame],['途中から',openingLoad]])}
 function menu(){
+ if(deductionActive||!['exploration','menu'].includes(state.mode))return;
  if(!state.flags.introSeen){showTitle();return}
- const buttons=[['セーブ',()=>saveSlots('save')],['途中から',()=>saveSlots('load')],['もちもの',inventory],['ちょうさメモ',memo]];
- if(state.flags.okaboChecked&&!state.flags.deductionDone)buttons.push(['推理を再開する',startDeduction]);
- if(state.flags.deductionDone)buttons.push(['エンディングを読み返す',()=>say(SCENARIO.ending,showEnding)]);
- buttons.push(['人物相関図（次工程）',()=>panel('人物相関図',[['もどる',menu]])],['メール（次工程）',()=>panel('メール',[['もどる',menu]])],['操作方法',()=>{
-  panel('操作方法',[['もどる',menu]]);note('「移動」「聞く」「調べる」「探す」「見せる」「会話」から行動を選びます。調べる対象や探す人物は、調査で手がかりが増えると追加されます。発見した持ち物は、その場所の「調べる」からも確認できます。会話は事件に関する話を一度ずつ優先し、その後は場所ごとの日常会話に切り替わります。会話をタップすると全文表示、もう一度タップすると次へ進みます。会話・推理を終えた探索中に保存できます。推理パートでは答えを選んで進めます。');
- }]);panel('メニュー',buttons);
+ openNotebook();
 }
 function inventory(){
  const buttons=state.inventory.map(item=>[item,()=>{
