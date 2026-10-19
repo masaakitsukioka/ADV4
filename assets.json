@@ -104,7 +104,7 @@
     "phsBody": "assets/ui/phs-body.png",
     "phsMini": "assets/ui/phs-mini.png"
   },
-  "deductionBackground": "assets/backgrounds/saiji-notebook-deduction.png",
+  "deductionBackground": "assets/backgrounds/deduction-notebook.png",
   "mouthStrips": {
     "saiji": {
       "normal": "assets/characters/talk/saiji-normal-mouths.png",
@@ -114,10 +114,26 @@
     }
   },
   "fonts": {
-    "phs": {
+    "dot": {
+      "role": "PHS液晶・ドット表示",
       "path": "assets/fonts/DotGothic16-Regular.ttf",
       "license": "assets/fonts/OFL.txt",
       "source": "https://github.com/google/fonts/tree/main/ofl/dotgothic16"
+    },
+    "body": {
+      "role": "本文・UI（ゴシック）",
+      "path": [
+        "assets/fonts/NotoSansJP-Regular.subset.woff",
+        "assets/fonts/NotoSansJP-Bold.subset.woff"
+      ],
+      "license": "assets/fonts/OFL-NotoCJK.txt",
+      "source": "https://github.com/notofonts/noto-cjk"
+    },
+    "heading": {
+      "role": "見出し（明朝）",
+      "path": "assets/fonts/NotoSerifJP-Bold.subset.woff",
+      "license": "assets/fonts/OFL-NotoCJK.txt",
+      "source": "https://github.com/notofonts/noto-cjk"
     }
   }
 }

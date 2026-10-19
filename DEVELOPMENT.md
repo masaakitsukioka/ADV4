@@ -1,5 +1,8 @@
 # サイカチADVの開発場所
 
+設定・原稿の正本はNotion「東京意匠學校奇譚 七ツノ怪異｜ストーリー台帳」（進行台帳・シナリオ作成ルール・シナリオ本文）。タスクはNotion「サイカチADV 開発体制」の開発タスク。
+このフォルダの data/scenario.js は試作「消えたスケッチ」（システム構築用。ストーリーは本編に使わない）。本編の原稿はNotionのシナリオ本文から変換する（開発タスク17）。
+
 今後は、どのPCでもExtreme SSD内の `ADV4` フォルダを開いて開発します。
 GitHub: https://github.com/masaakitsukioka/ADV4
 
@@ -27,3 +30,6 @@ node tests/menu-phs.cjs
 キャラクター名の生成素材と場所名の生成プロンプトは `art_sources/stage-ui-prompts.json` に記録。
 
 手帳UIのブラウザ検証：tests/menu-phs-browser.cjs（Playwright、127.0.0.1:8777でHTTP配信）。ADV_URL／CHROME_PATHで環境を指定できます。
+
+ビジュアル・UIルール（背景ドット絵の密度・色数、UIスタイル、書体4種）は `design/visual-rules/README.md`。共通テーマは `data/theme.css` / `data/theme.js`。
+背景の変換と確認：`python3 art_sources/pixel/to_pixel.py 入力.png assets/backgrounds/<roomId>.png` / `--check`。

@@ -1,2 +1,6 @@
 .DS_Store
 ._*
+
+# 再生成できるUI検査の全画面写真。代表例はui-debug-20261019/after/に保存。
+design/ui-audit/*.png
+design/ui-layout/*.png

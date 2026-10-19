@@ -1,0 +1,286 @@
+■ 画面外にはみ出す文字：5件
+  p.nb-question 「？ 誰が、なぜページを破いたのか。」  …844x390, 667x375, 375x667, 360x640
+  p.evidence-note 「会話をタップすると全文表示、もう一度で次へ。会話」  …844x390, 667x375, 375x667, 360x640
+  p.evidence-note 「手帳：↑↓で項目を選択、Enterで右ページへ、」  …844x390, 667x375, 375x667, 360x640
+  p.nb-question 「□ 準備室の作品棚と手に入れた持ち物を調べよう。」  …667x375, 375x667, 360x640
+  button 「タイトルにもどる」  …667x375
+■ 枠で切れる文字：1件
+  div#line 「ナカコから聞いたんだけど、その時オカボーが変なこ」  …1280x720, 844x390, 667x375
+■ 12px未満の文字：76件
+  p#nbPlace 「現在地：美術準備室」 11.0px  …844x390, 667x375, 390x844, 375x667, 360x640
+  small 「2点」 9.0px  …844x390, 667x375, 390x844, 375x667, 360x640
+  small 「調査の記録」 9.0px  …844x390, 667x375, 390x844, 375x667, 360x640
+  small.nb-new 「● 未読 2」 9.0px  …844x390, 667x375, 390x844, 375x667, 360x640
+  small.nb-keys 「↑↓ 選ぶ Enter 開く Esc もどる」 9.0px  …844x390, 667x375, 390x844, 375x667, 360x640
+  small 「放課後」 11.7px  …1920x1080, 1280x720, 1024x768, 768x1024
+  small 「2点」 11.0px  …1920x1080, 1280x720, 1024x768, 768x1024
+  small 「調査の記録」 11.0px  …1920x1080, 1280x720, 1024x768, 768x1024
+  small.nb-new 「● 未読 2」 11.0px  …1920x1080, 1280x720, 1024x768, 768x1024
+  small.nb-keys 「↑↓ 選ぶ Enter 開く Esc もどる」 11.0px  …1920x1080, 1280x720, 1024x768, 768x1024
+  button.nb-tab 「もちもの」 10.0px  …390x844, 375x667, 360x640
+  button.nb-tab 「メモ」 10.0px  …390x844, 375x667, 360x640
+  button.nb-tab 「相関図」 10.0px  …390x844, 375x667, 360x640
+  button.nb-tab 「メール」 10.0px  …390x844, 375x667, 360x640
+  button.nb-tab 「記録」 10.0px  …390x844, 375x667, 360x640
+  small 「5人」 9.0px  …844x390, 667x375, 390x844, 375x667, 360x640
+  span 「1996年7月19日（金） 放課後」 10.0px  …390x844, 375x667, 360x640
+  small 「放課後」 8.3px  …390x844, 375x667, 360x640
+  small 「5人」 11.0px  …1920x1080, 1280x720, 1024x768, 768x1024
+  button.nb-tab 「もちもの」 11.0px  …844x390, 667x375
+  button.nb-tab 「メモ」 11.0px  …844x390, 667x375
+  button.nb-tab 「相関図」 11.0px  …844x390, 667x375
+  button.nb-tab 「メール」 11.0px  …844x390, 667x375
+  button.nb-tab 「記録」 11.0px  …844x390, 667x375
+  span 「1996年7月19日（金） 放課後」 11.0px  …844x390, 667x375
+  small 「放課後」 9.2px  …844x390, 667x375
+  small.nb-new 「● 更新 5人」 9.0px  …844x390, 667x375, 390x844, 375x667, 360x640
+  small.nb-new 「● 更新 5人」 11.0px  …1920x1080, 1280x720, 1024x768, 768x1024
+  small 「本名：前野春樹」 11.0px  …1920x1080, 1280x720, 1024x768, 768x1024, 390x844, 375x667, 360x640
+  small 「本名：佐藤齊治」 11.0px  …1920x1080, 1280x720, 1024x768, 768x1024, 390x844, 375x667, 360x640
+  small 「本名：廣村奈加子」 11.0px  …1920x1080, 1280x720, 1024x768, 768x1024, 390x844, 375x667, 360x640
+  small.unknown 「本名：？？？」 11.0px  …1920x1080, 1280x720, 1024x768, 768x1024, 390x844, 375x667, 360x640
+  figcaption#itemCaption 「ナカコのスケッチブック」 11.0px  …768x1024, 844x390, 667x375, 390x844, 375x667, 360x640
+  button 「← 手帳にもどる」 11.0px  …390x844, 375x667, 360x640
+  span 「▂▄▆」 9.8px  …844x390, 667x375, 390x844, 375x667, 360x640
+  span 「7/19 16:08」 9.8px  …844x390, 667x375, 390x844, 375x667, 360x640
+  span 「▮▮▯」 9.8px  …844x390, 667x375, 390x844, 375x667, 360x640
+  p.nb-mail-from 「ﾌﾛﾑ: ﾅｶｺ」 11.9px  …844x390, 667x375, 390x844, 375x667, 360x640
+  button 「ﾓﾄﾞﾙ」 9.1px  …844x390, 667x375, 390x844, 375x667, 360x640
+  span 「ﾍﾝｼﾝ ﾃﾞｷﾏｾﾝ」 9.1px  …844x390, 667x375, 390x844, 375x667, 360x640
+  span 「▂▄▆」 3.5px  …844x390, 667x375, 390x844, 375x667, 360x640
+  span 「7/19 16:08」 3.5px  …844x390, 667x375, 390x844, 375x667, 360x640
+  span 「▮▮▯」 3.5px  …844x390, 667x375, 390x844, 375x667, 360x640
+  p.nb-mail-from 「ﾌﾛﾑ: ﾅｶｺ」 4.5px  …844x390, 667x375, 390x844, 375x667, 360x640
+  p.nb-mail-body 「ﾉｰﾄ ﾐﾂｶｯﾀ? ｱｽ ﾌﾞｼﾂ」 5.0px  …844x390, 667x375, 390x844, 375x667, 360x640
+  small.nb-chart-help 「調査が進むと、人物・本名・関係が書き加えられる。」 11.0px  …1920x1080, 1280x720, 1024x768, 768x1024
+  span 「▂▄▆」 5.6px  …1920x1080, 1280x720, 1024x768, 768x1024
+  span 「7/19 16:08」 5.6px  …1920x1080, 1280x720, 1024x768, 768x1024
+  span 「▮▮▯」 5.6px  …1920x1080, 1280x720, 1024x768, 768x1024
+  p.nb-mail-from 「ﾌﾛﾑ: ﾅｶｺ」 7.2px  …1920x1080, 1280x720, 1024x768, 768x1024
+  p.nb-mail-body 「ﾉｰﾄ ﾐﾂｶｯﾀ? ｱｽ ﾌﾞｼﾂ」 8.0px  …1920x1080, 1280x720, 1024x768, 768x1024
+  small.nb-mail-count 「18/20ﾓｼﾞ」 5.2px  …1920x1080, 1280x720, 1024x768, 768x1024
+  button 「ﾓﾄﾞﾙ」 5.6px  …1920x1080, 1280x720, 1024x768, 768x1024
+  span 「ﾍﾝｼﾝ ﾃﾞｷﾏｾﾝ」 5.6px  …1920x1080, 1280x720, 1024x768, 768x1024
+  small 「第一日 判明 5人」 10.0px  …390x844, 375x667, 360x640
+  p.nb-legend 「━ 判明した関係 ┅ 不確かな関係 ┈ 印象的な」 10.0px  …390x844, 375x667, 360x640
+  small.nb-chart-help 「調査が進むと、人物・本名・関係が書き加えられる。」 10.0px  …390x844, 375x667, 360x640
+  p.nb-mail-caption 「本文の拡大表示」 10.0px  …390x844, 375x667, 360x640
+  small.nb-mail-count 「18/20ﾓｼﾞ」 9.0px  …390x844, 375x667, 360x640
+  button 「ﾓﾄﾞﾙ」 4.0px  …390x844, 375x667, 360x640
+  span 「ﾍﾝｼﾝ ﾃﾞｷﾏｾﾝ」 4.0px  …390x844, 375x667, 360x640
+  span.nb-edge-label 「相棒」 10.0px  …844x390, 667x375
+  span.nb-edge-label 「同級生」 10.0px  …844x390, 667x375
+  span.nb-edge-label 「クロ研の当番」 10.0px  …844x390, 667x375
+  span.nb-edge-label 「配置図を記した顧問」 10.0px  …844x390, 667x375
+  small 「本名：前野春樹」 10.0px  …844x390, 667x375
+  small 「本名：佐藤齊治」 10.0px  …844x390, 667x375
+  small 「本名：廣村奈加子」 10.0px  …844x390, 667x375
+  small.unknown 「本名：？？？」 10.0px  …844x390, 667x375
+  p.nb-legend 「━ 判明した関係 ┅ 不確かな関係 ┈ 印象的な」 9.0px  …844x390, 667x375
+  small.nb-chart-help 「調査が進むと、人物・本名・関係が書き加えられる。」 9.0px  …844x390, 667x375
+  p.nb-mail-caption 「本文の拡大表示」 11.0px  …844x390, 667x375
+  small.nb-mail-count 「18/20ﾓｼﾞ」 9.1px  …844x390, 667x375
+  small.nb-mail-count 「18/20ﾓｼﾞ」 3.3px  …844x390, 667x375
+  button 「ﾓﾄﾞﾙ」 3.5px  …844x390, 667x375
+  span 「ﾍﾝｼﾝ ﾃﾞｷﾏｾﾝ」 3.5px  …844x390, 667x375
+■ 36px未満のボタン：180件
+  button#nbClose 「✕ とじる」 71x28  …844x390, 667x375, 390x844, 375x667, 360x640
+  button.nb-tab 「もちもの」 23x60  …390x844, 375x667, 360x640
+  button.nb-tab 「メモ」 23x47  …390x844, 375x667, 360x640
+  button.nb-tab 「相関図」 23x48  …390x844, 375x667, 360x640
+  button.nb-tab 「メール」 23x48  …390x844, 375x667, 360x640
+  button.nb-tab 「記録」 23x47  …390x844, 375x667, 360x640
+  button 「移動」 125x32  …390x844, 375x667, 360x640
+  button 「聞く」 125x32  …390x844, 375x667, 360x640
+  button 「調べる」 125x32  …390x844, 375x667, 360x640
+  button 「探す」 125x32  …390x844, 375x667, 360x640
+  button 「見せる」 125x32  …390x844, 375x667, 360x640
+  button 「会話」 125x32  …390x844, 375x667, 360x640
+  button.nb-tab 「もちもの」 26x64  …844x390, 667x375
+  button.nb-tab 「メモ」 26x42  …844x390, 667x375
+  button.nb-tab 「相関図」 26x51  …844x390, 667x375
+  button.nb-tab 「メール」 26x51  …844x390, 667x375
+  button.nb-tab 「記録」 26x42  …844x390, 667x375
+  button 「移動」 141x27  …844x390, 667x375
+  button 「聞く」 141x27  …844x390, 667x375
+  button 「調べる」 141x27  …844x390, 667x375
+  button 「探す」 141x27  …844x390, 667x375
+  button 「見せる」 141x27  …844x390, 667x375
+  button 「会話」 141x27  …844x390, 667x375
+  button#openingNext 「▼」 24x43  …1920x1080, 1280x720, 1024x768, 768x1024, 844x390, 667x375, 390x844, 375x667, 360x640
+  button.nb-entry 「壱 もちもの 2点」 314x27  …844x390
+  button.nb-entry 「弐 ちょうさメモ 調査の記録」 314x27  …844x390
+  button.nb-entry 「四 メール（PHS） ● 未読 2」 314x27  …844x390
+  button.nb-entry 「伍 セーブ」 314x27  …844x390
+  button.nb-entry 「六 途中から」 314x27  …844x390
+  button.nb-entry 「七 設定・操作方法」 314x27  …844x390
+  button.nb-entry 「壱 もちもの 2点」 235x27  …667x375
+  button.nb-entry 「弐 ちょうさメモ 調査の記録」 235x27  …667x375
+  button.nb-entry 「四 メール（PHS） ● 未読 2」 235x27  …667x375
+  button.nb-entry 「伍 セーブ」 235x27  …667x375
+  button.nb-entry 「六 途中から」 235x27  …667x375
+  button.nb-entry 「七 設定・操作方法」 235x27  …667x375
+  button.nb-entry 「伍 セーブ」 146x32  …390x844
+  button.nb-entry 「六 途中から」 146x32  …390x844
+  button.nb-entry 「七 設定・操作方法」 146x32  …390x844
+  button.nb-entry 「伍 セーブ」 139x32  …375x667
+  button.nb-entry 「六 途中から」 139x32  …375x667
+  button.nb-entry 「七 設定・操作方法」 139x32  …375x667
+  button.nb-entry 「伍 セーブ」 131x32  …360x640
+  button.nb-entry 「六 途中から」 131x32  …360x640
+  button.nb-entry 「七 設定・操作方法」 131x32  …360x640
+  button.nb-entry 「参 人物相関図 5人」 314x27  …844x390
+  button.nb-entry 「参 人物相関図 5人」 235x27  …667x375
+  button 「← 手帳にもどる」 79x30  …390x844, 375x667, 360x640
+  button 「ﾓﾄﾞﾙ」 24x28  …844x390, 667x375, 390x844, 375x667, 360x640
+  button 「ﾓﾄﾞﾙ」 30x28  …1920x1080, 1280x720, 1024x768, 768x1024
+  button 「ﾓﾄﾞﾙ」 13x10  …1920x1080, 1280x720, 1024x768, 768x1024
+  button.nb-entry 「参 人物相関図 ● 更新 5人」 314x27  …844x390
+  button 「もどる」 324x35  …844x390
+  button.nb-entry 「参 人物相関図 ● 更新 5人」 235x27  …667x375
+  button 「もどる」 245x35  …667x375
+  button 「ﾓﾄﾞﾙ」 10x10  …390x844, 375x667, 360x640
+  button 「ﾓﾄﾞﾙ」 9x10  …844x390, 667x375
+  button 「記録2：空き」 324x35  …844x390
+  button 「記録3：空き」 324x35  …844x390
+  button.answer-option 「嫌がらせで」 83x25  …844x390
+  button.answer-option 「二度塗り」 83x25  …844x390
+  button.answer-option 「修正」 83x25  …844x390
+  button.answer-option 「サイジ」 83x25  …844x390
+  button.answer-option 「面白がって」 83x25  …844x390
+  button.answer-option 「恨んで」 83x25  …844x390
+  button.answer-option 「ハルキ」 83x25  …844x390
+  button.answer-option 「ナカコ」 83x25  …844x390
+  button.answer-option 「仕返し」 83x25  …844x390
+  button.answer-confirm 「この答えで決定」 453x30  …844x390
+  button 「記録2：空き」 245x35  …667x375
+  button 「記録3：空き」 245x35  …667x375
+  button.answer-option 「ハルキ」 64x25  …667x375
+  button.answer-option 「仕返し」 64x25  …667x375
+  button.answer-option 「恨んで」 64x25  …667x375
+  button.answer-option 「二度塗り」 64x25  …667x375
+  button.answer-option 「ナカコ」 64x25  …667x375
+  button.answer-option 「サイジ」 64x25  …667x375
+  button.answer-confirm 「この答えで決定」 356x30  …667x375
+  button.answer-option 「仕返し」 103x29  …390x844
+  button.answer-option 「ナカコ」 103x29  …390x844
+  button.answer-option 「二度塗り」 103x29  …390x844
+  button.answer-option 「サイジ」 103x29  …390x844
+  button.answer-option 「恨んで」 103x29  …390x844
+  button.answer-option 「修正」 103x29  …390x844
+  button.answer-option 「ハルキ」 103x29  …390x844
+  button.answer-option 「嫌がらせで」 103x29  …390x844
+  button.answer-option 「面白がって」 103x29  …390x844
+  button.answer-confirm 「この答えで決定」 328x33  …390x844
+  button.answer-option 「二度塗り」 99x29  …375x667
+  button.answer-option 「ナカコ」 99x29  …375x667
+  button.answer-option 「ハルキ」 99x29  …375x667
+  button.answer-option 「面白がって」 99x29  …375x667
+  button.answer-option 「修正」 99x29  …375x667
+  button.answer-option 「恨んで」 99x29  …375x667
+  button.answer-option 「仕返し」 99x29  …375x667
+  button.answer-option 「サイジ」 99x29  …375x667
+  button.answer-option 「嫌がらせで」 99x29  …375x667
+  button.answer-confirm 「この答えで決定」 315x33  …375x667
+  button.answer-option 「修正」 94x29  …360x640
+  button.answer-option 「ナカコ」 94x29  …360x640
+  button.answer-option 「ハルキ」 94x29  …360x640
+  button.answer-option 「面白がって」 94x29  …360x640
+  button.answer-option 「恨んで」 94x29  …360x640
+  button.answer-option 「二度塗り」 94x29  …360x640
+  button.answer-option 「サイジ」 94x29  …360x640
+  button.answer-option 「仕返し」 94x29  …360x640
+  button.answer-option 「嫌がらせで」 94x29  …360x640
+  button.answer-confirm 「この答えで決定」 301x33  …360x640
+  button 「ナカコのスケッチブックをしらべる」 324x35  …844x390
+  button 「オカボーのスケッチブックをしらべる」 324x35  …844x390
+  button 「相関図をひらく」 324x35  …844x390
+  button 「PHSを取り出す」 324x35  …844x390
+  button 「記録1：空き」 324x35  …844x390
+  button 「上書きする」 324x35  …844x390
+  button 「やめる」 324x35  …844x390
+  button 「記録1：美術準備室 / 2026/10/19 1」 324x35  …844x390
+  button.answer-slot.active 「A」 190x30  …844x390
+  button.answer-slot 「B」 190x30  …844x390
+  button.answer-slot 「C」 405x30  …844x390
+  button.answer-option 「間違って」 83x25  …844x390
+  button.answer-option 「オカボー」 83x25  …844x390
+  button.answer-option 「落書き」 83x25  …844x390
+  button.answer-slot 「オカボー」 190x30  …844x390
+  button.answer-slot 「間違って」 190x30  …844x390
+  button.answer-slot.active 「落書き」 405x30  …844x390
+  button.answer-option.used 「間違って」 83x25  …844x390
+  button.answer-option.used 「オカボー」 83x25  …844x390
+  button.answer-option.used 「落書き」 83x25  …844x390
+  button 「ナカコのスケッチブックをしらべる」 245x35  …667x375
+  button 「相関図をひらく」 245x35  …667x375
+  button 「PHSを取り出す」 245x35  …667x375
+  button 「記録1：空き」 245x35  …667x375
+  button 「上書きする」 245x35  …667x375
+  button 「やめる」 245x35  …667x375
+  button.answer-slot.active 「A」 144x30  …667x375
+  button.answer-slot 「B」 144x30  …667x375
+  button.answer-slot 「C」 312x30  …667x375
+  button.answer-option 「間違って」 64x25  …667x375
+  button.answer-option 「オカボー」 64x25  …667x375
+  button.answer-slot 「オカボー」 144x30  …667x375
+  button.answer-slot 「間違って」 144x30  …667x375
+  button.answer-slot.active 「落書き」 312x30  …667x375
+  button.answer-option.used 「間違って」 64x25  …667x375
+  button.answer-option.used 「オカボー」 64x25  …667x375
+  button.answer-slot.active 「A」 132x33  …390x844
+  button.answer-slot 「B」 132x33  …390x844
+  button.answer-slot 「C」 287x33  …390x844
+  button.answer-option 「間違って」 103x29  …390x844
+  button.answer-option 「オカボー」 103x29  …390x844
+  button.answer-option 「落書き」 103x29  …390x844
+  button.answer-slot 「オカボー」 132x33  …390x844
+  button.answer-slot 「間違って」 132x33  …390x844
+  button.answer-slot.active 「落書き」 287x33  …390x844
+  button.answer-option.used 「間違って」 103x29  …390x844
+  button.answer-option.used 「オカボー」 103x29  …390x844
+  button.answer-option.used 「落書き」 103x29  …390x844
+  button.answer-slot.active 「A」 126x33  …375x667
+  button.answer-slot 「B」 126x33  …375x667
+  button.answer-slot 「C」 274x33  …375x667
+  button.answer-option 「間違って」 99x29  …375x667
+  button.answer-option 「落書き」 99x29  …375x667
+  button.answer-option 「オカボー」 99x29  …375x667
+  button.answer-slot 「オカボー」 126x33  …375x667
+  button.answer-slot 「間違って」 126x33  …375x667
+  button.answer-slot.active 「落書き」 274x33  …375x667
+  button.answer-option.used 「間違って」 99x29  …375x667
+  button.answer-option.used 「落書き」 99x29  …375x667
+  button.answer-option.used 「オカボー」 99x29  …375x667
+  button.answer-slot.active 「A」 119x33  …360x640
+  button.answer-slot 「B」 119x33  …360x640
+  button.answer-slot 「C」 260x33  …360x640
+  button.answer-option 「オカボー」 94x29  …360x640
+  button.answer-option 「落書き」 94x29  …360x640
+  button.answer-option 「間違って」 94x29  …360x640
+  button.answer-slot 「オカボー」 119x33  …360x640
+  button.answer-slot 「間違って」 119x33  …360x640
+  button.answer-slot.active 「落書き」 260x33  …360x640
+  button.answer-option.used 「オカボー」 94x29  …360x640
+  button.answer-option.used 「落書き」 94x29  …360x640
+  button.answer-option.used 「間違って」 94x29  …360x640
+■ 他の要素に隠れるボタン：2件
+  button.nb-entry 「七 設定・操作方法」 ← small.nb-keys 「↑↓ 選ぶ Enter 開く Esc もどる」  …667x375
+  button 「タイトルにもどる」 ← div#scene  …844x390, 667x375
+■ コントラスト不足：10件
+  small.nb-new 「● 未読 2」 3.66  …1920x1080, 1280x720, 1024x768, 768x1024, 844x390, 667x375, 390x844, 375x667, 360x640
+  button.nb-tab 「記録」 3.66  …1920x1080, 1280x720, 1024x768, 768x1024, 844x390, 667x375, 390x844, 375x667, 360x640
+  small.nb-new 「● 更新 5人」 3.66  …1920x1080, 1280x720, 1024x768, 768x1024, 844x390, 667x375, 390x844, 375x667, 360x640
+  button.nb-tab 「相関図」 3.66  …1920x1080, 1280x720, 1024x768, 768x1024, 844x390, 667x375, 390x844, 375x667, 360x640
+  button.nb-tab 「メール」 3.66  …1920x1080, 1280x720, 1024x768, 768x1024, 844x390, 667x375, 390x844, 375x667, 360x640
+  button.nb-tab 「もちもの」 3.66  …1920x1080, 1280x720, 1024x768, 768x1024, 844x390, 667x375, 390x844, 375x667, 360x640
+  button.nb-tab 「メモ」 3.66  …1920x1080, 1280x720, 1024x768, 768x1024, 844x390, 667x375, 390x844, 375x667, 360x640
+  button.answer-option.used 「落書き」 2.83  …1920x1080, 1280x720, 1024x768, 768x1024, 844x390, 667x375, 390x844, 375x667, 360x640
+  button.answer-option.used 「間違って」 2.83  …1920x1080, 1280x720, 1024x768, 768x1024, 844x390, 667x375, 390x844, 375x667, 360x640
+  button.answer-option.used 「オカボー」 2.83  …1920x1080, 1280x720, 1024x768, 768x1024, 844x390, 667x375, 390x844, 375x667, 360x640
+■ 同梱外の書体で描画：4件
+  Zapf Dingbats  …1920x1080, 1280x720, 1024x768, 768x1024, 844x390, 667x375, 390x844, 375x667, 360x640
+  .Hiragino Kaku Gothic Interface  …1920x1080, 1280x720, 1024x768, 768x1024, 844x390, 667x375, 390x844, 375x667, 360x640
+  .SF NS  …1920x1080, 1280x720, 1024x768, 768x1024, 844x390, 667x375, 390x844, 375x667, 360x640
+  Menlo  …1920x1080, 1280x720, 1024x768, 768x1024, 844x390, 667x375, 390x844, 375x667, 360x640
+■ エラー 1920x1080: console: Failed to load resource: the server responded with a status of 404 (File not found)

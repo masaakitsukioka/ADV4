@@ -1,0 +1,283 @@
+/* =====================================================================
+   v0.15 共通テーマ層（最後に読み込む）
+   基準は「捜査手帳」：墨・紙（方眼）・朱。全画面をこの言語に揃える。
+   ルールの全文は design/visual-rules/README.md
+   ===================================================================== */
+
+/* ---- 書体：3書体＋画像文字の4種に限定 -------------------------------
+   1. 画像文字（筆文字・新聞切り抜き）… 場所名・メニュー・人物名札・手帳題字
+   2. 見出し明朝  --font-head … 画面の題・日付・謎の番号
+   3. 本文ゴシック --font-body … 会話・説明・ボタン（Regular / Bold）
+   4. ドット       --font-dot  … PHS液晶・システム的な小さな表示
+   本文と見出しは同梱Webフォント。OSの書体には頼らない。 */
+@font-face{font-family:'ADV Gothic';src:url('../assets/fonts/NotoSansJP-Regular.subset.woff') format('woff');font-weight:400;font-display:swap}
+@font-face{font-family:'ADV Gothic';src:url('../assets/fonts/NotoSansJP-Bold.subset.woff') format('woff');font-weight:700 900;font-display:swap}
+@font-face{font-family:'ADV Mincho';src:url('../assets/fonts/NotoSerifJP-Bold.subset.woff') format('woff');font-weight:400 900;font-display:swap}
+:root{
+ --font-body:'ADV Gothic',sans-serif;
+ --font-head:'ADV Mincho','ADV Gothic',serif;
+ --font-dot:'DotGothic16','ADV Gothic',monospace;
+ --t-ink:#111219;--t-paper:#efe5cf;--t-paper2:#e4d6b8;--t-red:#da391c;--t-red-dk:#b63e31;--t-line:#afa389;--t-sumi:#070e10;
+ --t-grid:linear-gradient(#8c785a21 1px,transparent 1px),linear-gradient(90deg,#8c785a21 1px,transparent 1px);
+ font-family:var(--font-body);
+}
+body,button,input,select,.line,.panel,.nb-book,#notebook button{font-family:var(--font-body)}
+#notebook .panel h2,.nb-day,.nb-special-head h2,.nb-number,.nb-stamp,#opening h1,#questionNumber,.panel h2,.command-window h2{font-family:var(--font-head)}
+.nb-lcd,#textSpeedState{font-family:var(--font-dot)}
+#deductionStart,#deductionResult,#deductionResult.solved{font-family:var(--font-body);font-weight:900}
+
+/* ---- 紙の部品（共通） ---------------------------------------------- */
+.t-paper,.command-window,#game:not(.deduction-layout) .panel,#game.deduction-layout .panel,#questionAnnouncement,#opening .opening-card{
+ background-color:var(--t-paper);background-image:var(--t-grid);background-size:22px 22px;color:var(--t-ink);
+ border:3px solid var(--t-ink);border-radius:2px;box-shadow:8px 8px 0 var(--t-red-dk);clip-path:none}
+
+/* ---- タイトル／オープニング：暗い教室の上に手帳の1ページ ------------- */
+#opening{background:#05070c url('../assets/backgrounds/classroom.png') center/cover no-repeat;image-rendering:pixelated}
+#opening:before{content:'';position:absolute;inset:0;background:#05070cd0;pointer-events:none}
+#opening .opening-card{position:relative;width:min(640px,92vw);max-height:92dvh;overflow:auto;padding:clamp(22px,4vw,46px) clamp(20px,4vw,48px);text-align:center}
+#opening .opening-card:before{content:'';position:absolute;left:0;right:0;top:0;height:7px;background:var(--t-red)}
+#opening h1{color:var(--t-ink);font-weight:900;font-size:clamp(30px,6vw,60px);letter-spacing:.12em;margin:8px 0 6px;text-align:center}
+#opening h1:empty,#opening #openingText:empty{display:none}
+#opening #openingText{color:#5b4f40;font-size:clamp(13px,1.6vw,17px);letter-spacing:.2em;margin:0 0 22px}
+#opening .opening-card:has(#openingTitle:not(:empty)):after{content:'皀角坂意匠學院 クロ研';position:absolute;top:18px;left:22px;font-size:11px;letter-spacing:.2em;color:#6b5d4a}
+#opening .opening-card:has(#openingTitle:not(:empty)){padding-top:clamp(38px,5vw,52px)}
+#opening .opening-actions{gap:14px}
+#opening .opening-actions button{background:var(--t-sumi);color:var(--t-paper);border:0;box-shadow:4px 4px 0 var(--t-red);font-weight:700;letter-spacing:.12em;padding:10px 26px;min-height:44px}
+#opening .opening-actions button:hover,#opening .opening-actions button:focus-visible{background:var(--t-red);color:#fff;outline:none;box-shadow:4px 4px 0 var(--t-sumi)}
+#opening #openingSynopsis{color:var(--t-ink);text-align:left;margin:0;font-size:clamp(16px,2vw,23px);line-height:1.8}
+#opening .opening-card:has(#openingSynopsis:not(.hidden)){width:min(820px,92vw)}
+
+/* ---- 探索コマンド：手帳の紙片 -------------------------------------- */
+.command-window{padding:14px 16px;overflow:hidden}
+.command-window:before{display:none}
+.command-window h2,#commandTitle{color:var(--t-ink);font-weight:900;border-bottom:2px solid var(--t-ink);letter-spacing:.12em;padding:0 0 6px 4px;margin:0 0 6px}
+#commandTitle{font-size:clamp(13px,1.3vw,16px)!important;letter-spacing:.2em}
+#commandMain,#commandDetail{background-color:var(--t-paper)!important}
+#commandDetail{box-shadow:6px 6px 0 var(--t-sumi)}
+.command-window button{color:var(--t-ink)!important;border:0!important;border-radius:0!important;font-weight:700;background:none!important;position:relative}
+.command-window button:hover,.command-window button:focus-visible,.command-window button.active{background:linear-gradient(transparent 56%,#da391c40 56%,#da391c40 86%,transparent 86%)!important;outline:none}
+.command-window button.active:before{content:'▶ '!important;color:var(--t-red)!important;font-size:.7em}
+.command-window .command-back{border-top:1px dashed var(--t-line)!important;color:#5b4f40!important}
+
+/* ---- 汎用パネル（セーブ確認・終わり等） ----------------------------- */
+#game .panel h2{color:var(--t-ink);border-bottom:2px solid var(--t-ink)}
+#game:not(.deduction-layout) .panel button{background:var(--t-sumi);color:var(--t-paper);border:0;box-shadow:3px 3px 0 var(--t-red)}
+#game:not(.deduction-layout) .panel button:hover,#game:not(.deduction-layout) .panel button:focus-visible{background:var(--t-red);color:#fff;outline:none}
+#game .panel .evidence-note,#game .panel p{color:var(--t-ink)}
+#notebook .panel{border:0!important;background-image:none!important}
+
+/* ---- 会話ウィンドウ：墨の紙。立ち絵の上でも読める濃さを維持 ------------ */
+.dialogue,.dialogue.open{background:#070e10e6;border:3px solid var(--t-ink);box-shadow:inset 0 0 0 2px #afa38955,0 -4px 0 var(--t-red-dk)}
+#dialogueChoices button{background:var(--t-paper);color:var(--t-ink);box-shadow:3px 3px 0 var(--t-red);border:0;font-weight:700}
+
+/* 文字設定ボタンは手帳「設定・操作方法」へ移動。画面上には出さない */
+#textControls{display:none!important}
+
+/* ---- 推理：問題カードは紙。立ち絵より手前に置く ----------------------- */
+#game.deduction-layout .panel{z-index:8;overflow:auto;inset:3% 21% calc(var(--message-height) + 2%);padding:clamp(12px,1.8vw,24px)}
+#game.deduction-layout .panel h2{color:var(--t-ink);border-color:var(--t-ink);font-weight:900}
+#game.deduction-layout .panel .deduction-choice,#game.deduction-layout .answer-option{background:var(--t-sumi);color:var(--t-paper);border:0;box-shadow:3px 3px 0 var(--t-red)}
+#game.deduction-layout .panel .deduction-choice:hover,#game.deduction-layout .panel .deduction-choice:focus-visible,#game.deduction-layout .answer-option:hover,#game.deduction-layout .answer-option:focus-visible{background:var(--t-red);color:#fff;outline:none}
+#game.deduction-layout .answer-option.used{background:var(--t-paper2);color:#8a7c66;box-shadow:none;border:1px dashed var(--t-line)}
+#game.deduction-layout .answer-pool{border:1px dashed var(--t-line);background:#fff4}
+#game.deduction-layout .answer-confirm{background:var(--t-red)!important;color:#fff!important;box-shadow:3px 3px 0 var(--t-sumi)!important;font-weight:900}
+/* 5問目の組み立て文：列を縮められるようにし、助詞を折り返さない */
+#game.deduction-layout .answer-sentence{grid-template-columns:minmax(0,1fr) auto minmax(0,1fr) auto;color:var(--t-ink);font-weight:700}
+#game.deduction-layout .answer-sentence>span{white-space:nowrap}
+#game.deduction-layout .answer-slot{background:#fff;border:2px solid var(--t-ink)!important;color:var(--t-red);min-width:0;overflow:hidden;text-overflow:ellipsis}
+#game.deduction-layout .answer-slot.active{border-color:var(--t-red)!important;box-shadow:3px 3px 0 var(--t-red)}
+#questionAnnouncement{color:var(--t-ink)}
+#questionNumber{color:var(--t-red)}
+
+/* 推理背景：320x180のドット絵を、人物と同じ倍率（--px）で敷く */
+.deduction-door{background-image:url('../assets/backgrounds/deduction-notebook.png');background-size:calc(var(--px,4px)*320) calc(var(--px,4px)*180);image-rendering:pixelated;background-color:#180409}
+.deduction-door.left{background-position:calc(50vw - var(--px,4px)*160) center}
+.deduction-door.right{background-position:calc(var(--px,4px)*-160) center}
+
+/* ---- 立ち絵：背景と同じ1ドット＝--px で表示（密度の統一） --------------- */
+#game .character-art{height:calc(var(--px,4px)*144)!important;width:auto!important;max-width:none!important;max-height:none!important}
+
+/* ---- スマホ縦：話している1人だけを中央に出す --------------------------- */
+@media (orientation:portrait) and (max-width:700px){
+ #characterStage{justify-content:center!important}
+ #characterStage .character-card{position:absolute!important;left:50%!important;right:auto!important;transform:translateX(-50%)!important;transition:opacity .15s}
+ #characterStage .character-card:not(.active){opacity:0!important;visibility:hidden}
+ #game.deduction-layout .panel{inset:2% 4% calc(var(--message-height) + 2%)}
+}
+
+/* ---- 手帳：設定欄 -------------------------------------------------- */
+.nb-settings{display:grid;gap:12px;margin:0 0 18px;padding:0 0 16px;border-bottom:1px dashed var(--t-line)}
+.nb-settings-row{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.nb-settings-row>span{min-width:6.5em;font-weight:700}
+#notebook #panelBody .nb-settings-row button{display:inline-block;width:auto;min-width:0;margin:0;text-align:center;box-shadow:none;background:#fff8;border:2px solid var(--t-ink);color:var(--t-ink);padding:5px 12px;min-height:36px;font-weight:700}
+#notebook #panelBody .nb-settings-row button[aria-pressed=true]{background:var(--t-sumi);color:var(--t-paper);box-shadow:3px 3px 0 var(--t-red)}
+@media(prefers-reduced-motion:reduce){#characterStage .character-card{transition:none}}
+
+/* v0.15 UI検証修正。書体・ドット倍率・基調色は上記のルールを維持。 */
+:root{--ui:clamp(1px,.1388889dvh,1.5px);--t-small-red:#b0301a}
+/* A1：本文領域を3行の測定基準にする。枠内の余白に文字を食い込ませない。 */
+.dialogue,.dialogue.open{padding:calc(16 * var(--ui)) calc(24 * var(--ui));overflow:visible;grid-template-rows:minmax(0,1fr);align-items:stretch}
+#line{height:100%;min-height:0;max-height:100%;overflow:hidden;line-height:1.65;letter-spacing:.04em;font-size:clamp(16px,2.2vw,calc(29 * var(--ui)))}
+.speaker{min-height:0}.speaker img{max-height:100%;height:auto}
+#nextMark{right:12px;bottom:2px;font-size:14px;color:var(--t-paper)}
+/* タイトルと汎用パネルも720pと1080pで同じ比率に。 */
+#opening .opening-card{width:min(calc(640 * var(--ui)),92vw);padding:calc(38 * var(--ui)) calc(32 * var(--ui));max-height:92dvh}
+#opening h1{font-size:calc(48 * var(--ui))}
+#opening #openingText{font-size:calc(16 * var(--ui))}
+#opening .opening-card:has(#openingTitle:not(:empty)):after{font-size:calc(12 * var(--ui))}
+#opening .opening-actions button{font-size:calc(16 * var(--ui));min-height:44px}
+#opening #openingSynopsis{font-size:calc(21 * var(--ui));line-height:1.65}
+#opening #openingNext{min-width:36px;min-height:36px!important;font-size:24px;color:var(--t-small-red)}
+#game:not(.deduction-layout)>.panel{font-size:calc(16 * var(--ui));padding:calc(24 * var(--ui));inset:7% 9%;max-height:86dvh}
+#game:not(.deduction-layout)>.panel h2{font-size:calc(26 * var(--ui));margin:0 100px 14px 0}
+#game:not(.deduction-layout)>.panel button{font-size:calc(16 * var(--ui));min-height:44px}
+#game:not(.deduction-layout)>.panel p{font-size:calc(16 * var(--ui))}
+/* C4：選択マークは独立した欄へ。 */
+.command-window button{padding-left:26px!important;min-height:36px!important;font-size:16px!important}
+.command-window button.active:before{position:absolute;left:7px;top:50%;transform:translateY(-50%);width:14px}
+#commandTitle,.command-footer{font-size:12px!important}
+#commandChildren button{height:auto;min-height:36px!important;line-height:1.2;padding-top:5px;padding-bottom:5px}
+#commandMain{width:195px;padding:10px 12px}
+#commandDetail{overflow:auto;max-height:calc(100dvh - 112px);width:min(360px,52vw)}
+/* A2：4列、各ボタン36px、決定までをカード内に収める。 */
+#game.deduction-layout .panel{inset:3% 18% auto;max-height:calc(97dvh - var(--message-height) - 16px);height:auto;padding:calc(14 * var(--ui));overflow:auto}
+#game.deduction-layout .panel h2{font-size:calc(21 * var(--ui));margin:0 0 10px;padding-bottom:6px}
+#game.deduction-layout .panel .deduction-choice{font-size:calc(17 * var(--ui));min-height:44px;width:100%;margin:8px 0!important}
+#game.deduction-layout .panel .answer-sentence{font-size:calc(16 * var(--ui));gap:6px;margin:0 0 8px}
+#game.deduction-layout .panel .answer-slot{font-size:calc(16 * var(--ui));min-height:36px;padding:4px;margin:0;white-space:nowrap;color:var(--t-small-red)}
+#game.deduction-layout .panel .answer-pool{width:100%;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px;padding:6px;min-height:0}
+#game.deduction-layout .panel .answer-option{font-size:calc(15 * var(--ui));white-space:nowrap;min-height:36px;padding:4px 2px;margin:0;letter-spacing:0}
+#game.deduction-layout .panel .answer-option.used{color:#5b4f40;opacity:1;background:var(--t-paper2);border:1px dashed #5b4f40;text-decoration:line-through}
+#game.deduction-layout .panel .answer-confirm{font-size:calc(16 * var(--ui));min-height:40px;margin:8px 0 0;padding:6px;position:sticky;bottom:0;background:var(--t-small-red)!important;z-index:1}
+#questionNumber{color:var(--t-small-red)}
+/* 手帳：本文16、補足12、ボタン14を最低値とする。 */
+#game.notebook-visible .location{visibility:hidden}
+#notebook{padding:5vh 7vw 4vh 4vw}
+.nb-left,.nb-right{padding:calc(28 * var(--ui));padding-bottom:calc(60 * var(--ui))}
+.nb-date{font-size:calc(14 * var(--ui));margin-top:calc(30 * var(--ui));gap:12px}
+.nb-date small,.nb-place,.nb-entry small,.nb-keys,.nb-tab,.nb-number{font-size:calc(12 * var(--ui))}
+.nb-date small{font-size:calc(12 * var(--ui))}
+.nb-day{font-size:calc(40 * var(--ui))}
+.nb-place{margin:8px 0 12px}
+#nbNav{gap:2px;padding:3px 5px;overflow:visible;flex-shrink:0}
+#nbNav .nb-entry{padding:6px 8px;min-height:44px;gap:8px}
+.nb-entry strong{font-size:calc(19 * var(--ui))}
+.nb-entry small{font-size:calc(12 * var(--ui));line-height:1.35}
+.nb-entry small.nb-new,.nb-edge-label,.nb-node .unknown,.nb-memo.fresh b,.nb-number{color:var(--t-small-red)}
+.nb-number{width:22px;flex-shrink:0;font-family:var(--font-head)}
+.nb-stamp{font-family:var(--font-head)}
+.nb-tabs{right:-36px;top:60px;gap:4px}
+.nb-tab{min-width:36px;min-height:64px;font-size:calc(12 * var(--ui))!important;padding:8px 6px;border-radius:0;letter-spacing:.08em}
+.nb-tab[aria-current=page]{background:var(--t-small-red)}
+.nb-close{min-height:44px;min-width:90px;font-size:calc(14 * var(--ui))!important;right:24px;bottom:18px}
+.nb-keys{left:calc(28 * var(--ui));bottom:22px;font-size:calc(12 * var(--ui))}
+#notebook .panel h2{font-family:var(--font-head);font-size:calc(26 * var(--ui));margin:0 0 12px}
+#notebook #panelBody p{font-size:calc(16 * var(--ui));line-height:1.6}
+#notebook #panelBody button{font-size:calc(15 * var(--ui));min-height:44px;margin:7px 0}
+#notebook .nb-settings-row button{min-height:36px!important;font-size:14px}
+.nb-scroll-cue{position:absolute;right:calc(28 * var(--ui));bottom:60px;background:var(--t-paper);border-bottom:2px solid var(--t-small-red);color:var(--t-ink);padding:3px 6px;font:12px var(--font-body);pointer-events:none}
+.nb-special-head h2{font-family:var(--font-head);font-size:calc(26 * var(--ui))}
+.nb-special-head h2 small,.nb-special-head button,.nb-legend,.nb-chart-help{font-family:var(--font-body);font-size:calc(12 * var(--ui))!important}
+.nb-special-head button{min-height:36px;font-size:14px!important}
+.nb-chart-canvas{min-width:700px;min-height:400px}
+.nb-node{width:150px;line-height:1.4}
+.nb-node strong{font-size:calc(17 * var(--ui))}
+.nb-node small{font-size:calc(12 * var(--ui));line-height:1.5}
+.nb-edge-label{font-size:calc(12 * var(--ui));background:var(--t-paper)}
+#itemCaption{font:calc(13 * var(--ui)) var(--font-body)}
+#mailToast small{font-size:12px}
+/* A6：電波と電池は同梱書体に依存しない棒の図形。 */
+.lcd-signal,.lcd-battery{display:inline-flex;align-items:flex-end;gap:2px;width:30px;height:14px;flex-shrink:0}
+.lcd-signal i{width:7px;background:currentColor}.lcd-signal i:nth-child(1){height:4px}.lcd-signal i:nth-child(2){height:8px}.lcd-signal i:nth-child(3){height:12px}
+.lcd-battery{align-items:center}.lcd-battery i{width:7px;height:11px;background:currentColor}.lcd-battery i:last-child{background:none;border:1px solid currentColor}
+.nb-lcd.enlarged{font-family:var(--font-dot);font-size:calc(18 * var(--ui));padding:14px;min-height:230px}
+.enlarged .nb-lcd-bar,.enlarged .nb-soft,.enlarged .nb-mail-count{font-size:calc(12 * var(--ui))}
+.enlarged .nb-mail-from{font-size:calc(16 * var(--ui))}
+.enlarged .nb-mail-body{font-size:calc(22 * var(--ui));line-height:1.5}
+.enlarged .nb-soft button{font-size:14px!important;min-height:36px;min-width:44px}
+.enlarged .nb-mail-row{min-height:44px;font-size:16px!important}
+.nb-mail-caption{font-size:calc(12 * var(--ui))}
+.nb-phone .lcd-signal,.nb-phone .lcd-battery{width:12px;height:5px;gap:1px}
+.nb-phone .lcd-signal i{width:3px}.nb-phone .lcd-signal i:nth-child(1){height:1px}.nb-phone .lcd-signal i:nth-child(2){height:3px}.nb-phone .lcd-signal i:nth-child(3){height:5px}
+.nb-phone .lcd-battery i{width:3px;height:4px}
+/* 小さい横画面：操作領域を確保しつつ、七項目と推理カードを収める。 */
+@media(max-height:460px) and (min-width:601px){
+ :root{--message-height:30dvh}
+ .dialogue,.dialogue.open{padding:10px 18px;grid-template-columns:70px minmax(0,1fr);gap:12px}
+ #line{font-size:16px}
+ #game.deduction-layout .panel{inset:1% 12% auto;padding:7px 10px;max-height:calc(99dvh - var(--message-height) - 12px)}
+ #game.deduction-layout .panel h2{font-size:16px;margin-bottom:5px;padding-bottom:4px}
+ #game.deduction-layout .panel .answer-sentence{grid-template-columns:minmax(0,1fr) auto minmax(0,1fr) auto minmax(0,1fr) auto;margin:0 0 5px;gap:4px;font-size:14px}
+ #game.deduction-layout .panel .answer-slot[data-slot="2"]{grid-column:auto}
+ #game.deduction-layout .panel .answer-slot{font-size:14px;min-height:36px;padding:3px}
+ #game.deduction-layout .panel .answer-pool{gap:4px;padding:4px}
+ #game.deduction-layout .panel .answer-option{font-size:14px;min-height:36px;padding:2px}
+ #game.deduction-layout .panel .answer-confirm{font-size:14px;min-height:36px;margin-top:5px;padding:4px}
+ #game.deduction-layout .panel .deduction-choice{font-size:15px;min-height:36px;margin:5px 0!important}
+ #notebook{padding:10px 43px 12px 12px}.nb-book{padding:10px}
+ .nb-left,.nb-right{padding:10px 14px 50px}
+ .nb-title{width:150px;top:-22px;height:42px}
+ .nb-date{margin-top:12px;padding-bottom:4px;font-size:12px;gap:7px}.nb-day{font-size:26px}.nb-stamp{width:30px;height:30px;flex-basis:30px;font-size:19px}
+ .nb-date small{display:none}.nb-place{font-size:12px;margin:5px 0}
+ #nbNav{gap:0;padding:0}#nbNav .nb-entry{min-height:36px;padding:3px 3px;gap:4px}.nb-entry strong{font-size:14px;white-space:nowrap}.nb-entry small{font-size:12px;margin-left:auto}.nb-number{font-size:12px;width:15px}
+ .nb-entry[data-section=help] strong{font-size:14px}.nb-keys{display:none}
+ .nb-tabs{right:-36px;top:20px}.nb-tab{min-width:36px;min-height:49px;font-size:12px!important;padding:4px 7px}
+ .nb-close{right:16px;bottom:12px;min-height:36px;font-size:14px!important;padding:5px 12px}
+ #notebook .panel h2{font-size:21px;margin-bottom:8px}#notebook #panelBody p{font-size:15px;line-height:1.5}#notebook #panelBody button{font-size:14px;min-height:36px;padding:6px;margin:5px 0}
+ .nb-scroll-cue{right:16px;bottom:51px}
+ .nb-special{padding:10px 14px 52px}.nb-special-head h2{font-size:22px}.nb-chart-canvas{min-height:400px}
+ .nb-lcd.enlarged{font-size:16px;min-height:185px;padding:10px}.enlarged .nb-mail-body{font-size:20px;margin:5px 0}.enlarged .nb-lcd-bar,.enlarged .nb-soft,.enlarged .nb-mail-count{font-size:12px}.enlarged .nb-mail-from{font-size:15px;margin:5px 0}.nb-phs-view{padding:4px 0;gap:5%}.nb-phone{height:185px}
+ #game:not(.deduction-layout)>.panel.title-load{inset:3% 5%;padding:12px 16px;max-height:94dvh}
+ #game>.panel.title-load h2{font-size:20px;margin:0 100px 6px 0;padding-bottom:5px}
+ .title-load #panelBody{display:grid;grid-template-columns:1fr 1fr;gap:7px 12px}
+ #game>.panel.title-load #panelBody button{width:100%;min-width:0;min-height:36px;font-size:14px;margin:0;padding:6px 10px}
+ #game>.panel.title-load #panelBody p{grid-column:1/-1;font-size:14px;margin:2px 0}
+ #commandMain{top:76px;left:3%;width:170px;padding:8px 10px}#commandDetail{top:76px;left:calc(3% + 174px);max-height:calc(100dvh - 92px);width:calc(94vw - 174px);padding:8px 10px}
+}
+@media(orientation:portrait) and (max-width:700px){
+ .dialogue,.dialogue.open{padding:12px;grid-template-columns:58px minmax(0,1fr);gap:10px}#line{font-size:17px}
+ #notebook{padding:20px 43px 12px 8px}.nb-book{padding:9px}.nb-left{padding:14px 8px 8px}.nb-right{padding:12px 9px 54px}.nb-date{font-size:12px;margin-top:11px;gap:5px}.nb-day{font-size:25px}.nb-date small{font-size:12px}.nb-place{font-size:12px;margin:5px 0}
+ #nbNav{display:grid;grid-template-columns:1fr 1fr;gap:1px 6px;padding:0}#nbNav .nb-entry{min-height:40px;padding:3px 2px;gap:4px;flex-wrap:wrap}.nb-entry strong{font-size:14px}.nb-entry small{font-size:12px;margin-left:18px;width:100%;line-height:1.35}.nb-number{font-size:12px;width:14px}.nb-keys{display:none}
+ .nb-tabs{right:-36px;top:30px}.nb-tab{min-width:36px;min-height:57px;font-size:12px!important;padding:5px 7px}.nb-close{font-size:14px!important;right:12px;bottom:12px;min-height:36px}
+ #notebook .panel h2{font-size:21px}#notebook #panelBody p{font-size:15px}#notebook #panelBody button{min-height:40px;font-size:14px}
+ .nb-special{padding:12px 9px 55px}.nb-special-head h2 small{font-size:12px}.nb-special-head button{min-height:36px}
+ .nb-node small{font-size:12px}.nb-node strong{font-size:17px}.nb-legend,.nb-chart-help{font-size:12px!important;line-height:1.5}
+ .nb-scroll-cue{right:10px;bottom:53px}
+ .nb-lcd.enlarged{min-height:205px;padding:9px;font-size:16px}.enlarged .nb-lcd-bar,.enlarged .nb-soft,.enlarged .nb-mail-count{font-size:12px}.enlarged .nb-soft{gap:2px;flex-wrap:wrap}.enlarged .nb-mail-body{font-size:20px}.enlarged .nb-mail-from{font-size:15px}.nb-mail-caption{font-size:12px}.nb-phone{height:180px;flex-basis:180px}
+ #game.deduction-layout .panel{inset:2% 3% auto;max-height:calc(98dvh - var(--message-height) - 14px);padding:10px}
+ #game.deduction-layout .panel h2{font-size:18px}
+ #game.deduction-layout .panel .answer-pool{grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;padding:4px}
+ #game.deduction-layout .panel .answer-option{font-size:14px;min-height:36px;padding:3px 1px}
+ #game.deduction-layout .panel .answer-slot{font-size:15px;min-height:36px}
+ #game.deduction-layout .panel .answer-confirm{font-size:15px;min-height:40px}
+ #opening h1{font-size:34px}#opening #openingSynopsis{font-size:18px}
+ #commandMain{top:85px;left:3%;width:160px}#commandDetail{top:85px;left:calc(3% + 164px);width:calc(94vw - 164px);max-height:calc(100dvh - 102px)}
+ #commandChildren button{white-space:normal}
+}
+@media(max-height:460px) and (min-width:601px){
+ .nb-left{padding:4px 10px 0}.nb-date{margin-top:8px;padding-bottom:2px;line-height:1.3}.nb-stamp{height:28px;flex-basis:28px}.nb-place{line-height:18px;margin:3px 0}
+}
+#dialogueChoices:empty{display:none}
+@media(max-height:460px) and (min-width:601px){
+ #game.deduction-layout .panel{padding:6px 10px}
+ #game.deduction-layout .panel h2{margin-bottom:3px;padding-bottom:2px}
+ #game.deduction-layout .panel .answer-sentence{margin-bottom:3px}
+ #game.deduction-layout .panel .answer-pool{gap:3px;padding:2px}
+ #game.deduction-layout .panel .answer-confirm{margin-top:3px}
+}
+.nb-face{width:calc(64 * var(--ui));height:calc(64 * var(--ui));font-size:calc(29 * var(--ui))}
+@media(orientation:portrait) and (min-width:701px) and (max-width:900px){
+ .nb-spread{display:flex;flex-direction:column}.nb-left{flex:none;border-right:0;border-bottom:1px solid var(--t-line);padding:24px 24px 12px;box-shadow:none}.nb-right{flex:1;min-height:0;padding:20px 24px 70px}
+ .nb-date{margin-top:20px}.nb-place{font-size:14px;margin:8px 0}
+ #nbNav{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px 12px}
+ #nbNav .nb-entry{min-height:48px;flex-wrap:wrap;gap:6px}.nb-entry strong{font-size:22px}.nb-entry small{font-size:14px}.nb-keys{display:none}
+ .nb-tabs{right:-36px}.nb-special-head h2 small{font-size:14px!important}
+}
+@media(max-height:460px) and (min-width:601px){.nb-face{width:52px;height:52px;font-size:24px}}
+@media(prefers-reduced-motion:reduce){.dialogue,.dialogue.open{transition:none}}
+/* ト書きは名前欄を使わず本文を全幅にする（端末別の2列指定より優先）。 */
+.dialogue.narration,.dialogue.open.narration{grid-template-columns:minmax(0,1fr)}
+/* 続きの案内は本文に重ねず、操作札と並ぶ専用の下余白へ置く。 */
+.nb-scroll-cue{left:calc(28 * var(--ui));right:auto;bottom:28px}
+@media(max-height:460px) and (min-width:601px){.nb-scroll-cue{left:14px;bottom:20px}}
+@media(orientation:portrait) and (max-width:700px){.nb-scroll-cue{left:10px;bottom:20px}}

@@ -33,7 +33,7 @@ function advanceOpening(){
 $('openingSynopsis').onclick=advanceOpening;
 $('openingNext').onclick=e=>{e.stopPropagation();advanceOpening()};
 function openingLoad(){
- $('opening').classList.add('hidden');saveSlots('load');
+ $('opening').classList.add('hidden');saveSlots('load');$('panel').classList.add('title-load');
  const b=document.createElement('button');b.textContent='タイトルにもどる';b.onclick=showTitle;$('panelBody').appendChild(b);
 }
 function startNewGame(){
@@ -145,4 +145,7 @@ function showEnding(){
  $('game').classList.add('ending-screen');deductionActive=false;state.mode='ending-out';
  moveOutDialogue(()=>{$('deductionStage').classList.add('hidden');panel('消えたスケッチ — 終わり',[['タイトルへ',showTitle]]);note('試作版をプレイしていただき、ありがとうございました。')});
 }
-showTitle();
+if(typeof document.fonts?.load==='function'){
+ $('opening').style.visibility='hidden';
+ Promise.all([document.fonts.load('16px "ADV Gothic"'),document.fonts.load('700 16px "ADV Gothic"'),document.fonts.load('700 24px "ADV Mincho"')]).finally(()=>{$('opening').style.visibility='';showTitle()});
+}else showTitle();
