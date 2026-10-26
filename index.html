@@ -25,7 +25,7 @@
 /* v0.5 visual system: ink / paper / vermilion, responsive full-bleed */
 :root{--ink:#111219;--paper:#f1e9db;--red:#b63e31;--line:#d2c2a9;--shadow:#09090e}
 #game{background:var(--ink);isolation:isolate}
-#scene{image-rendering:pixelated;background:linear-gradient(180deg,#151a2b 0 17%,#34384c 17% 49%,#171c27 49% 54%,#39353b 54% 100%)}
+#scene{background:linear-gradient(180deg,#151a2b 0 17%,#34384c 17% 49%,#171c27 49% 54%,#39353b 54% 100%)}
 #scene:before{inset:12% 16% 39%;border:10px solid #141823;background:repeating-linear-gradient(90deg,#414657 0 17%,#161a25 17% 20%);box-shadow:0 0 0 12px #696052,0 12px 0 12px #1d1d29}
 #scene:after{content:'';position:absolute;bottom:0;left:0;right:0;height:25%;background:repeating-linear-gradient(90deg,#40363a 0 8%,#27242b 8% 9%);clip-path:polygon(0 35%,100% 15%,100% 100%,0 100%);opacity:.8}
 #scene.corridor{background:linear-gradient(105deg,#171b29 0 24%,#393c4a 24% 54%,#22202d 54% 100%)}
@@ -63,14 +63,14 @@
 /* v0.6: pixel canvas, cover mapping and safe-area target placement */
 #scene{overflow:hidden;background-color:#181b28!important;background-image:none}
 #scene::before,#scene::after{display:none!important}
-#pixelScene{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;image-rendering:pixelated;image-rendering:crisp-edges}
+#pixelScene{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
 .target{transform:translate(-50%,-50%);min-width:72px;max-width:140px;min-height:44px;z-index:3}
 .tab.left{left:max(0px,env(safe-area-inset-left))}.tab.right{right:max(0px,env(safe-area-inset-right))}
 @media(max-height:380px){.target{font-size:12px;min-width:68px;min-height:44px}}
 
 /* v0.7 external portrait images; preserve left Haruki/right Saiji and fallback */
 .character-card{position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:flex-end}
-.character-art{display:none;position:absolute;bottom:0;left:50%;transform:translateX(-50%);height:100%;width:auto;max-width:100%;object-fit:contain;image-rendering:pixelated;opacity:.72;pointer-events:none}
+.character-art{display:none;position:absolute;bottom:0;left:50%;transform:translateX(-50%);height:100%;width:auto;max-width:100%;object-fit:contain;opacity:.72;pointer-events:none}
 .character-card.active .character-art{opacity:1}
 .character-card .character-name,.character-card .emotion{position:relative;z-index:2;text-shadow:1px 2px 2px #000;background:#151720b8;padding:2px 6px}
 .asset-fallback{position:absolute;top:12%;left:40%}
@@ -82,7 +82,7 @@
 .location{top:max(12px,env(safe-area-inset-top));left:50%;transform:translateX(-50%);padding:5px 12px;background:#071012ba;color:var(--paper);font-size:13px;letter-spacing:.14em;border-bottom:1px solid #b3a38555;max-width:44%;text-align:center}
 .tab{top:max(0px,env(safe-area-inset-top));width:clamp(128px,22vw,300px);height:clamp(62px,12vw,144px);min-width:0;min-height:48px;padding:0;border:0;background:none;color:transparent;font-size:0;writing-mode:horizontal-tb;z-index:10;transition:filter .12s;overflow:visible}
 .tab.left{left:max(0px,env(safe-area-inset-left))}.tab.right{right:max(0px,env(safe-area-inset-right))}
-.tab:before{display:none}.tab img{display:block;width:100%;height:100%;object-fit:contain;image-rendering:pixelated;pointer-events:none}
+.tab:before{display:none}.tab img{display:block;width:100%;height:100%;object-fit:contain;pointer-events:none}
 .tab:hover,.tab:focus-visible{transform:none;filter:brightness(1.18)}
 .tab:focus-visible{outline:2px solid var(--paper);outline-offset:-5px}
 .target{color:var(--paper);background:#080f1066;border:1px solid #b9ac8d55;box-shadow:none;backdrop-filter:none;opacity:.72;letter-spacing:.09em;font-size:clamp(12px,1.3vw,16px)}
@@ -201,7 +201,7 @@
 /* Final stage layering, no-scroll text/commands and coordinated entrances. */
 :root{--message-height:27dvh;--frame-speed:.24s}
 #scene{z-index:0}.grain{z-index:1}.location,#menu{z-index:4;width:min(44vw,50dvh);height:16.667dvh;max-width:none;padding:0;transition:transform .45s ease}
-.location{background:none;display:block}.location img{width:100%;height:100%;object-fit:contain;image-rendering:pixelated}.location span{display:none}
+.location{background:none;display:block}.location img{width:100%;height:100%;object-fit:contain;}.location span{display:none}
 #characterStage{z-index:7;bottom:0;top:auto;height:66.667dvh;inset-inline:0}
 .character-card{width:min(45vw,48.2dvh);height:100%;transition:filter .15s}
 .character-art{width:100%;height:100%;object-fit:contain;object-position:center bottom}
@@ -266,7 +266,7 @@
 .location,#menu{width:min(35.2vw,40dvh);height:13.3336dvh}.location{left:0!important;right:auto;padding:0;transform-origin:left top}#menu{transform-origin:right top}
 #characterStage,#game.deduction-layout #characterStage{height:86.6671dvh}
 .character-card,#game.deduction-layout .character-card{width:min(58.5vw,62.66dvh)}
-.character-talk{z-index:2;image-rendering:pixelated;pointer-events:none}
+.character-talk{z-index:2;pointer-events:none}
 .dialogue.leaving{transform:translateY(105%);opacity:0;pointer-events:none}
 #characterStage.leaving #harukiCard{animation:characterLeftOut var(--frame-speed) ease .2s both}
 #characterStage.leaving #saijiCard{animation:characterRightOut var(--frame-speed) ease .2s both}
@@ -276,7 +276,7 @@
 @keyframes windowIn{from{opacity:0;transform:translateY(-12px)}to{opacity:1;transform:translateY(0)}}
 @keyframes windowOut{from{opacity:1;transform:translateY(0)}to{opacity:0;transform:translateY(-12px)}}
 #itemGraphic{position:absolute;z-index:9;left:50%;top:39%;transform:translate(-50%,-50%);width:min(30vw,34dvh);margin:0;background:#071013de;border:2px solid #b5a789;box-shadow:5px 5px #020607aa;pointer-events:none}
-#itemCanvas{display:block;width:100%;aspect-ratio:1;image-rendering:pixelated}#itemCaption{font-size:clamp(11px,1.2vw,16px);line-height:1.3;text-align:center;padding:7px;color:var(--paper)}
+#itemCanvas{display:block;width:100%;aspect-ratio:1;}#itemCaption{font-size:clamp(11px,1.2vw,16px);line-height:1.3;text-align:center;padding:7px;color:var(--paper)}
 #itemGraphic.window-in{animation:itemIn .24s ease both}#itemGraphic.window-out{animation:itemOut .24s ease both}
 @keyframes itemIn{from{opacity:0;transform:translate(-50%,-45%)}to{opacity:1;transform:translate(-50%,-50%)}}
 @keyframes itemOut{from{opacity:1;transform:translate(-50%,-50%)}to{opacity:0;transform:translate(-50%,-55%)}}
@@ -311,16 +311,16 @@
 @keyframes solvedLetter{from{opacity:0;transform:scale(2)}to{opacity:1;transform:scale(1)}}
 @keyframes solvedGlow{0%,100%{filter:brightness(1);text-shadow:3px 3px #060708}45%{filter:brightness(1.8);text-shadow:0 0 15px #fff,0 0 45px #fff}}
 @media(prefers-reduced-motion:reduce){#deductionResult.solved #resultText,#deductionResult.solved #resultText span{animation:none}}
-</style><link rel="stylesheet" href="data/notebook.css"><link rel="stylesheet" href="data/theme.css"></head><body><main id="game" aria-label="サイカチADV 消えたスケッチ 試作版 v0.14.0"><div id="scene"><canvas id="pixelScene" width="320" height="180" aria-hidden="true"></canvas></div><div class="grain"></div><div class="title">皀角坂意匠學院</div><div class="location" id="location" aria-label="現在の場所"><img id="locationGraphic" alt=""><span id="locationName"></span></div><div id="targets"></div><div id="actions" class="actions hidden"></div><button id="menu" class="tab right" type="button" aria-label="メニュー"><img id="menuGraphic" src="assets/ui/menu.png" alt="" aria-hidden="true">メニュー</button><div class="hint">コマンドを選んで調査する</div><div id="characterStage" class="hidden" aria-hidden="true"><div id="harukiCard" class="character-card"><img class="character-art" id="harukiArt" alt="ハルキ"><canvas id="harukiTalk" class="character-art character-talk hidden" width="104" height="144" aria-hidden="true"></canvas><span id="harukiFallback" class="asset-fallback">ハルキ</span><span class="character-name">ハルキ</span><span class="emotion" id="harukiEmotion">通常</span></div><div id="saijiCard" class="character-card"><img class="character-art" id="saijiArt" alt="サイジ"><canvas id="saijiTalk" class="character-art character-talk hidden" width="104" height="144" aria-hidden="true"></canvas><span id="saijiFallback" class="asset-fallback">サイジ</span><span class="character-name">サイジ</span><span class="emotion" id="saijiEmotion">通常</span></div></div><div id="portraitRail" class="portrait-rail hidden"><span class="portrait" id="harukiFace">ハルキ</span><span class="portrait" id="saijiFace">サイジ</span></div><div id="textControls" class="hidden"><button id="speedButton" type="button">文字：ふつう</button><button id="autoButton" type="button">自動：OFF</button></div><div id="dialogue" class="dialogue hidden" role="dialog" aria-live="off"><div id="speaker" class="speaker"></div><div id="line" class="line"></div><div id="dialogueChoices"></div><span class="next" id="nextMark">▼</span></div><section id="panel" class="panel hidden" aria-label="メニュー"><button class="close" id="close">とじる</button><h2 id="panelTitle"></h2><div id="panelBody"></div></section><div id="deductionStage" class="hidden" aria-hidden="true"><div class="deduction-door left"></div><div class="deduction-door right"></div></div><div id="deductionFlash" aria-hidden="true"></div><div id="deductionStart" aria-hidden="true"><span id="deductionStartText">推理開始！</span></div><div id="questionAnnouncement" class="hidden" role="status"><strong id="questionNumber"></strong><p id="questionText"></p></div><div id="deductionResult" class="hidden" role="status"><span id="resultText"></span></div><figure id="itemGraphic" class="hidden" aria-live="polite"><canvas id="itemCanvas" width="96" height="96"></canvas><figcaption id="itemCaption"></figcaption></figure><section id="commandWindows" class="hidden" aria-label="調査コマンド"><section id="commandMain" class="command-window" aria-labelledby="commandTitle"><h2 id="commandTitle">捜査コマンド</h2><div id="commandRoots"></div></section><section id="commandDetail" class="command-window hidden" aria-labelledby="commandHeading"><h2 id="commandHeading"></h2><div id="commandChildren"></div></section></section><section id="opening" aria-label="消えたスケッチ オープニング"><div class="opening-card"><h1 id="openingTitle"></h1><p id="openingText"></p><p id="openingSynopsis" class="hidden"><span id="openingCopy"></span><button id="openingNext" type="button" aria-label="次へ" class="next-inline">▼</button></p><div class="opening-actions" id="openingActions"></div></div></section></main><script src="data/scenario.js"></script><script src="data/events.js"></script><script src="data/notebook-model.js"></script><script src="data/saves.js"></script><script>
+</style><link rel="stylesheet" href="data/notebook.css"><link rel="stylesheet" href="data/theme.css"></head><body><main id="game" aria-label="サイカチADV 消えたスケッチ 試作版 v0.14.0"><div id="scene"><canvas id="pixelScene" width="1920" height="1080" aria-hidden="true"></canvas></div><div class="grain"></div><div class="title">皀角坂意匠學院</div><div class="location" id="location" aria-label="現在の場所"><img id="locationGraphic" alt=""><span id="locationName"></span></div><div id="targets"></div><div id="actions" class="actions hidden"></div><button id="menu" class="tab right" type="button" aria-label="メニュー"><img id="menuGraphic" src="assets/ui/menu.png" alt="" aria-hidden="true">メニュー</button><div class="hint">コマンドを選んで調査する</div><div id="characterStage" class="hidden" aria-hidden="true"><div id="harukiCard" class="character-card"><img class="character-art" id="harukiArt" alt="ハルキ"><canvas id="harukiTalk" class="character-art character-talk hidden" width="1040" height="1440" aria-hidden="true"></canvas><span id="harukiFallback" class="asset-fallback">ハルキ</span><span class="character-name">ハルキ</span><span class="emotion" id="harukiEmotion">通常</span></div><div id="saijiCard" class="character-card"><img class="character-art" id="saijiArt" alt="サイジ"><canvas id="saijiTalk" class="character-art character-talk hidden" width="1040" height="1440" aria-hidden="true"></canvas><span id="saijiFallback" class="asset-fallback">サイジ</span><span class="character-name">サイジ</span><span class="emotion" id="saijiEmotion">通常</span></div></div><div id="portraitRail" class="portrait-rail hidden"><span class="portrait" id="harukiFace">ハルキ</span><span class="portrait" id="saijiFace">サイジ</span></div><div id="textControls" class="hidden"><button id="speedButton" type="button">文字：ふつう</button><button id="autoButton" type="button">自動：OFF</button></div><div id="dialogue" class="dialogue hidden" role="dialog" aria-live="off"><div id="speaker" class="speaker"></div><div id="line" class="line"></div><div id="dialogueChoices"></div><span class="next" id="nextMark">▼</span></div><section id="panel" class="panel hidden" aria-label="メニュー"><button class="close" id="close">とじる</button><h2 id="panelTitle"></h2><div id="panelBody"></div></section><div id="deductionStage" class="hidden" aria-hidden="true"><div class="deduction-door left"></div><div class="deduction-door right"></div></div><div id="deductionFlash" aria-hidden="true"></div><div id="deductionStart" aria-hidden="true"><span id="deductionStartText">推理開始！</span></div><div id="questionAnnouncement" class="hidden" role="status"><strong id="questionNumber"></strong><p id="questionText"></p></div><div id="deductionResult" class="hidden" role="status"><span id="resultText"></span></div><figure id="itemGraphic" class="hidden" aria-live="polite"><canvas id="itemCanvas" width="96" height="96"></canvas><figcaption id="itemCaption"></figcaption></figure><section id="commandWindows" class="hidden" aria-label="調査コマンド"><section id="commandMain" class="command-window" aria-labelledby="commandTitle"><h2 id="commandTitle">捜査コマンド</h2><div id="commandRoots"></div></section><section id="commandDetail" class="command-window hidden" aria-labelledby="commandHeading"><h2 id="commandHeading"></h2><div id="commandChildren"></div></section></section><section id="opening" aria-label="消えたスケッチ オープニング"><div class="opening-card"><h1 id="openingTitle"></h1><p id="openingText"></p><p id="openingSynopsis" class="hidden"><span id="openingCopy"></span><button id="openingNext" type="button" aria-label="次へ" class="next-inline">▼</button></p><div class="opening-actions" id="openingActions"></div></div></section></main><script src="data/scenario.js"></script><script src="data/events.js"></script><script src="data/notebook-model.js"></script><script src="data/saves.js"></script><script>
  'use strict';
 const SCENARIO=window.SAIKACHI_SCENARIO;
 if(!SCENARIO||!SCENARIO.rooms||!SCENARIO.investigations){throw new Error('シナリオファイル data/scenario.js が読み込めません');}
 const DATA={rooms:SCENARIO.rooms};
 
 // v0.7: external asset paths are replaceable; procedural backgrounds and emoji remain fallbacks.
-const ASSETS={resolution:{width:320,height:180},scenes:{
- classroom:{background:'assets/backgrounds/classroom.png',targets:{shelf:{x:242,y:84},desk:{x:119,y:119},window:{x:35,y:70},prepDoor:{x:125,y:83},floor:{x:245,y:150}}},
- corridor:{background:'assets/backgrounds/corridor.png',targets:{notice:{x:250,y:72},door:{x:145,y:104}}}
+const ASSETS={resolution:{width:1920,height:1080},scenes:{
+ classroom:{background:'assets/backgrounds/classroom.png',targets:{shelf:{x:1452,y:504},desk:{x:714,y:714},window:{x:210,y:420},prepDoor:{x:750,y:498},floor:{x:1470,y:900}}},
+ corridor:{background:'assets/backgrounds/corridor.png',targets:{notice:{x:1500,y:432},door:{x:870,y:624}}}
 },characters:{
  haruki:{normal:'assets/characters/haruki_normal.png',surprised:'assets/characters/haruki_surprised.png',thinking:'assets/characters/haruki_thinking.png',confident:'assets/characters/haruki_confident.png'},
  saiji:{normal:'assets/characters/saiji_normal.png',surprised:'assets/characters/saiji_surprised.png',thinking:'assets/characters/saiji_thinking.png',confident:'assets/characters/saiji_confident.png'}
@@ -341,8 +341,9 @@ function setSceneBackground(roomId){
 function coverGeometry(){const rect=$('scene').getBoundingClientRect(),w=ASSETS.resolution.width,h=ASSETS.resolution.height;const scale=Math.max(rect.width/w,rect.height/h);return {rect,scale,ox:(rect.width-w*scale)/2,oy:(rect.height-h*scale)/2}}
 function placeTarget(button,id){const target=ASSETS.scenes[state.room].targets[id];if(!target)return;const {rect,scale,ox,oy}=coverGeometry();const margin=50;const x=Math.max(margin,Math.min(rect.width-margin,ox+target.x*scale));const y=Math.max(36,Math.min(rect.height-30,oy+target.y*scale));button.style.left=x+'px';button.style.top=y+'px'}
 function drawScene(roomId){
- const ctx=$('pixelScene').getContext('2d');ctx.imageSmoothingEnabled=false;
- ctx.clearRect(0,0,320,180);ctx.fillStyle='#181b28';ctx.fillRect(0,0,320,180);
+ const canvas=$('pixelScene'),ctx=canvas.getContext('2d');
+ canvas.width=ASSETS.resolution.width;canvas.height=ASSETS.resolution.height;ctx.imageSmoothingEnabled=true;
+ ctx.clearRect(0,0,canvas.width,canvas.height);ctx.fillStyle='#808080';ctx.fillRect(0,0,canvas.width,canvas.height);
 }
 
 const state={mode:'exploration',room:SCENARIO.initial.room,flags:{...SCENARIO.initial.flags},inventory:[],visits:{[SCENARIO.initial.room]:1},completedEvents:{},selected:null,dialogue:[],lineIndex:0,afterDialogue:null,deductionStep:0,errors:0};

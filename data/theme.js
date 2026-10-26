@@ -1,15 +1,5 @@
 'use strict';
-// v0.15 共通テーマ：ドット倍率の共有と、手帳内の文字設定。
-// --px … 背景（320x180）を画面に敷いたときの1ドットの大きさ。立ち絵・推理背景も同じ値で描く。
-function updatePixelScale(){
- if(typeof coverGeometry!=='function')return;
- const scale=coverGeometry().scale;if(!(scale>0))return;
- $('game').style.setProperty('--px',scale.toFixed(3)+'px');
-}
-(()=>{const base=render;render=function(){const result=base.apply(this,arguments);updatePixelScale();return result}})();
-window.addEventListener('resize',updatePixelScale);
-updatePixelScale();
-
+// 画面比率によるサイズ指定は theme.css で行う。
 // 「文字：ふつう」「自動：OFF」は手帳の「設定・操作方法」で切り替える。
 // 既存の #speedButton / #autoButton の処理をそのまま使うので、保存・自動送りの挙動は変わらない。
 function renderTextSettings(){

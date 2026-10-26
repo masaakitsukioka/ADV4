@@ -32,7 +32,7 @@ body,button,input,select,.line,.panel,.nb-book,#notebook button{font-family:var(
  border:3px solid var(--t-ink);border-radius:2px;box-shadow:8px 8px 0 var(--t-red-dk);clip-path:none}
 
 /* ---- タイトル／オープニング：暗い教室の上に手帳の1ページ ------------- */
-#opening{background:#05070c url('../assets/backgrounds/classroom.png') center/cover no-repeat;image-rendering:pixelated}
+#opening{background:#05070c url('../assets/backgrounds/classroom.png') center/cover no-repeat;}
 #opening:before{content:'';position:absolute;inset:0;background:#05070cd0;pointer-events:none}
 #opening .opening-card{position:relative;width:min(640px,92vw);max-height:92dvh;overflow:auto;padding:clamp(22px,4vw,46px) clamp(20px,4vw,48px);text-align:center}
 #opening .opening-card:before{content:'';position:absolute;left:0;right:0;top:0;height:7px;background:var(--t-red)}
@@ -89,13 +89,16 @@ body,button,input,select,.line,.panel,.nb-book,#notebook button{font-family:var(
 #questionAnnouncement{color:var(--t-ink)}
 #questionNumber{color:var(--t-red)}
 
-/* 推理背景：320x180のドット絵を、人物と同じ倍率（--px）で敷く */
-.deduction-door{background-image:url('../assets/backgrounds/deduction-notebook.png');background-size:calc(var(--px,4px)*320) calc(var(--px,4px)*180);image-rendering:pixelated;background-color:#180409}
-.deduction-door.left{background-position:calc(50vw - var(--px,4px)*160) center}
-.deduction-door.right{background-position:calc(var(--px,4px)*-160) center}
+/* 1920×1080の画像を画面全体にcoverし、その左右半分を閉じる。 */
+.deduction-door{background:none!important;overflow:hidden}
+.deduction-door::before{content:'';position:absolute;top:0;bottom:0;width:200%;background:#808080 url('../assets/backgrounds/deduction-notebook.png') center/cover no-repeat}
+.deduction-door.left::before{left:0}.deduction-door.right::before{right:0}
 
-/* ---- 立ち絵：背景と同じ1ドット＝--px で表示（密度の統一） --------------- */
-#game .character-art{height:calc(var(--px,4px)*144)!important;width:auto!important;max-width:none!important;max-height:none!important}
+/* 背景のトリミング倍率と切り離し、人物は常に画面高の80%。 */
+#game #characterStage{height:80dvh!important;bottom:0;top:auto}
+#game .character-card{height:100%!important;width:57.777778dvh!important;flex-shrink:0}
+#game .character-art{height:80dvh!important;width:57.777778dvh!important;max-width:none!important;max-height:none!important;left:0!important;right:auto!important;transform:none!important;object-fit:contain;object-position:center bottom}
+#game .asset-fallback{background:#808080;color:var(--t-paper);width:100%;height:100%;align-content:center;text-align:center}
 
 /* ---- スマホ縦：話している1人だけを中央に出す --------------------------- */
 @media (orientation:portrait) and (max-width:700px){

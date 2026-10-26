@@ -1,7 +1,7 @@
 # メニュー「捜査手帳」・PHS・人物相関図 デザイン仕様
 
 作成：2026-10-17（Claude）／実装担当：Codex
-見本：`design/menu-phs-relations/mockup.html`（画面写真 `ui-mockup-1〜3.png`）
+見本：`design/menu-phs-relations/mockup.html`（画面写真 `ui-mockup-1〜3.png` は SSD の サイカチADV資料/UI/menu-phs_261017/ に移動）
 
 ## 共通
 

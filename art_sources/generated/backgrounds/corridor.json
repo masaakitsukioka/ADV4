@@ -1,0 +1,32 @@
+{
+ "name": "旧校舎廊下",
+ "canva_media_id": "MAHYuL0j8rI",
+ "canva_url": "https://www.canva.com/M/MAHYuL0j8rI",
+ "rejected": [
+  {
+   "id": "MAHYuAaQgvA",
+   "reason": "美術室の扉が右1/4（立ち絵の位置）まで入る"
+  }
+ ],
+ "sheet": {
+  "building": "旧校舎（4号館）。物置になりかけ、暗く静か",
+  "time": "放課後・雨",
+  "view": "目の高さ、廊下の奥を見る。消失点は画面の約25%",
+  "hotspots": {
+   "notice": "掲示板（白紙の貼り紙、文字なし）32〜48%",
+   "door": "美術室の両開きの扉 52〜70%"
+  },
+  "props": [
+   "木のベンチ",
+   "積んだ古い木の椅子",
+   "鋳物のラジエーター",
+   "傘立て",
+   "一部消えた蛍光灯"
+  ]
+ },
+ "generated": "2026-10-22",
+ "tool": "Canva generate-image LANDSCAPE_16_9 (1680x944)",
+ "references": "SSD の サイカチADV資料/資料/school-ref_261022/（明治〜大正の石造・煉瓦の洋風校舎、1930年代のRC造の本館、工芸学校の平面図）。画像は生成に入れず、素材・窓・壁の作りを読む資料にだけ使用",
+ "skill": "saikachi-background",
+ "attempts": 2
+}

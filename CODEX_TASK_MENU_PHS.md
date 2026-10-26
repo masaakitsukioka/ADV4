@@ -6,7 +6,7 @@
 
 ## 読むもの（先に必ず読む）
 1. `design/menu-phs-relations/SPEC.md` — デザイン仕様（見た目・色・動き・操作）
-2. `design/menu-phs-relations/ui-mockup-1.png`〜`3.png` と `mockup.html` — 見本。**見本の内容（第二日・マコト等）は本編の例。試作では下の「サンプルデータ」を使う。**
+2. `サイカチADV資料/UI/menu-phs_261017/ui-mockup-1.png`〜`3.png`（SSD、2026-10-26 に移動） と `mockup.html` — 見本。**見本の内容（第二日・マコト等）は本編の例。試作では下の「サンプルデータ」を使う。**
 3. `art_sources/menu-phs-prompts.json` — 生成する画像のプロンプト
 4. `DEVELOPMENT.md` — 作業前後のGit手順とテスト
 

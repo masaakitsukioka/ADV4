@@ -31,5 +31,6 @@ node tests/menu-phs.cjs
 
 手帳UIのブラウザ検証：tests/menu-phs-browser.cjs（Playwright、127.0.0.1:8777でHTTP配信）。ADV_URL／CHROME_PATHで環境を指定できます。
 
-ビジュアル・UIルール（背景ドット絵の密度・色数、UIスタイル、書体4種）は `design/visual-rules/README.md`。共通テーマは `data/theme.css` / `data/theme.js`。
-背景の変換と確認：`python3 art_sources/pixel/to_pixel.py 入力.png assets/backgrounds/<roomId>.png` / `--check`。
+ビジュアル・UIルール（画像の寸法〔2026-10-26 ドット絵をやめた〕、UIスタイル、書体4種）は `design/visual-rules/README.md`。共通テーマは `data/theme.css` / `data/theme.js`。
+
+画像の作業分担（ラフはClaude、組み込みはCodex、清書は作者）と、ラフ→本番の差し替え手順は `design/visual-rules/ART_PIPELINE.md`。

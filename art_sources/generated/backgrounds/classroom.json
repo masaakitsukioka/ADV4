@@ -1,0 +1,51 @@
+{
+ "name": "美術準備室",
+ "canva_media_id": "MAHYuBuRD4M",
+ "canva_url": "https://www.canva.com/M/MAHYuBuRD4M",
+ "rejected": [
+  {
+   "id": "MAHYuBy0Q5Y",
+   "reason": "ドアが無く窓が2つ。作品棚が左1/4にかかる"
+  }
+ ],
+ "sheet": {
+  "building": "旧校舎（4号館）。1910年頃の石造の洋風校舎。壁が厚く窓は奥まる",
+  "time": "放課後・曇り",
+  "view": "目の高さ、左寄りから奥の壁を見る。消失点は画面の約6割",
+  "hotspots": {
+   "shelf": "作品棚 28〜42%",
+   "window": "窓（はめ殺し）44〜56%",
+   "prepDoor": "ドア 60〜72%",
+   "desk": "机（果物の静物）35〜65%",
+   "floor": "床"
+  },
+  "props": [
+   "石膏胸像2体",
+   "折りたたんだイーゼル",
+   "布の入った段ボール",
+   "木の丸椅子",
+   "鋳物のラジエーター",
+   "蛍光灯"
+  ]
+ },
+ "generated": "2026-10-22",
+ "tool": "Canva generate-image LANDSCAPE_16_9 (1680x944)",
+ "references": "SSD の サイカチADV資料/資料/school-ref_261022/（明治〜大正の石造・煉瓦の洋風校舎、1930年代のRC造の本館、工芸学校の平面図）。画像は生成に入れず、素材・窓・壁の作りを読む資料にだけ使用",
+ "skill": "saikachi-background",
+ "attempts": 2,
+ "illustration": {
+  "canva_media_id": "MAHYvrj0JEs",
+  "canva_url": "https://www.canva.com/M/MAHYvrj0JEs",
+  "generated": "2026-10-22",
+  "from": "写真調 MAHYuBuRD4M → 主線なしイラスト MAHYviKkEAI → 主線あり（これを採用候補）",
+  "style": "色トレスの主線（焦げ茶・暗い紫）・平らなセル調・放課後（窓から橙とクリームの光、影は紫）",
+  "props_added": [
+   "赤いリンゴと黄色い洋梨",
+   "段ボールの青い布",
+   "色付きのポートフォリオ",
+   "窓辺の小さな鉢植え"
+  ],
+  "file": "classroom-illust.png（作者がCanvaからダウンロードして置く）",
+  "note": "ドアが画面幅の約70〜83%で、右1/4に少しかかる"
+ }
+}

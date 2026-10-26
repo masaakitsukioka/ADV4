@@ -1,7 +1,7 @@
 {
   "resolution": {
-    "width": 320,
-    "height": 180
+    "width": 1920,
+    "height": 1080
   },
   "drawOrder": [
     "background",
@@ -13,41 +13,41 @@
   "scenes": {
     "classroom": {
       "background": "assets/backgrounds/classroom.png",
-      "fallback": "solid:#181b28",
+      "fallback": "solid:#808080",
       "targets": {
         "shelf": [
-          242,
-          84
+          1452,
+          504
         ],
         "desk": [
-          119,
-          119
+          714,
+          714
         ],
         "window": {
-          "x": 35,
-          "y": 70
+          "x": 210,
+          "y": 420
         },
         "prepDoor": {
-          "x": 125,
-          "y": 83
+          "x": 750,
+          "y": 498
         },
         "floor": {
-          "x": 245,
-          "y": 150
+          "x": 1470,
+          "y": 900
         }
       }
     },
     "corridor": {
       "background": "assets/backgrounds/corridor.png",
-      "fallback": "solid:#181b28",
+      "fallback": "solid:#808080",
       "targets": {
         "notice": [
-          250,
-          72
+          1500,
+          432
         ],
         "door": [
-          145,
-          104
+          870,
+          624
         ]
       }
     }
@@ -135,5 +135,10 @@
       "license": "assets/fonts/OFL-NotoCJK.txt",
       "source": "https://github.com/notofonts/noto-cjk"
     }
-  }
+  },
+  "characterResolution": {
+    "width": 1040,
+    "height": 1440
+  },
+  "mouthFrames": {}
 }

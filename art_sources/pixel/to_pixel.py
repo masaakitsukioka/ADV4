@@ -1,4 +1,5 @@
-"""生成画像・下描きを、サイカチADVの背景ルール（320x180・共通パレット）に変換する。
+"""生成画像・下描き（線画・イラスト）を、サイカチADVの背景ルール（320x180）に変換する。写真は photo_to_pixel.py を使う。
+※2026-10-22 より色数の制限はなし。彩度を抑えたグレイッシュトーンにする（--check で平均彩度を確認）。
 使い方:
   python3 art_sources/pixel/to_pixel.py 入力.png assets/backgrounds/<roomId>.png [--colors 32] [--dither]
   python3 art_sources/pixel/to_pixel.py --check assets/backgrounds/<roomId>.png
@@ -11,14 +12,19 @@ W,H=320,180
 def palette():
     d=json.load(open(os.path.join(HERE,'palette.json'),encoding='utf8'))['colors']
     return [tuple(int(v[i:i+2],16) for i in (1,3,5)) for v in d.values()]
-def check(path):
+def check(path,max_sat=18.0):
+    """2026-10-22 のルール：サイズ320x180／色数の制限なし／彩度を抑えたグレイッシュトーン（平均彩度の目安 18%以下）。"""
+    import colorsys
     im=Image.open(path).convert('RGB');ok=True
     if im.size!=(W,H): print('NG サイズ',im.size,'→ 320x180 にする');ok=False
     cs=im.getcolors(1<<16);n=len(cs) if cs else 65537
-    if n>32: print('NG 色数',n,'→ 32色以内');ok=False
-    pal=set(palette());off=[c for _,c in (im.getcolors(1<<16) or []) if c not in pal]
-    if off: print('注意 共通パレット外の色',len(off),'色（意図した追加色なら palette.json に登録）')
-    print('OK' if ok else 'NG',path,im.size,(n if n<=65536 else '65536以上'),'色');return ok
+    tot=0.0;cnt=0
+    for c,(r,g,b) in (cs or []):
+        tot+=colorsys.rgb_to_hsv(r/255,g/255,b/255)[1]*c;cnt+=c
+    sat=tot/cnt*100 if cnt else 0
+    if sat>max_sat: print('注意 平均彩度 %.0f%%（目安 %.0f%%以下）→ photo_to_pixel.py --gray 0.45〜0.6 で抑える'%(sat,max_sat))
+    if n>65536: print('注意 色数が多すぎる（写真のまま？）→ photo_to_pixel.py で変換する')
+    print('OK' if ok else 'NG',path,im.size,(n if n<=65536 else '65536以上'),'色','平均彩度 %.0f%%'%sat);return ok
 def convert(src,dst,colors=32,dither=False):
     im=Image.open(src).convert('RGB');w,h=im.size;t=W/H
     if w/h>t: nw=round(h*t);im=im.crop(((w-nw)//2,0,(w-nw)//2+nw,h))
