@@ -6,7 +6,7 @@ const {chromium}=require('playwright');
 const fs=require('fs'),path=require('path');
 const OUT=process.env.OUT||path.resolve(__dirname,'../design/ui-audit');fs.mkdirSync(OUT,{recursive:true});
 const URL=process.env.ADV_URL||'http://127.0.0.1:8777/';
-const VIEWPORTS=[[1920,1080,'PC-FHD'],[1280,720,'PC-HD'],[1024,768,'PC-4:3'],[768,1024,'Tab-縦'],[844,390,'Phone-横'],[667,375,'SE-横'],[390,844,'Phone-縦'],[375,667,'SE-縦'],[360,640,'Android小-縦']];
+const VIEWPORTS=[[1920,1080,'PC-FHD'],[1280,720,'PC-HD'],[1024,768,'PC-4:3'],[768,1024,'Tab-縦'],[844,390,'Phone-横'],[667,375,'SE-横'],[390,844,'Phone-縦'],[375,667,'SE-縦'],[360,640,'Android小-縦']].filter(([w,h])=>!process.env.SIZES||process.env.SIZES.split(',').includes(w+'x'+h));
 
 const MEASURE=()=>{
  const vw=innerWidth,vh=innerHeight,out={offscreen:[],clipped:[],small:[],tap:[],obscured:[],contrast:[],texts:0};
@@ -26,14 +26,14 @@ const MEASURE=()=>{
   const ownText=[...e.childNodes].some(n=>n.nodeType===3&&n.textContent.trim());
   if(ownText)e.dataset.auditFont='1';
   if(ownText&&!(e.querySelector&&e.querySelector('img')&&parseFloat(s.fontSize)===0)){out.texts++;
-   const fs=parseFloat(s.fontSize);if(fs<12)out.small.push(label(e)+' '+fs.toFixed(1)+'px'+(e.closest('.nb-phone')?'（PHS本体・装飾）':''));
+   const stage=e.closest('#mangaStage'),stageScale=stage?parseFloat(stage.style.getPropertyValue('--manga-scale'))||1:1;const fs=parseFloat(s.fontSize)*stageScale;if(fs<12)out.small.push(label(e)+' '+fs.toFixed(1)+'px'+(e.closest('.nb-phone')?'（PHS本体・装飾）':''));
    if(!deferred(e)&&(r.right>vw+1||r.left<-1||r.bottom>vh+1||r.top<-1)){if(!e.closest('[class*=nb-chart]'))out.offscreen.push(label(e)+` [${r.left|0},${r.top|0},${r.right|0},${r.bottom|0}]`)}
    const fg=parse(s.color);const bg=bgOf(e);
    if(fg&&bg.color&&!bg.image){const cr=ratio(fg,bg.color);const big=fs>=24||(fs>=18.66&&+s.fontWeight>=700);if(cr<(big?3:4.5))out.contrast.push(label(e)+' '+cr.toFixed(2)+(bg.partial?'（半透明背景）':''))}
    else if(bg.image) e.dataset.auditImgbg='1';
   }
   const ov=s.overflow+s.overflowX+s.overflowY;
-  if(/hidden|clip/.test(ov)&&(e.scrollWidth>e.clientWidth+2||e.scrollHeight>e.clientHeight+2)&&(e.innerText||'').trim()&&!['HTML','BODY'].includes(e.tagName)&&e.id!=='game'&&e.id!=='scene')out.clipped.push(label(e)+` 中身${e.scrollWidth}x${e.scrollHeight} > 枠${e.clientWidth}x${e.clientHeight}`);
+  if(/hidden|clip/.test(ov)&&!/auto|scroll/.test(ov)&&(e.scrollWidth>e.clientWidth+2||e.scrollHeight>e.clientHeight+2)&&(e.innerText||'').trim()&&!['HTML','BODY'].includes(e.tagName)&&e.id!=='game'&&e.id!=='scene'&&e.id!=='mangaStage')out.clipped.push(label(e)+` 中身${e.scrollWidth}x${e.scrollHeight} > 枠${e.clientWidth}x${e.clientHeight}`);
   if(s.textOverflow==='ellipsis'&&e.scrollWidth>e.clientWidth+1)out.clipped.push(label(e)+' 省略記号で切れ');
   if(e.matches('button,[role=button],a[href]')&&!e.closest('.nb-phone')){
    if(r.height<36||r.width<36)out.tap.push(label(e)+` ${r.width|0}x${r.height|0}`);

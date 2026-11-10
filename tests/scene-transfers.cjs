@@ -1,0 +1,5 @@
+require('./browser-harness.cjs')(async(page,assert)=>{
+ const result=await page.evaluate(()=>{moveTo('corridor');for(let i=0;i<200&&state.mode==='dialogue';i++)advance();const moved={room:state.room,stamp:$('placeStamp').getAttribute('src'),background:$('scene').dataset.request};state.flags.okaboChecked=true;startDeduction();const during={mode:state.mode,parent:$('dialogue').parentElement.id,active:deductionActive,panel:!$('panel').classList.contains('hidden')};closePanel();const cannotExit=deductionActive;startNewGame();return{moved,during,cannotExit,reset:deductionActive,parent:$('dialogue').parentElement.id}});
+ assert.equal(result.moved.room,'corridor');assert(result.moved.stamp.endsWith('stamp-place-corridor.png'));assert(result.moved.background.endsWith('corridor.png'));assert.equal(result.during.parent,'game');assert(result.during.active&&result.during.panel&&result.cannotExit);assert.equal(result.reset,false);assert.equal(result.parent,'mangaStage');
+ console.log('PASS: place stamp/background transition, legacy deduction layout and exit guard, restart restores manga stage');
+}).catch(e=>{console.error(e);process.exitCode=1});

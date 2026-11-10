@@ -1,0 +1,42 @@
+[
+  {
+    "room": "classroom",
+    "time": "朝",
+    "meanAbsoluteRGB": 15.500373931623932
+  },
+  {
+    "room": "classroom",
+    "time": "昼",
+    "meanAbsoluteRGB": 12.720860042735042
+  },
+  {
+    "room": "classroom",
+    "time": "放課後",
+    "meanAbsoluteRGB": 12.774572649572649
+  },
+  {
+    "room": "classroom",
+    "time": "夜",
+    "meanAbsoluteRGB": 5.911485042735043
+  },
+  {
+    "room": "corridor",
+    "time": "朝",
+    "meanAbsoluteRGB": 14.34196047008547
+  },
+  {
+    "room": "corridor",
+    "time": "昼",
+    "meanAbsoluteRGB": 11.857478632478632
+  },
+  {
+    "room": "corridor",
+    "time": "放課後",
+    "meanAbsoluteRGB": 11.527430555555556
+  },
+  {
+    "room": "corridor",
+    "time": "夜",
+    "meanAbsoluteRGB": 4.803392094017094
+  }
+]

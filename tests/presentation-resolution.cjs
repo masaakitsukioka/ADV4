@@ -1,19 +1,7 @@
-// Exercise real mouth compositing with both placeholder and replacement artwork.
-const fs=require('fs'),vm=require('vm'),assert=require('assert');
-const operations=[];
-function context(){return{clearRect(...args){operations.push(['clear',...args])},drawImage(...args){operations.push(['image',...args])},fillRect(...args){operations.push(['fill',...args])}}}
-const sandbox={ASSETS:{characterResolution:{width:1040,height:1440}},setCharacterImage(){},document:{createElement(){return{getContext:()=>context()}}}};
-vm.createContext(sandbox);vm.runInContext(fs.readFileSync(require('path').join(__dirname,'../data/presentation.js'),'utf8'),sandbox);
-function draw(base,frame=1,strip=null,overlay=null,id='haruki'){
- operations.length=0;const ctx=context();sandbox.drawTalkingPortrait(ctx,base,id,frame,strip,overlay);assert.equal(ctx.imageSmoothingEnabled,true);assert.deepEqual(operations[0],['clear',0,0,1040,1440]);return operations;
-}
-const hd={width:1040,height:1440},old={width:104,height:144},overlay={...hd,overlay:true};
-assert.equal(draw(hd).length,2,'new portrait without mouth images stays static');
-assert.equal(draw(hd,1,null,overlay).at(-1)[1],overlay);
-assert.equal(draw(hd,0,null,overlay).length,2,'closed mouth uses base');
-assert.equal(draw(hd,1,null,old).length,2,'wrong-sized overlay cannot misalign mouth');
-assert(draw(old).some(op=>op[0]==='fill'),'legacy Haruki mouth still animates');
-assert.deepEqual(draw(old).at(-1).slice(2),[0,0,1040,1440]);
-const strip={width:312,height:144};assert(draw(old,1,strip,null,'saiji').some(op=>op[1]===strip),'legacy Saiji strip still used');
-const hdStrip={width:3120,height:1440};assert.deepEqual(draw(hd,2,hdStrip,null,'saiji').at(-1).slice(2),[2080,0,1040,1440,0,0,1040,1440]);
-console.log('PASS: HD overlays, HD strip, static missing/invalid overlays, legacy mouths, smooth full-size compositing');
+const fs=require('fs'),vm=require('vm'),assert=require('assert'),path=require('path');
+const operations=[],sandbox={ASSETS:{characterResolution:{width:1040,height:1440}},setCharacterImage(){}};
+vm.createContext(sandbox);vm.runInContext(fs.readFileSync(path.join(__dirname,'../data/presentation.js'),'utf8'),sandbox);
+const base={width:1040,height:1440},replacement={width:1040,height:1440,frame:true};
+function draw(frame,image){operations.length=0;const ctx={clearRect(...a){operations.push(['clear',...a])},drawImage(...a){operations.push(['draw',...a])}};sandbox.drawTalkingPortrait(ctx,base,'haruki',frame,null,image);assert(ctx.imageSmoothingEnabled);assert.equal(operations.length,2,'exactly one full image, with no base underneath');return operations[1]}
+assert.strictEqual(draw(1,replacement)[1],replacement);assert.strictEqual(draw(0,replacement)[1],base);assert.strictEqual(draw(1,null)[1],base);assert.strictEqual(draw(2,{width:104,height:144})[1],base);assert.deepEqual(draw(2,replacement).slice(2),[0,0,1040,1440]);
+console.log('PASS: aligned full-portrait replacement, closed base, missing/invalid fallback, no stacked image');

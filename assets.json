@@ -4,36 +4,40 @@
     "height": 1080
   },
   "drawOrder": [
-    "background",
-    "characterStage",
-    "targets",
-    "dialogue",
-    "panels"
+    "paper",
+    "scene",
+    "header",
+    "commands",
+    "dialoguePaper",
+    "nameAndText",
+    "characters",
+    "menu",
+    "notebook"
   ],
   "scenes": {
     "classroom": {
       "background": "assets/backgrounds/classroom.png",
       "fallback": "solid:#808080",
       "targets": {
-        "shelf": [
-          1452,
-          504
-        ],
-        "desk": [
-          714,
-          714
-        ],
         "window": {
-          "x": 210,
-          "y": 420
+          "x": 188,
+          "y": 180
+        },
+        "desk": {
+          "x": 1275,
+          "y": 600
+        },
+        "shelf": {
+          "x": 1755,
+          "y": 375
         },
         "prepDoor": {
-          "x": 750,
-          "y": 498
+          "x": 1425,
+          "y": 278
         },
         "floor": {
-          "x": 1470,
-          "y": 900
+          "x": 630,
+          "y": 705
         }
       }
     },
@@ -41,14 +45,14 @@
       "background": "assets/backgrounds/corridor.png",
       "fallback": "solid:#808080",
       "targets": {
-        "notice": [
-          1500,
-          432
-        ],
-        "door": [
-          870,
-          624
-        ]
+        "door": {
+          "x": 1523,
+          "y": 495
+        },
+        "notice": {
+          "x": 908,
+          "y": 398
+        }
       }
     }
   },
@@ -85,15 +89,14 @@
     }
   },
   "backgroundDimensions": {
-    "width": 1672,
-    "height": 941
+    "width": 1920,
+    "height": 1080
   },
   "ui": {
-    "menu": "assets/ui/menu.png",
-    "location": "assets/ui/location-banner.png",
+    "menu": "assets/ui/manga/menu-note.png",
     "locations": {
-      "classroom": "assets/ui/location-classroom.png",
-      "corridor": "assets/ui/location-corridor.png"
+      "classroom": "assets/ui/manga/stamp-place-classroom.png",
+      "corridor": "assets/ui/manga/stamp-place-corridor.png"
     },
     "speakerNames": {
       "ハルキ": "assets/ui/name-haruki.png",
@@ -102,17 +105,24 @@
     "notebookTitle": "assets/ui/menu-title-notebook.png",
     "notebookCover": "assets/ui/notebook-cover.png",
     "phsBody": "assets/ui/phs-body.png",
-    "phsMini": "assets/ui/phs-mini.png"
-  },
-  "deductionBackground": "assets/backgrounds/deduction-notebook.png",
-  "mouthStrips": {
-    "saiji": {
-      "normal": "assets/characters/talk/saiji-normal-mouths.png",
-      "surprised": "assets/characters/talk/saiji-surprised-mouths.png",
-      "thinking": "assets/characters/talk/saiji-thinking-mouths.png",
-      "confident": "assets/characters/talk/saiji-confident-mouths.png"
+    "phsMini": "assets/ui/phs-mini.png",
+    "manga": {
+      "check-a": "assets/ui/manga/check-a.png",
+      "check-b": "assets/ui/manga/check-b.png",
+      "stamp-place-corridor": "assets/ui/manga/stamp-place-corridor.png",
+      "time-circle-yoru": "assets/ui/manga/time-circle-yoru.png",
+      "stamp-date-0719": "assets/ui/manga/stamp-date-0719.png",
+      "topic-circle": "assets/ui/manga/topic-circle.png",
+      "time-circle-asa": "assets/ui/manga/time-circle-asa.png",
+      "paper": "assets/ui/manga/paper.svg",
+      "menu-note": "assets/ui/manga/menu-note.png",
+      "time-circle-hiru": "assets/ui/manga/time-circle-hiru.png",
+      "stamp-title": "assets/ui/manga/stamp-title.png",
+      "stamp-place-classroom": "assets/ui/manga/stamp-place-classroom.png",
+      "time-circle-houkago": "assets/ui/manga/time-circle-houkago.png"
     }
   },
+  "deductionBackground": "assets/backgrounds/deduction-notebook.png",
   "fonts": {
     "dot": {
       "role": "PHS液晶・ドット表示",
@@ -121,7 +131,7 @@
       "source": "https://github.com/google/fonts/tree/main/ofl/dotgothic16"
     },
     "body": {
-      "role": "本文・UI（ゴシック）",
+      "role": "UI（ゴシック）",
       "path": [
         "assets/fonts/NotoSansJP-Regular.subset.woff",
         "assets/fonts/NotoSansJP-Bold.subset.woff"
@@ -130,7 +140,7 @@
       "source": "https://github.com/notofonts/noto-cjk"
     },
     "heading": {
-      "role": "見出し（明朝）",
+      "role": "見出し・会話本文（明朝）",
       "path": "assets/fonts/NotoSerifJP-Bold.subset.woff",
       "license": "assets/fonts/OFL-NotoCJK.txt",
       "source": "https://github.com/notofonts/noto-cjk"
@@ -140,5 +150,101 @@
     "width": 1040,
     "height": 1440
   },
-  "mouthFrames": {}
+  "mouthFrames": {
+    "haruki": {
+      "normal": [
+        null,
+        "assets/characters/talk/haruki-normal-mouth-1.png",
+        "assets/characters/talk/haruki-normal-mouth-2.png"
+      ],
+      "surprised": [
+        null,
+        "assets/characters/talk/haruki-surprised-mouth-1.png",
+        "assets/characters/talk/haruki-surprised-mouth-2.png"
+      ],
+      "thinking": [
+        null,
+        "assets/characters/talk/haruki-thinking-mouth-1.png",
+        "assets/characters/talk/haruki-thinking-mouth-2.png"
+      ],
+      "confident": [
+        null,
+        "assets/characters/talk/haruki-confident-mouth-1.png",
+        "assets/characters/talk/haruki-confident-mouth-2.png"
+      ]
+    },
+    "saiji": {
+      "normal": [
+        null,
+        "assets/characters/talk/saiji-normal-mouth-1.png",
+        "assets/characters/talk/saiji-normal-mouth-2.png"
+      ],
+      "surprised": [
+        null,
+        "assets/characters/talk/saiji-surprised-mouth-1.png",
+        "assets/characters/talk/saiji-surprised-mouth-2.png"
+      ],
+      "thinking": [
+        null,
+        "assets/characters/talk/saiji-thinking-mouth-1.png",
+        "assets/characters/talk/saiji-thinking-mouth-2.png"
+      ],
+      "confident": [
+        null,
+        "assets/characters/talk/saiji-confident-mouth-1.png",
+        "assets/characters/talk/saiji-confident-mouth-2.png"
+      ]
+    }
+  },
+  "blinkFrames": {
+    "haruki": {
+      "normal": [
+        null,
+        "assets/characters/blink/haruki-normal-eyes-1.png",
+        "assets/characters/blink/haruki-normal-eyes-2.png"
+      ],
+      "surprised": [
+        null,
+        "assets/characters/blink/haruki-surprised-eyes-1.png",
+        "assets/characters/blink/haruki-surprised-eyes-2.png"
+      ],
+      "thinking": [
+        null,
+        "assets/characters/blink/haruki-thinking-eyes-1.png",
+        "assets/characters/blink/haruki-thinking-eyes-2.png"
+      ],
+      "confident": [
+        null,
+        "assets/characters/blink/haruki-confident-eyes-1.png",
+        "assets/characters/blink/haruki-confident-eyes-2.png"
+      ]
+    },
+    "saiji": {
+      "normal": [
+        null,
+        "assets/characters/blink/saiji-normal-eyes-1.png",
+        "assets/characters/blink/saiji-normal-eyes-2.png"
+      ],
+      "surprised": [
+        null,
+        "assets/characters/blink/saiji-surprised-eyes-1.png",
+        "assets/characters/blink/saiji-surprised-eyes-2.png"
+      ],
+      "thinking": [
+        null,
+        "assets/characters/blink/saiji-thinking-eyes-1.png",
+        "assets/characters/blink/saiji-thinking-eyes-2.png"
+      ],
+      "confident": [
+        null,
+        "assets/characters/blink/saiji-confident-eyes-1.png",
+        "assets/characters/blink/saiji-confident-eyes-2.png"
+      ]
+    }
+  },
+  "timeOfDay": "data/timeofday-params.json",
+  "windowMasks": {
+    "classroom": "assets/backgrounds/masks/classroom-window.png",
+    "corridor": "assets/backgrounds/masks/corridor-window.png"
+  }
 }

@@ -1,0 +1,42 @@
+[
+  {
+    "room": "classroom",
+    "time": "朝",
+    "mean": 108.8926818632445
+  },
+  {
+    "room": "classroom",
+    "time": "昼",
+    "mean": 89.09205516791405
+  },
+  {
+    "room": "classroom",
+    "time": "放課後",
+    "mean": 90.30755110100381
+  },
+  {
+    "room": "classroom",
+    "time": "夜",
+    "mean": 36.16721498012494
+  },
+  {
+    "room": "corridor",
+    "time": "朝",
+    "mean": 98.28059825615254
+  },
+  {
+    "room": "corridor",
+    "time": "昼",
+    "mean": 76.76718136985224
+  },
+  {
+    "room": "corridor",
+    "time": "放課後",
+    "mean": 79.41415427536855
+  },
+  {
+    "room": "corridor",
+    "time": "夜",
+    "mean": 31.081472335316015
+  }
+]

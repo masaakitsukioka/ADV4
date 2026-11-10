@@ -1,0 +1,20 @@
+logic: exit 0
+PASS: room-local commands, once-only acquisition, current movement and visits
+
+saves: exit 0
+PASS: examination save/restore, old-save migration, rejection of malformed keys, new-game reset and retained slot
+
+stability: exit 0
+PASS: reveal/advance, IME and repeated-key guards, native button activation, choice cancels automatic advance, stale dialogue stays closed
+
+scene-transfers: exit 0
+PASS: place stamp/background transition, legacy deduction layout and exit guard, restart restores manga stage
+
+portrait-animation: exit 0
+PASS: closed/half/open mouth cycle, immediate close after reveal, idle half/closed/open blink and no simultaneous speaking blink
+
+menu-phs-browser: exit 0
+PASS: actual Chrome, deferred 2.5s notification, arrow/Enter/Esc navigation, mail reaction and read state, notebook save/load, title load, old save, relation update, three viewports, reduced-motion, deduction lock, no JS errors.
+
+manga-rebuild: exit 0
+PASS: examination mark, speaker/name/body/inline advance, choices, notebook, movement, rotated cover coordinates, 8 time/place renders, light cache and screenshots

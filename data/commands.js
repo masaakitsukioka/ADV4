@@ -6,9 +6,9 @@ function learnCommandNames(text){
  for(const person of SCENARIO.commands.people)if(text.includes(person.name))state.flags[person.flag]=true;
 }
 function commandInvestigations(){
- const entries=room().targets.map(t=>({label:t.name,run:()=>examine(t.id)}));
+ const entries=room().targets.map(t=>({id:t.id,label:t.name,run:()=>examine(t.id)}));
  for(const extra of SCENARIO.commands.investigations){
-  if(extra.room===state.room&&Events.matches(extra.when,state))entries.push({label:extra.label,run:()=>examine(extra.target)});
+  if(extra.room===state.room&&Events.matches(extra.when,state))entries.push({id:extra.target,label:extra.label,run:()=>examine(extra.target)});
  }
  for(const item of state.inventory.filter(item=>SCENARIO.items[item]?.room===state.room))entries.push({label:item,run:()=>inspectItem(item)});
  return entries;
@@ -56,15 +56,15 @@ function chooseCommand(kind){
  $('commandChildren').querySelector('button')?.focus();
 }
 function renderCommands(){
- const visible=state.mode==='exploration'&&state.flags.introSeen;
+ const visible=['exploration','dialogue'].includes(state.mode)&&state.flags.introSeen&&!deductionActive;
  showWindow('commandWindows',visible);
  if(!visible){commandSelection=null;return}
  const headings={listen:'聞く',investigate:'調べる',search:'探す',move:'移動',show:'見せる',showRecipient:'誰に見せる？'};
  for(const b of $('commandRoots').children){
-  const active=b.dataset.command===commandSelection;b.classList.toggle('active',active);b.setAttribute('aria-expanded',String(active));
+  const active=b.dataset.command===(commandSelection||'investigate');b.classList.toggle('active',active);b.setAttribute('aria-expanded',String(active));
  }
  showWindow('commandDetail',!!commandSelection);
- if(!commandSelection)return;
+ if(!commandSelection){if(typeof decorateMangaCommands==='function')decorateMangaCommands();return;}
  $('commandHeading').textContent=headings[commandSelection];
  const box=$('commandChildren');box.replaceChildren();
  let entries=[];
@@ -77,9 +77,11 @@ function renderCommands(){
  else if(commandSelection==='show')entries=state.inventory.map(item=>({label:item,run:()=>chooseItemToShow(item)}));
  else if(commandSelection==='showRecipient')entries=(room().occupants||[]).filter(p=>p.name!=='サイジ'&&p.id!=='saiji').map(p=>({label:p.name,run:()=>showItemToPerson(state.showingItem,p)}));
  else if(commandSelection==='move')entries=Object.entries(DATA.rooms).filter(([id])=>id!==state.room).map(([id,r])=>({label:r.name,run:()=>{commandSelection=null;moveTo(id)}}));
+ box.classList.toggle('many-targets',entries.length>5);
  if(!entries.length){const p=document.createElement('p');p.textContent='まだ手がかりがない。';box.appendChild(p)}
- for(const entry of entries){const b=document.createElement('button');b.type='button';b.textContent=entry.label;b.onclick=()=>{if(state.mode==='exploration')entry.run()};box.appendChild(b)}
- const back=document.createElement('button');back.type='button';back.className='command-back';back.textContent='もどる';back.onclick=()=>{commandSelection=null;renderCommands();$('commandRoots').querySelector('button')?.focus()};box.appendChild(back);$('commandDetail').style.setProperty?.('--command-count',entries.length+1);if(window.innerHeight){const available=window.innerHeight-$('commandDetail').getBoundingClientRect().top-90;const row=Math.max(20,Math.min(42,available/(entries.length+1)));$('commandDetail').style.setProperty('--command-row',row+'px');$('commandDetail').style.setProperty('--command-font',Math.min(17,row*.53,$('commandDetail').getBoundingClientRect().width/15)+'px')}
+ if(commandSelection==='investigate'){const order=['desk','shelf','window','prepDoor','floor','notice','door'];entries.sort((a,b)=>(order.indexOf(a.id)<0?99:order.indexOf(a.id))-(order.indexOf(b.id)<0?99:order.indexOf(b.id)))}
+ for(const entry of entries){const b=document.createElement('button');b.type='button';b.textContent=entry.label;if(entry.id)b.dataset.target=entry.id;b.onclick=()=>{if(state.mode==='exploration')entry.run()};box.appendChild(b)}
+ const back=document.createElement('button');back.type='button';back.className='command-back';back.textContent='もどる';back.onclick=()=>{commandSelection=null;renderCommands();$('commandRoots').querySelector('button')?.focus()};box.appendChild(back);$('commandDetail').style.setProperty?.('--command-count',entries.length+1);if(typeof decorateMangaCommands==='function'){decorateMangaCommands();return}if(window.innerHeight){const available=window.innerHeight-$('commandDetail').getBoundingClientRect().top-90;const row=Math.max(20,Math.min(42,available/(entries.length+1)));$('commandDetail').style.setProperty('--command-row',row+'px');$('commandDetail').style.setProperty('--command-font',Math.min(17,row*.53,$('commandDetail').getBoundingClientRect().width/15)+'px')}
 }
 for(const [kind,label] of [['move','移動'],['listen','聞く'],['investigate','調べる'],['search','探す'],['show','見せる'],['chat','会話']]){
  const b=document.createElement('button');b.type='button';b.textContent=label;b.dataset.command=kind;b.setAttribute('aria-controls','commandDetail');b.onclick=()=>chooseCommand(kind);$('commandRoots').appendChild(b);

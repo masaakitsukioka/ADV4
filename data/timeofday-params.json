@@ -1,0 +1,67 @@
+{
+ "note": "下地は着彩済みの背景（tonecolor）。昼はそのまま。座標は1920x1080の背景の座標",
+ "time": {
+  "asa": {
+   "dark": 1.0,
+   "color": "#FFE6B0",
+   "ray": 1.6,
+   "length": 0.75,
+   "glow": 0.8,
+   "patch": 1.0,
+   "wash": 0.55,
+   "washR": 1.0,
+   "tint": 0.0,
+   "tc": "#FFFFFF",
+   "win": 1.0,
+   "wc": "#FFFFFF"
+  },
+  "yu": {
+   "wash": 0.0,
+   "washR": 1.0,
+   "dark": 1.0,
+   "color": "#FF9450",
+   "ray": 1.0,
+   "length": 0.7,
+   "glow": 0.6,
+   "patch": 0.85,
+   "tint": 0.7,
+   "tc": "#FF8A4A",
+   "win": 1.0,
+   "wc": "#FFB07A"
+  },
+  "yoru": {
+   "wash": 0.0,
+   "washR": 1.0,
+   "dark": 0.32,
+   "color": "#C9D8FF",
+   "ray": 0.95,
+   "length": 0.6,
+   "glow": 0.4,
+   "patch": 0.85,
+   "tint": 0.0,
+   "tc": "#FFFFFF",
+   "win": 0.55,
+   "wc": "#AFC2F0"
+  }
+ },
+ "place": {
+  "classroom": {
+   "src": [
+    -300,
+    150
+   ],
+   "ymax": 0.45,
+   "reach": 1.0,
+   "rayk": 1.0
+  },
+  "corridor": {
+   "src": [
+    -400,
+    200
+   ],
+   "ymax": 0.55,
+   "reach": 1.7,
+   "rayk": 1.6
+  }
+ }
+}

@@ -1,6 +1,5 @@
 'use strict';
 let presentationGeneration=0,talkTimer=null,talkGeneration=0,itemGraphicGeneration=0;
-const mouthGeometry={saiji:{source:{x:40,y:66,w:8,h:7},target:{x:39,y:68,w:8,h:7}}};
 const presentationReduced=()=>matchMedia('(prefers-reduced-motion: reduce)').matches;
 function showWindow(id,visible){
  const node=$(id),target=visible?'shown':'hidden';if(node.dataset.visibilityTarget===target)return;node.dataset.visibilityTarget=target;
@@ -20,63 +19,50 @@ function showItemGraphic(key,label){
  loadImage(path).then(image=>{if(generation!==itemGraphicGeneration||!image)return;const c=$('itemCanvas'),ctx=c.getContext('2d');if(!ctx?.drawImage)return;ctx.imageSmoothingEnabled=true;ctx.clearRect(0,0,96,96);ctx.drawImage(image,0,0,96,96)});
 }
 function itemGraphicFor(item){return SCENARIO.items[item]?.graphic?.[state.flags.okaboChecked?'examined':'closed']||SCENARIO.items[item]?.graphic?.closed}
+const blinkTimers=new Map(),portraitTokens=new Map();
+function hidePortraitFrame(id){$(id+'Talk').classList.add('hidden');$(id+'Talk').dataset.frame='0';$(id+'Card').classList.remove('animating')}
+function clearBlink(id){clearTimeout(blinkTimers.get(id));blinkTimers.delete(id);portraitTokens.set(id,(portraitTokens.get(id)||0)+1)}
 function stopTalking(){
  talkGeneration++;clearTimeout(talkTimer);talkTimer=null;
- for(const id of ['haruki','saiji']){$(id+'Talk').classList.add('hidden');$(id+'Talk').dataset.frame='0'}
+ for(const id of ['haruki','saiji']){clearBlink(id);hidePortraitFrame(id)}
 }
-// Draw Haruki's mouth on the original 104 x 144 pixel grid.
-// The original lips occupy x=50..56, y=65..67 in all four expressions.
-function drawHarukiMouth(ctx,base,frame){
- if(!frame)return;
- // This adjacent skin pixel belongs to the same expression, so no patch seam appears.
- ctx.drawImage(base,49,64,1,1,50,65,7,4);
- const pixels=frame===1?['.OOOO.','OIIIIO','.OOOO.']:['.OOOO.','OIIIIO','OITTIO','.OOOO.'];
- const colors={O:'#854543',I:'#582928',T:'#d48f5e'};
- pixels.forEach((row,y)=>Array.from(row).forEach((pixel,x)=>{
-  if(colors[pixel]){ctx.fillStyle=colors[pixel];ctx.fillRect(51+x,65+y,1,1)}
- }));
+// Each replacement is a complete aligned portrait. Draw exactly one image.
+function drawTalkingPortrait(ctx,base,id,frame,strip,replacement){
+ const {width,height}=ASSETS.characterResolution;ctx.imageSmoothingEnabled=true;ctx.clearRect(0,0,width,height);
+ const image=frame&&replacement?.width===width&&replacement?.height===height?replacement:base;
+ if(image)ctx.drawImage(image,0,0,width,height);
 }
-// Full-canvas transparent mouth overlays share the portrait's origin and dimensions.
-// Legacy 104x144 assets keep their existing animation until the artwork is replaced.
-function drawTalkingPortrait(ctx,base,id,frame,strip,overlay){
- const {width,height}=ASSETS.characterResolution;
- ctx.imageSmoothingEnabled=true;ctx.clearRect(0,0,width,height);
- ctx.drawImage(base,0,0,width,height);
- if(!frame)return;
- if(overlay&&overlay.width===width&&overlay.height===height){ctx.drawImage(overlay,0,0,width,height);return}
- if(strip&&strip.width===width*3&&strip.height===height){ctx.drawImage(strip,frame*width,0,width,height,0,0,width,height);return}
- // Never apply old mouth coordinates to a new portrait.
- if(base.width!==104||base.height!==144)return;
- const temp=document.createElement('canvas');temp.width=104;temp.height=144;
- const tc=temp.getContext('2d');tc.imageSmoothingEnabled=true;tc.drawImage(base,0,0,104,144);
- if(id==='haruki')drawHarukiMouth(tc,base,frame);
- else if(strip&&strip.width===312&&strip.height===144){
-  const patch=document.createElement('canvas');patch.width=104;patch.height=144;
-  const pc=patch.getContext('2d');pc.imageSmoothingEnabled=true;
-  pc.drawImage(strip,frame*104,0,104,144,0,0,104,144);
-  const {source:a,target:b}=mouthGeometry[id];tc.drawImage(patch,a.x,a.y,a.w,a.h,b.x,b.y,b.w,b.h);
- }
- ctx.clearRect(0,0,width,height);ctx.drawImage(temp,0,0,width,height);
+async function displayPortraitFrame(id,paths,frame,valid){
+ const expression=ASSETS.emotionMap[$(id+'Emotion').textContent]||'normal';
+ const [base,replacement]=await Promise.all([loadImage(ASSETS.characters[id][expression]),loadImage(paths?.[frame])]);
+ if(!valid()||!base)return;
+ const canvas=$(id+'Talk'),{width,height}=ASSETS.characterResolution;
+ canvas.width=width;canvas.height=height;const ctx=canvas.getContext('2d');if(!ctx?.drawImage)return;
+ drawTalkingPortrait(ctx,base,id,frame,null,replacement);canvas.dataset.frame=String(frame);canvas.classList.remove('hidden');$(id+'Card').classList.add('animating');
+}
+function scheduleBlink(id){
+ clearBlink(id);if(presentationReduced())return;const token=portraitTokens.get(id);
+ const valid=()=>portraitTokens.get(id)===token;
+ const start=()=>{if(!valid())return;if($('characterStage').classList.contains('hidden')){scheduleBlink(id);return}
+  const key=ASSETS.emotionMap[$(id+'Emotion').textContent]||'normal',frames=ASSETS.blinkFrames?.[id]?.[key];let i=0;
+  function tick(){if(!valid())return;const frame=[1,2,1,0][i++];canvasState(frame);if(i<4)blinkTimers.set(id,setTimeout(tick,70));else{hidePortraitFrame(id);scheduleBlink(id)}}
+  function canvasState(frame){$(id+'Talk').dataset.animation='blink';displayPortraitFrame(id,frames,frame,valid)}tick();
+ };
+ blinkTimers.set(id,setTimeout(start,2000+Math.random()*4000));
+}
+function finishTalking(){
+ talkGeneration++;clearTimeout(talkTimer);talkTimer=null;
+ for(const id of ['haruki','saiji']){hidePortraitFrame(id);scheduleBlink(id)}
 }
 function startTalking(name,emotion,text){
- stopTalking();if(!['ハルキ','サイジ'].includes(name))return;
- const id=name==='ハルキ'?'haruki':'saiji',key=ASSETS.emotionMap[emotion]||'normal',generation=talkGeneration;
- const canvas=$(id+'Talk');canvas.dataset.expression=key;
- const basePath=ASSETS.characters[id][key],stripPath='assets/characters/talk/'+id+'-'+key+'-mouths.png';
- const duration=Math.min(4500,Math.max(500,Array.from(text).length*(textSettings.index===3?35:textSettings.speeds[textSettings.index])));
- const until=Date.now()+duration;const sequence=[0,1,2,1];let step=0;
- const frames=ASSETS.mouthFrames?.[id]?.[key]||[];
- const images=Promise.all([loadImage(basePath),id==='haruki'?Promise.resolve(null):loadImage(stripPath),loadImage(frames[1]),loadImage(frames[2])]);
- async function draw(frame){
-  const [base,strip,open1,open2]=await images;if(generation!==talkGeneration||!base)return;
-  const ctx=canvas.getContext('2d');if(!ctx?.drawImage)return;
-  const {width,height}=ASSETS.characterResolution;
-  if(canvas.width!==width)canvas.width=width;if(canvas.height!==height)canvas.height=height;
-  drawTalkingPortrait(ctx,base,id,frame,strip,frame===1?open1:open2);
-  canvas.classList.remove('hidden');canvas.dataset.frame=String(frame);
- }
- function tick(){if(generation!==talkGeneration)return;const frame=sequence[step++%sequence.length];canvas.dataset.frame=String(frame);draw(frame);if(!typingDone||Date.now()<until)talkTimer=setTimeout(tick,120);else{draw(0);talkTimer=setTimeout(stopTalking,120)}}
- if(!presentationReduced())tick();
+ stopTalking();const speaker=({'ハルキ':'haruki','サイジ':'saiji'})[name];
+ for(const id of ['haruki','saiji'])if(id!==speaker)scheduleBlink(id);
+ if(!speaker||typingDone||presentationReduced()){if(speaker)scheduleBlink(speaker);return}
+ const key=ASSETS.emotionMap[emotion]||'normal',frames=ASSETS.mouthFrames?.[speaker]?.[key],generation=talkGeneration;let step=0;
+ function tick(){if(generation!==talkGeneration)return;if(typingDone){finishTalking();return}
+  $(speaker+'Talk').dataset.animation='talk';displayPortraitFrame(speaker,frames,[0,1,2,1][step++%4],()=>generation===talkGeneration);
+  talkTimer=setTimeout(tick,120);
+ }tick();
 }
 function presentDialogueLine(line){
  const [speaker,text,emotion,visual]=line;
