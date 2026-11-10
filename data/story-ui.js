@@ -38,10 +38,10 @@ function openingLoad(){
 }
 function startNewGame(){
  if(typeof resetNotebookUI==='function')resetNotebookUI();state.notebook=window.SaikachiNotebook.empty();
- resetPresentation();dailyConversationHistory.clear();
+ resetPresentation();resetCharacterExpressions();dailyConversationHistory.clear();
  deductionTransitionGeneration++;$('deductionStage').classList.add('hidden');$('deductionStage').classList.remove('closing');$('deductionFlash').classList.remove('flash');$('deductionStart').classList.remove('announce');deductionActive=false;lastConversationId=null;closeDialogueLayer();panelRevision++;choicesPending=false;typingDone=false;displayedChars=0;
  Object.assign(state,{mode:'opening',pendingDeduction:false,room:SCENARIO.initial.room,flags:{...SCENARIO.initial.flags},
-  inventory:[],visits:{[SCENARIO.initial.room]:1},completedEvents:{},examined:{},selected:null,
+  inventory:[],visits:{[SCENARIO.initial.room]:1},completedEvents:{},examined:{},listened:{},selected:null,
   dialogue:[],lineIndex:0,afterDialogue:null,deductionStep:0,errors:0});
  $('dialogueChoices').replaceChildren();$('panelBody').replaceChildren();
  openingPage(0);

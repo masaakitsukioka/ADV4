@@ -1,0 +1,53 @@
+conditions: exit 0
+PASS: condition/effect/once/visit unit tests; scenario JS/JSON equality
+
+story: exit 0
+PASS: command-only story, room-local discovery, random chat, transition ordering, no deduction exit, persistent problem window, ABC replacement/swapping, three saves, restart, legacy saves, three-line message pagination.
+PASS: no-repeat incident priority then ten daily chats per scene, saveable chat history, show excludes Saiji, item discovery/inspection/show variants, narration portraits, instant writing dismissal with persistent actors, success/reveal choreography.
+
+menu-phs: exit 0
+PASS: conditional one-time receipt, unread/read, undiscovered nodes, conditional real names, hinted/deceased records, relation update tokens, save roundtrip, old saves, invalid notebook rejection, scenario equality.
+
+presentation-resolution: exit 0
+PASS: aligned full-portrait replacement, closed base, missing/invalid fallback, no stacked image
+
+assets: exit 0
+PASS: 42 PNG dimensions (40 portraits + 2 backgrounds), masks and aligned frame registrations, asset definitions, target coordinate transforms at 3 sizes, image success/failure and stale image callbacks
+
+logic: exit 0
+PASS: room-local commands, once-only acquisition, current movement and visits
+
+saves: exit 0
+PASS: examination save/restore, old-save migration, rejection of malformed keys, new-game reset and retained slot
+
+stability: exit 0
+PASS: reveal/advance, IME and repeated-key guards, native button activation, choice cancels automatic advance, stale dialogue stays closed
+
+scene-transfers: exit 0
+PASS: place stamp/background transition, shared manuscript dialogue and exit guard, restart restores manga stage
+
+portrait-animation: exit 0
+PASS: closed/half/open mouth cycle, immediate close after reveal, idle half/closed/open blink and no simultaneous speaking blink
+
+menu-phs-browser: exit 0
+PASS: actual Chrome, deferred 2.5s notification, arrow/Enter/Esc navigation, mail reaction and read state, notebook save/load, title load, old save, relation update, three viewports, reduced-motion, deduction lock, no JS errors.
+
+manga-rebuild: exit 0
+PASS: examination mark, speaker/name/body/inline advance, choices, notebook, movement, rotated cover coordinates, 8 time/place renders, light cache and screenshots
+
+manga-fix1: exit 0
+PASS: six enlarged command rows do not overlap; corridor targets on arrival/click; no orphan arrow; paper choices; all five deduction leads readable; audit rejects narrow/clipped text
+
+manga-fix2: exit 0
+PASS: permanent paper/actors; retained expressions; normal 60ms typing; stale command focus Enter/Space; 80ms stagger; same list and selection after dialogue; listener completion/save/legacy/validation; room/new-game reset
+
+ui-layout: exit 0
+PASS 1920x1080: all dialogue pages, q5, seven notebook rows, relation labels, populated title saves
+PASS 1280x720: all dialogue pages, q5, seven notebook rows, relation labels, populated title saves
+PASS 1024x768: all dialogue pages, q5, seven notebook rows, relation labels, populated title saves
+PASS 768x1024: all dialogue pages, q5, seven notebook rows, relation labels, populated title saves
+PASS 844x390: all dialogue pages, q5, seven notebook rows, relation labels, populated title saves
+PASS 667x375: all dialogue pages, q5, seven notebook rows, relation labels, populated title saves
+PASS 390x844: all dialogue pages, q5, seven notebook rows, relation labels, populated title saves
+PASS 375x667: all dialogue pages, q5, seven notebook rows, relation labels, populated title saves
+PASS 360x640: all dialogue pages, q5, seven notebook rows, relation labels, populated title saves

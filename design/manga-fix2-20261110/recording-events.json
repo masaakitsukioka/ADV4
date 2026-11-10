@@ -1,0 +1,56 @@
+{
+  "events": [
+    {
+      "event": "intro-start",
+      "seconds": 0.944
+    },
+    {
+      "event": "game-typing",
+      "seconds": 1.781
+    },
+    {
+      "event": "game-blank-paper",
+      "seconds": 7.532
+    },
+    {
+      "event": "game-listen-empty",
+      "seconds": 9.044
+    },
+    {
+      "event": "list-open",
+      "seconds": 9.076
+    },
+    {
+      "event": "game-list-appear",
+      "seconds": 9.389
+    },
+    {
+      "event": "window-dialogue",
+      "seconds": 10.082
+    },
+    {
+      "event": "game-window-checked",
+      "seconds": 18.608
+    },
+    {
+      "event": "shelf-dialogue",
+      "seconds": 18.623
+    },
+    {
+      "event": "game-shelf-checked",
+      "seconds": 32.386
+    },
+    {
+      "event": "finished",
+      "seconds": 32.389
+    }
+  ],
+  "reference": {
+    "audioTracks": 0,
+    "duration": 61.367,
+    "fps": 30,
+    "height": 1080,
+    "width": 1920
+  },
+  "errors": []
+}

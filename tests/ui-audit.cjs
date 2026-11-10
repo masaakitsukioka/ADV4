@@ -34,7 +34,7 @@ const MEASURE=()=>{
   }
   const ov=s.overflow+s.overflowX+s.overflowY;
   if(/hidden|clip/.test(ov)&&!/auto|scroll/.test(ov)&&(e.scrollWidth>e.clientWidth+2||e.scrollHeight>e.clientHeight+2)&&(e.innerText||'').trim()&&!['HTML','BODY'].includes(e.tagName)&&e.id!=='game'&&e.id!=='scene'&&e.id!=='mangaStage')out.clipped.push(label(e)+` 中身${e.scrollWidth}x${e.scrollHeight} > 枠${e.clientWidth}x${e.clientHeight}`);
-  if(s.textOverflow==='ellipsis'&&e.scrollWidth>e.clientWidth+1)out.clipped.push(label(e)+' 省略記号で切れ');
+  if(s.textOverflow==='ellipsis'&&s.overflowX!=='visible'&&e.scrollWidth>e.clientWidth+1)out.clipped.push(label(e)+' 省略記号で切れ');
   if(e.matches('button,[role=button],a[href]')&&!e.closest('.nb-phone')){
    if(r.height<36||r.width<36)out.tap.push(label(e)+` ${r.width|0}x${r.height|0}`);
    const cx=Math.min(vw-1,Math.max(0,r.left+r.width/2)),cy=Math.min(vh-1,Math.max(0,r.top+r.height/2));const top=document.elementFromPoint(cx,cy);

@@ -1,5 +1,5 @@
 'use strict';
-let commandSelection=null;
+let commandSelection=null,commandListKey=null,commandListContext=null;
 let deductionActive=false,lastConversationId=null;
 const dailyConversationHistory=new Map();
 function learnCommandNames(text){
@@ -40,50 +40,57 @@ function chooseItemToShow(item){
  if(!people.length){commandSpeak([['','ここには見せる相手がいない。','通常',{item:itemGraphicFor(item),label:item}]]);return}
  commandSelection='showRecipient';state.showingItem=item;renderCommands();
 }
-function commandSpeak(lines){choicesPending=false;say(lines)}
+function commandSpeak(lines,after=null){choicesPending=false;say(lines,after)}
 function searchPerson(person){
  const lines=person.name==='犯人'?
   (state.flags.deductionDone?[['ハルキ','オカボーに話を聞きたいけど、ここにはいないな。','通常'],['サイジ','ナカコに伝える前に、本人に声をかけよう。','通常']]:[['ハルキ','スケッチを破った人を探したいけど、誰なのかまだ確かめられていない。','困惑'],['サイジ','まずは残された手がかりを調べよう。','通常']]):
   [['ハルキ',person.name+'を探してみたけど、ここにはいないみたいだ。','通常'],['サイジ','今はこの場所の手がかりを確かめよう。','通常']];
  commandSpeak(lines);
 }
-function chooseCommand(kind){
+function chooseCommand(kind,focusFirst=true){
  if(state.mode!=='exploration')return;
  commandSelection=kind;
  if(kind==='chat'){randomConversation();return}
  if(kind==='show'&&!state.inventory.length){commandSpeak([['','見せられるアイテムをまだ持っていない。']]);return}
  if(kind==='listen'&&!(room().occupants||[]).length){commandSpeak([['','ここには誰もいない。']]);return}
  commandSelection=kind;renderCommands();
- $('commandChildren').querySelector('button')?.focus();
+ if(focusFirst)$('commandChildren').querySelector('button')?.focus();
 }
 function renderCommands(){
  const visible=['exploration','dialogue'].includes(state.mode)&&state.flags.introSeen&&!deductionActive;
  showWindow('commandWindows',visible);
- if(!visible){commandSelection=null;return}
+ if(!visible){commandSelection=null;commandListKey=null;commandListContext=null;if(typeof updateCommandArrow==='function')updateCommandArrow();return}
  const headings={listen:'聞く',investigate:'調べる',search:'探す',move:'移動',show:'見せる',showRecipient:'誰に見せる？'};
  for(const b of $('commandRoots').children){
   const active=b.dataset.command===commandSelection;b.classList.toggle('active',active);b.setAttribute('aria-expanded',String(active));
  }
  showWindow('commandDetail',!!commandSelection&&commandSelection!=='chat');
- if(!commandSelection||commandSelection==='chat'){$('commandChildren').replaceChildren();if(typeof decorateMangaCommands==='function')decorateMangaCommands();return;}
+ if(!commandSelection||commandSelection==='chat'){commandListKey=null;commandListContext=null;$('commandChildren').replaceChildren();if(typeof decorateMangaCommands==='function')decorateMangaCommands();return;}
  $('commandHeading').textContent=headings[commandSelection];
- const box=$('commandChildren');box.replaceChildren();
+ const box=$('commandChildren');
  let entries=[];
  if(commandSelection==='listen'){
   const occupants=room().occupants||[];
-  entries=occupants.map(p=>({label:p.name,run:()=>commandSpeak(p.lines)}));
+  entries=occupants.map(person=>{const key=state.room+':'+(person.id||person.name);return{label:person.name,listenKey:key,run:()=>commandSpeak(person.lines,()=>{state.listened??={};state.listened[key]=true;render()})}});
   if(!entries.length)entries=[{label:'ここには誰もいない',run:()=>commandSpeak([['','ここには誰もいない。']])}];
  }else if(commandSelection==='investigate')entries=commandInvestigations();
  else if(commandSelection==='search')entries=commandPeople().map(p=>({label:p.name,run:()=>searchPerson(p)}));
  else if(commandSelection==='show')entries=state.inventory.map(item=>({label:item,run:()=>chooseItemToShow(item)}));
  else if(commandSelection==='showRecipient')entries=(room().occupants||[]).filter(p=>p.name!=='サイジ'&&p.id!=='saiji').map(p=>({label:p.name,run:()=>showItemToPerson(state.showingItem,p)}));
  else if(commandSelection==='move')entries=Object.entries(DATA.rooms).filter(([id])=>id!==state.room).map(([id,r])=>({label:r.name,run:()=>{commandSelection=null;moveTo(id)}}));
- box.classList.toggle('many-targets',entries.length>5);
- if(!entries.length){const p=document.createElement('p');p.textContent='まだ手がかりがない。';box.appendChild(p)}
  if(commandSelection==='investigate'){const order=['desk','shelf','window','prepDoor','floor','notice','door'];entries.sort((a,b)=>(order.indexOf(a.id)<0?99:order.indexOf(a.id))-(order.indexOf(b.id)<0?99:order.indexOf(b.id)))}
- for(const entry of entries){const b=document.createElement('button');b.type='button';b.textContent=entry.label;if(entry.id)b.dataset.target=entry.id;b.onclick=()=>{if(state.mode==='exploration')entry.run()};box.appendChild(b)}
- const back=document.createElement('button');back.type='button';back.className='command-back';back.textContent='もどる';back.onclick=()=>{commandSelection=null;renderCommands();$('commandRoots').querySelector('button')?.focus()};box.appendChild(back);$('commandDetail').style.setProperty?.('--command-count',entries.length+1);if(typeof decorateMangaCommands==='function'){decorateMangaCommands();return}if(window.innerHeight){const available=window.innerHeight-$('commandDetail').getBoundingClientRect().top-90;const row=Math.max(20,Math.min(42,available/(entries.length+1)));$('commandDetail').style.setProperty('--command-row',row+'px');$('commandDetail').style.setProperty('--command-font',Math.min(17,row*.53,$('commandDetail').getBoundingClientRect().width/15)+'px')}
+ const key=JSON.stringify([state.room,commandSelection,entries.map(e=>[e.id||e.listenKey||'',e.label])]);
+ const unchanged=key===commandListKey;
+ if(unchanged&&typeof decorateMangaCommands==='function'){
+  if(state.mode==='dialogue')$('commandDetail').classList.remove('list-enter');
+  decorateMangaCommands(false);return;
+ }
+ const selectedKey=box.querySelector?.('.paper-selected')?.dataset.entryKey,context=JSON.stringify([state.room,commandSelection]),enter=context!==commandListContext;
+ commandListKey=key;commandListContext=context;box.replaceChildren();box.classList.toggle('many-targets',entries.length>5);
+ if(!entries.length){const empty=document.createElement('p');empty.textContent='まだ手がかりがない。';box.appendChild(empty)}
+ for(const entry of entries){const b=document.createElement('button');b.type='button';b.textContent=entry.label;b.dataset.entryKey=JSON.stringify([entry.id||entry.listenKey||'',entry.label]);if(b.dataset.entryKey===selectedKey)b.classList.add('paper-selected');if(entry.id)b.dataset.target=entry.id;if(entry.listenKey)b.dataset.listenKey=entry.listenKey;b.onclick=()=>{if(state.mode==='exploration')entry.run()};box.appendChild(b)}
+ const back=document.createElement('button');back.type='button';back.className='command-back';back.textContent='もどる';back.onclick=()=>{commandSelection=null;renderCommands();$('commandRoots').querySelector('button')?.focus()};box.appendChild(back);$('commandDetail').style.setProperty?.('--command-count',entries.length+1);if(typeof decorateMangaCommands==='function'){decorateMangaCommands(enter);return}if(window.innerHeight){const available=window.innerHeight-$('commandDetail').getBoundingClientRect().top-90;const row=Math.max(20,Math.min(42,available/(entries.length+1)));$('commandDetail').style.setProperty('--command-row',row+'px');$('commandDetail').style.setProperty('--command-font',Math.min(17,row*.53,$('commandDetail').getBoundingClientRect().width/15)+'px')}
 }
 for(const [kind,label] of [['move','移動'],['listen','聞く'],['investigate','調べる'],['search','探す'],['show','見せる'],['chat','会話']]){
- const b=document.createElement('button');b.type='button';b.textContent=label;b.dataset.command=kind;b.setAttribute('aria-controls','commandDetail');b.onclick=()=>chooseCommand(kind);$('commandRoots').appendChild(b);
+ const b=document.createElement('button');b.type='button';b.textContent=label;b.dataset.command=kind;b.setAttribute('aria-controls','commandDetail');b.onclick=event=>chooseCommand(kind,!event||event.detail===0);$('commandRoots').appendChild(b);
 }

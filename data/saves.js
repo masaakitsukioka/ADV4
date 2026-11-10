@@ -24,8 +24,15 @@
    const p=data.progress,settings=data.settings;
    if(!object(p)||typeof p.room!=='string'||!own(scenario.rooms,p.room)||!object(p.flags)||!object(p.visits)||
       !object(p.completedEvents)||!Array.isArray(p.inventory)||!object(settings))fail();
-   const flags={...scenario.initial.flags},visits={},completedEvents={},examined={};
+   const flags={...scenario.initial.flags},visits={},completedEvents={},examined={},listened={};
    if(p.examined!==undefined){if(!object(p.examined))fail();for(const [k,v] of Object.entries(p.examined)){const parts=k.split(':');if(!safe(k)||parts.length!==2||!own(scenario.rooms,parts[0])||!own(scenario.investigations,parts[1])||v!==true)fail();examined[k]=true}}
+   if(p.listened!==undefined){
+    if(!object(p.listened))fail();
+    for(const [key,done] of Object.entries(p.listened)){const parts=key.split(':');
+     if(!safe(key)||parts.length!==2||!own(scenario.rooms,parts[0])||done!==true||!(scenario.rooms[parts[0]].occupants||[]).some(person=>(person.id||person.name)===parts[1]))fail();
+     listened[key]=true;
+    }
+   }
    const discoveryFlags=new Set(scenario.commands?.discoveryFlags||[]);
    for(const key of Object.keys(scenario.initial.flags))if(!own(p.flags,key)&&!discoveryFlags.has(key))fail();
    const legacyDiscoveries={layoutSeen:!!p.flags.layoutChecked,noticeSeen:!!p.flags.dutyChecked,personNakako:!!p.flags.introSeen,personOkabo:!!(p.flags.layoutChecked||p.flags.dutyChecked||p.flags.okaboChecked),personCulprit:!!p.flags.introSeen};
@@ -46,14 +53,14 @@
    if(p.inventory.some(i=>typeof i!=='string'||!items.has(i))||new Set(p.inventory).size!==p.inventory.length)fail();
    if(!Number.isInteger(settings.textSpeed)||settings.textSpeed<0||settings.textSpeed>3||typeof settings.auto!=='boolean')fail();
    return {format:FORMAT,scenarioId:data.scenarioId,saveRevision:data.saveRevision,savedAt:data.savedAt,
-    progress:{room:p.room,flags,inventory:[...p.inventory],visits,completedEvents,examined,notebook:global.SaikachiNotebook.validate(p.notebook,scenario)},
+    progress:{room:p.room,flags,inventory:[...p.inventory],visits,completedEvents,examined,listened,notebook:global.SaikachiNotebook.validate(p.notebook,scenario)},
     settings:{textSpeed:settings.textSpeed,auto:settings.auto}};
   }
   function snapshot(state,settings){
    if(!['exploration','menu'].includes(state.mode))throw new Error('会話や推理を終えてから保存してください。');
    return validate({format:FORMAT,scenarioId:scenario.meta.id,saveRevision:scenario.meta.saveRevision,
     savedAt:new Date().toISOString(),progress:{room:state.room,flags:state.flags,inventory:state.inventory,
-     visits:state.visits,completedEvents:state.completedEvents,examined:state.examined||{},notebook:state.notebook},settings:{textSpeed:settings.index,auto:settings.auto}});
+     visits:state.visits,completedEvents:state.completedEvents,examined:state.examined||{},listened:state.listened||{},notebook:state.notebook},settings:{textSpeed:settings.index,auto:settings.auto}});
   }
   function key(slot){if(!Number.isInteger(slot)||slot<1||slot>3)throw new Error('保存枠が正しくありません。');return PREFIX+scenario.meta.id+'.'+slot;}
   function raw(slot){

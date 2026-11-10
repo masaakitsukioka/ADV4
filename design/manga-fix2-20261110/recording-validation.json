@@ -1,0 +1,33 @@
+{
+  "metadata": {
+    "duration": 33.8,
+    "width": 1920,
+    "height": 1080
+  },
+  "samples": [
+    {
+      "time": 2,
+      "decodedTime": 1.92,
+      "range": 255,
+      "mean": 154.5663271604938
+    },
+    {
+      "time": 8,
+      "decodedTime": 7.92,
+      "range": 255,
+      "mean": 157.84543209876543
+    },
+    {
+      "time": 12,
+      "decodedTime": 11.92,
+      "range": 255,
+      "mean": 156.28851851851852
+    },
+    {
+      "time": 30,
+      "decodedTime": 29.92,
+      "range": 255,
+      "mean": 151.01453703703703
+    }
+  ]
+}

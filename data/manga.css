@@ -206,3 +206,37 @@ body,#game{background:#f7f5ee;color:#141414}
 #game.deduction-layout #mangaStage #panel .answer-slot,#game.deduction-layout #mangaStage #panel .answer-option,#game.deduction-layout #mangaStage #panel .answer-confirm{position:relative;overflow:visible}
 #game.deduction-layout #mangaStage #panel .answer-slot.active::after,#game.deduction-layout #mangaStage #panel .answer-option:focus-visible::after,#game.deduction-layout #mangaStage #panel .answer-confirm:focus-visible::after{content:'';position:absolute;inset:-6px -8px;background:url('../assets/ui/manga/topic-circle.png') center/100% 100% no-repeat;pointer-events:none}
 #game.deduction-layout #mangaStage #panel .answer-confirm:focus-visible{outline:none}
+/* FIX2: paper and actors are permanent; only the writing comes and goes. */
+#mangaStage .manga-sheet{display:block}
+#game #mangaStage #characterStage{display:block!important;visibility:visible!important}
+#game #characterStage .character-card,#game #characterStage.open .character-card,#game #characterStage.leaving .character-card{animation:none!important;transition:none}
+#mangaStage #dialogue,#mangaStage #dialogue.open,#mangaStage #dialogue.leaving{animation:none!important;transition:none;transform:none;opacity:1}
+#mangaStage #commandWindows,#mangaStage #commandDetail{animation:none!important;transition:none}
+#mangaStage #commandChildren .paper-selected::after{background-image:url('../assets/ui/manga/topic-circle.png')}
+#mangaStage #nextMark{animation:blink .85s steps(2,start) infinite}
+/* Header first, then one aligned paper cutout every 80 ms. */
+#mangaStage #commandDetail.list-enter h2{animation:listHeadingIn .14s ease-out both}
+#mangaStage #commandDetail.list-enter #commandChildren>*{animation:listPaperIn .16s ease-out var(--entry-delay,80ms) both}
+@keyframes listHeadingIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+@keyframes listPaperIn{from{opacity:0;transform:translateY(10px) rotate(var(--paper-turn,0deg))}to{opacity:1;transform:translateY(0) rotate(var(--paper-turn,0deg))}}
+@media(prefers-reduced-motion:reduce){
+ #mangaStage #commandDetail.list-enter h2,#mangaStage #commandDetail.list-enter #commandChildren>*{animation:none}
+ #mangaStage #nextMark{animation:none}
+}
+/* Fixed compact-screen positions keep all six commands above the permanent paper. */
+@media(orientation:landscape) and (max-height:460px){
+ #mangaStage #commandMain{top:70px}
+ #mangaStage #commandRoots{gap:0}
+ #game #mangaStage .character-card{top:720px!important}
+ #game #mangaStage #saijiCard{top:713px!important}
+}
+@media(orientation:portrait) and (min-width:701px) and (max-width:900px){
+ #mangaStage #commandMain{top:70px}
+ #mangaStage #commandRoots{gap:0}
+ #game #mangaStage .character-card{top:720px!important}
+ #game #mangaStage #saijiCard{top:713px!important}
+}
+
+/* Mail reactions use the same fixed paper/actors above the notebook overlay. */
+#mangaStage.mail-dialogue{z-index:6;background:none}
+#mangaStage.mail-dialogue #scene,#mangaStage.mail-dialogue #mangaHeader,#mangaStage.mail-dialogue #commandWindows,#mangaStage.mail-dialogue #mangaArrow{display:none!important}

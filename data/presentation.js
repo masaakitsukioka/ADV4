@@ -3,6 +3,7 @@ let presentationGeneration=0,talkTimer=null,talkGeneration=0,itemGraphicGenerati
 const presentationReduced=()=>matchMedia('(prefers-reduced-motion: reduce)').matches;
 function showWindow(id,visible){
  const node=$(id),target=visible?'shown':'hidden';if(node.dataset.visibilityTarget===target)return;node.dataset.visibilityTarget=target;
+ if(['commandWindows','commandDetail'].includes(id)){node.classList.toggle('hidden',!visible);node.classList.remove('window-in');node.classList.remove('window-out');return}
  const token=String(Number(node.dataset.visibilityToken||0)+1);node.dataset.visibilityToken=token;
  if(visible){node.classList.remove('window-out');if(node.classList.contains('hidden')){node.classList.remove('hidden');node.classList.add('window-in')}return}
  if(node.classList.contains('hidden'))return;
@@ -76,10 +77,8 @@ function resetPresentation(){
  $('characterStage').classList.remove('leaving');$('dialogue').classList.remove('leaving');
 }
 function moveOutDialogue(after){
- stopTalking();hideItemGraphic();const generation=++presentationGeneration;
- $('dialogue').classList.add('leaving');$('characterStage').classList.add('leaving');
- const finish=()=>{if(generation!==presentationGeneration)return;$('dialogue').classList.remove('leaving');$('characterStage').classList.remove('leaving');closeDialogueLayer();after()};
- if(presentationReduced())finish();else setTimeout(finish,440);
+ // The paper and portraits stay in place. Only the writing is dismissed.
+ presentationGeneration++;stopTalking();hideItemGraphic();closeDialogueLayer();after();
 }
 function questionPresentation(after){
  const generation=++presentationGeneration;state.mode='question-transition';render();

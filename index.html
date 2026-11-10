@@ -348,9 +348,9 @@ function drawScene(roomId){
  ctx.clearRect(0,0,canvas.width,canvas.height);ctx.fillStyle='#808080';ctx.fillRect(0,0,canvas.width,canvas.height);
 }
 
-const state={mode:'exploration',room:SCENARIO.initial.room,flags:{...SCENARIO.initial.flags},inventory:[],visits:{[SCENARIO.initial.room]:1},completedEvents:{},examined:{},selected:null,dialogue:[],lineIndex:0,afterDialogue:null,deductionStep:0,errors:0};
+const state={mode:'exploration',room:SCENARIO.initial.room,flags:{...SCENARIO.initial.flags},inventory:[],visits:{[SCENARIO.initial.room]:1},completedEvents:{},examined:{},listened:{},selected:null,dialogue:[],lineIndex:0,afterDialogue:null,deductionStep:0,errors:0};
 const $=id=>document.getElementById(id), room=()=>DATA.rooms[state.room];
-const textSettings={speeds:[85,37,16,0],labels:['おそい','ふつう','はやい','一瞬'],index:1,auto:false};let typingTimer=null,autoTimer=null,typingDone=false,displayedChars=0,dialogueGeneration=0;
+const textSettings={speeds:[138,60,26,0],labels:['おそい','ふつう','はやい','一瞬'],index:1,auto:false};let typingTimer=null,autoTimer=null,typingDone=false,displayedChars=0,dialogueGeneration=0;
 function setSpeaker(name){
  const box=$('speaker');box.replaceChildren();box.setAttribute('aria-label',name);
  if(name==='ハルキ'||name==='サイジ'){const img=document.createElement('img');img.src='assets/ui/name-'+(name==='ハルキ'?'haruki':'saiji')+'.png';img.alt=name;box.appendChild(img)}else box.textContent=name;
@@ -384,7 +384,13 @@ function paginateDialogue(lines){
  $('dialogue').classList.toggle('narration',!lines[0]?.[0]);return pages;
 }
 function cancelTextTimers(){clearTimeout(typingTimer);clearTimeout(autoTimer);typingTimer=null;autoTimer=null}
-function closeDialogueLayer(){if(typeof stopTalking==='function')stopTalking();if(typeof hideItemGraphic==='function')hideItemGraphic();if(!(typeof deductionActive!=='undefined'&&deductionActive))$('characterStage').classList.remove('open');$('dialogue').classList.remove('narration');dialogueGeneration++;cancelTextTimers();$('characterStage').classList.add('hidden');$('dialogue').classList.remove('open');$('dialogue').classList.add('hidden');$('portraitRail').classList.add('hidden');$('textControls').classList.add('hidden')}
+function closeDialogueLayer(){
+ if(typeof stopTalking==='function')stopTalking();if(typeof hideItemGraphic==='function')hideItemGraphic();
+ $('dialogue').classList.remove('narration');dialogueGeneration++;cancelTextTimers();
+ $('characterStage').classList.remove('hidden');$('dialogue').classList.remove('open');$('dialogue').classList.add('hidden');
+ $('speaker').replaceChildren();$('line').textContent='';$('nextMark').classList.remove('ready');$('dialogueChoices').replaceChildren();
+ $('portraitRail').classList.add('hidden');$('textControls').classList.add('hidden');
+}
 function updateTextControls(){$('speedButton').textContent='文字：'+textSettings.labels[textSettings.index];$('autoButton').textContent='自動：'+(textSettings.auto?'ON':'OFF')}
 $('speedButton').onclick=e=>{e.stopPropagation();textSettings.index=(textSettings.index+1)%textSettings.speeds.length;updateTextControls();if(state.mode==='dialogue'&&!typingDone)displayLine()};
 $('autoButton').onclick=e=>{e.stopPropagation();textSettings.auto=!textSettings.auto;updateTextControls();scheduleAuto()};
@@ -406,7 +412,7 @@ function showActions(id){
  a.style.left=Math.max(8,Math.min(r.left-g.left,g.width-a.offsetWidth-8))+'px';
  a.style.top=Math.max(8,Math.min(r.bottom-g.top+8,g.height-a.offsetHeight-8))+'px';
 }
-function say(lines,after=null){if(state.mode==='dialogue-out'&&typeof presentationGeneration!=='undefined'){presentationGeneration++;$('dialogue').classList.remove('leaving');$('characterStage').classList.remove('leaving')}if(typeof hideItemGraphic==='function')hideItemGraphic();state.itemPresentation=null;cancelTextTimers();state.mode='dialogue';state.dialogue=lines;if(typeof learnCommandNames==='function')for(const v of lines)learnCommandNames(String(v[1]));state.lineIndex=0;state.afterDialogue=after;state.selected=null;if(!(typeof deductionActive!=='undefined'&&deductionActive))showWindow('panel',false);$('actions').classList.add('hidden');$('dialogue').classList.remove('hidden');$('portraitRail').classList.remove('hidden');$('characterStage').classList.remove('hidden');$('textControls').classList.remove('hidden');const generation=++dialogueGeneration;requestAnimationFrame(()=>{if(generation===dialogueGeneration&&state.mode==='dialogue'){$('dialogue').classList.add('open');$('characterStage').classList.add('open')}});$('dialogue').classList.toggle('narration',!lines[0]?.[0]);state.dialogue=paginateDialogue(lines);displayLine();render()}
+function say(lines,after=null){if(state.mode==='dialogue-out'&&typeof presentationGeneration!=='undefined'){presentationGeneration++;$('dialogue').classList.remove('leaving');$('characterStage').classList.remove('leaving')}if(typeof hideItemGraphic==='function')hideItemGraphic();state.itemPresentation=null;cancelTextTimers();state.mode='dialogue';state.dialogue=lines;if(typeof learnCommandNames==='function')for(const v of lines)learnCommandNames(String(v[1]));state.lineIndex=0;state.afterDialogue=after;state.selected=null;if(!(typeof deductionActive!=='undefined'&&deductionActive))showWindow('panel',false);$('actions').classList.add('hidden');$('dialogue').classList.remove('hidden');$('portraitRail').classList.remove('hidden');$('characterStage').classList.remove('hidden');$('textControls').classList.remove('hidden');const generation=++dialogueGeneration;requestAnimationFrame(()=>{if(generation===dialogueGeneration&&state.mode==='dialogue'){$('dialogue').classList.add('open');$('characterStage').classList.add('open')}});$('dialogue').classList.toggle('narration',!lines[0]?.[0]);state.dialogue=paginateDialogue(lines);displayLine();render();$('dialogue').tabIndex=-1;$('dialogue').focus?.({preventScroll:true})}
 function displayLine(){cancelTextTimers();const v=state.dialogue[state.lineIndex];if(!v)return;const speaker=v[0],full=String(v[1]);$('dialogue').classList.toggle('more-message',state.mode==='deduction'&&state.lineIndex<state.dialogue.length-1);setSpeaker(speaker);if(typeof learnCommandNames==='function')learnCommandNames(full);$('characterStage').classList.remove('hidden');$('dialogue').classList.toggle('narration',!speaker);$('line').textContent='';$('line').scrollTop=0;$('nextMark').classList.remove('ready');$('dialogueChoices').replaceChildren();$('harukiFace').classList.toggle('active',speaker==='ハルキ');$('saijiFace').classList.toggle('active',speaker==='サイジ');if(speaker)updateCharacterCards(speaker,v[2]||'通常');typingDone=false;displayedChars=0;const chars=Array.from(full);const speed=textSettings.speeds[textSettings.index];function tick(){if(!['dialogue','deduction'].includes(state.mode))return;displayedChars=Math.min(chars.length,displayedChars+1);$('line').textContent=chars.slice(0,displayedChars).join('');if(displayedChars<chars.length){typingTimer=setTimeout(tick,speed)}else{typingDone=true;$('nextMark').classList.add('ready');onLineCompleted();scheduleAuto()}}if(speed===0||matchMedia('(prefers-reduced-motion: reduce)').matches){$('line').textContent=full;displayedChars=chars.length;typingDone=true;$('nextMark').classList.add('ready');onLineCompleted();scheduleAuto()}else tick();if(typeof presentDialogueLine==='function')presentDialogueLine(v)}
 function onLineCompleted(){if(typeof finishTalking==='function')finishTalking()}
 function advance(){
@@ -439,7 +445,8 @@ function examine(id){
 }
 function moveTo(id){
  if(!DATA.rooms[id])return;
- const changed=Events.enter(id,state);if(typeof commandSelection!=='undefined')commandSelection=changed?'investigate':commandSelection;closePanel();
+ const changed=Events.enter(id,state);if(typeof commandSelection!=='undefined')commandSelection=changed?'investigate':commandSelection;if(changed)resetCharacterExpressions();closePanel();
+ if(changed)$('commandChildren').querySelector?.('button')?.focus?.({preventScroll:true});
  if(changed)runEvent(Events.select(DATA.rooms[id].onEnter||[],state));
 }
 let panelRevision=0;
@@ -494,11 +501,16 @@ function restoreSave(saved){if(typeof resetNotebookUI==='function')resetNotebook
 // v0.4: data-driven dialogue choices; placeholder portraits (not final character art)
 let choicesPending=false;
 const CHARACTER_EMOTIONS={ 'ハルキ':['通常','驚き','困惑','納得'], 'サイジ':['通常','思案','疑問','確信'] };
+function resetCharacterExpressions(){
+ if(typeof stopTalking==='function')stopTalking();
+ for(const id of ['haruki','saiji']){$(id+'Emotion').textContent='通常';setCharacterImage(id,'通常')}
+}
 function updateCharacterCards(speaker,emotion){
-  for(const [name,id] of [['ハルキ','haruki'],['サイジ','saiji']]){
-    $(id+'Card').classList.toggle('active',name===speaker);
-    const shown=CHARACTER_EMOTIONS[name].includes(emotion)?emotion:'通常';$(id+'Emotion').textContent=shown;setCharacterImage(id,shown);
-  }
+ for(const [name,id] of [['ハルキ','haruki'],['サイジ','saiji']]){
+  $(id+'Card').classList.toggle('active',name===speaker);
+  if(name!==speaker)continue;
+  const shown=CHARACTER_EMOTIONS[name].includes(emotion)?emotion:'通常';$(id+'Emotion').textContent=shown;setCharacterImage(id,shown);
+ }
 }
 const TOPIC_DIALOGUE=SCENARIO.topics;
 function startTopicDialogue(){playTopic('intro')}
@@ -519,9 +531,9 @@ function showTopicChoices(choices){
   updateCharacterCards('サイジ','疑問');
   const container=$('dialogueChoices');container.replaceChildren();
   for(const option of choices){const b=document.createElement('button');b.type='button';b.textContent=option.label;b.onclick=e=>{e.stopPropagation();choicesPending=false;container.replaceChildren();runEvent(option)};container.appendChild(b)}
-  if(typeof decorateMangaChoices==='function')decorateMangaChoices();render();
+  if(typeof decorateMangaChoices==='function')decorateMangaChoices();render();container.querySelector('button')?.focus?.({preventScroll:true});
 }
 
 for(const id of ['menu']){$(id+'Graphic').addEventListener('error',()=>{$(id).classList.add('asset-missing')})}
-$('menu').onclick=()=>menu();$('close').onclick=closePanel;$('dialogue').onclick=e=>{if(e.target.closest('button'))return;advance()};$('game').addEventListener('click',e=>{if(e.target===$('scene')||e.target===$('pixelScene')||e.target===$('targets')||e.target.classList.contains('grain')){state.selected=null;$('actions').classList.add('hidden');render()}});window.addEventListener('resize',()=>{if(state.mode==='exploration'){render();if(state.selected)showActions(state.selected)}else{drawScene(state.room);setSceneBackground(state.room)}});document.addEventListener('keydown',e=>{if(e.isComposing)return;if((e.key==='Enter'||e.key===' ')&&['dialogue','deduction'].includes(state.mode)){if(e.target?.closest?.('button, input, textarea, select, [contenteditable]'))return;if(choicesPending)return;e.preventDefault();if(!e.repeat)advance()}else if(e.key==='Escape'&&state.mode==='exploration'&&typeof commandSelection!=='undefined'&&commandSelection){commandSelection=null;renderCommands()}else if(e.key==='Escape'&&state.mode==='menu')closePanel()});render();
+$('menu').onclick=()=>menu();$('close').onclick=closePanel;$('dialogue').onclick=e=>{if(e.target.closest('button'))return;advance()};$('game').addEventListener('click',e=>{if(e.target===$('scene')||e.target===$('pixelScene')||e.target===$('targets')||e.target.classList.contains('grain')){state.selected=null;$('actions').classList.add('hidden');render()}});window.addEventListener('resize',()=>{if(state.mode==='exploration'){render();if(state.selected)showActions(state.selected)}else{drawScene(state.room);setSceneBackground(state.room)}});document.addEventListener('keydown',e=>{if(e.isComposing)return;if((e.key==='Enter'||e.key===' ')&&['dialogue','deduction'].includes(state.mode)){if(choicesPending&&e.target?.closest?.('#dialogueChoices button'))return;if(state.mode==='deduction'&&e.target?.closest?.('#panel button'))return;if(choicesPending){e.preventDefault();$('dialogueChoices').querySelector('button')?.focus?.({preventScroll:true});return}e.preventDefault();if(!e.repeat)advance()}else if(e.key==='Escape'&&state.mode==='exploration'&&typeof commandSelection!=='undefined'&&commandSelection){commandSelection=null;renderCommands()}else if(e.key==='Escape'&&state.mode==='menu')closePanel()});render();
 </script><script src="data/lighting.js"></script><script src="data/presentation.js"></script><script src="data/commands.js"></script><script src="data/story-ui.js"></script><script src="data/notebook-ui.js"></script><script src="data/theme.js"></script><script src="data/manga.js"></script></body></html>

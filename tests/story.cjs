@@ -60,7 +60,7 @@ run('closePanel();textSettings.index=3;textSettings.auto=true;Saves.write(3,Save
 for(const slot of [1,2,3]){
  const expected=JSON.parse(run(`JSON.stringify(Saves.read(${slot}))`));run('showTitle()');click('途中から');
  const b=elements.panelBody.children.find(b=>b.textContent.startsWith('記録'+slot+'：'));assert(b);b.onclick();click('再開する');
- assert.deepEqual(JSON.parse(run('JSON.stringify({room:state.room,flags:state.flags,inventory:state.inventory,visits:state.visits,completedEvents:state.completedEvents,examined:state.examined,notebook:state.notebook})')),expected.progress);
+ assert.deepEqual(JSON.parse(run('JSON.stringify({room:state.room,flags:state.flags,inventory:state.inventory,visits:state.visits,completedEvents:state.completedEvents,examined:state.examined,listened:state.listened,notebook:state.notebook})')),expected.progress);
  assert.deepEqual(JSON.parse(run('JSON.stringify({textSpeed:textSettings.index,auto:textSettings.auto})')),expected.settings);
 }
 const storageBefore=Array.from(storage.entries());begin();assert.deepEqual(Array.from(storage.entries()),storageBefore);
@@ -90,16 +90,15 @@ run('SCENARIO.rooms.classroom.occupants=[{id:"saiji",name:"サイジ"},{id:"memb
 click('見せる');click('ナカコのスケッチブック');assert(!elements.commandChildren.children.some(b=>b.textContent==='サイジ'));click('部員');assert.equal(elements.itemGraphic.dataset.item,'nakako-torn');end();run('delete SCENARIO.rooms.classroom.occupants');
 run('inspectItem("オカボーのスケッチブック")');assert.equal(elements.line.textContent,'なんだこれ！？');assert.equal(elements.itemGraphic.dataset.item,'okabo-graffiti');end();
 assert(!elements.itemGraphic.classList.contains('window-out'));
-// There is no early callback while the dialogue/portraits move out.
+// FIX2: only writing disappears; completion is synchronous and actors stay.
 sandbox.matchMedia=()=>({matches:false});let exitDone=0;run('deductionActive=false;state.mode="dialogue"');sandbox.exitCallback=()=>exitDone++;
-run('moveOutDialogue(exitCallback)');assert.equal(exitDone,0);assert(elements.dialogue.classList.contains('leaving'));
-timed.filter(t=>t.ms===440).at(-1).fn();assert.equal(exitDone,1);assert(elements.characterStage.classList.contains('hidden'));
+run('moveOutDialogue(exitCallback)');assert.equal(exitDone,1);assert(!elements.dialogue.classList.contains('leaving'));assert(!elements.characterStage.classList.contains('hidden'));assert.equal(elements.line.textContent,'');
 run('resetPresentation();showWindow("panel",true);showWindow("panel",false);showWindow("panel",false)');
 const oldHide=timed.filter(t=>t.ms===240).at(-1);assert(oldHide);run('showWindow("panel",true)');oldHide.fn();assert(!elements.panel.classList.contains('hidden'));
 let resultDone=0;sandbox.resultCallback=()=>resultDone++;run('correctPresentation(false,resultCallback)');assert.equal(elements.resultText.textContent,'正解！');assert.equal(resultDone,0);
 timed.filter(t=>t.ms===1180).at(-1).fn();assert(elements.deductionResult.classList.contains('result-out'));assert.equal(resultDone,0);
 timed.filter(t=>t.ms===1360).at(-1).fn();assert.equal(resultDone,1);
 run('correctPresentation(true,resultCallback)');assert.deepEqual(elements.resultText.children.map(e=>e.textContent),['解','明']);assert(elements.deductionResult.classList.contains('solved'));
-console.log('PASS: no-repeat incident priority then ten daily chats per scene, saveable chat history, show excludes Saiji, item discovery/inspection/show variants, narration portraits, cancellable move-out, success/reveal choreography.');
+console.log('PASS: no-repeat incident priority then ten daily chats per scene, saveable chat history, show excludes Saiji, item discovery/inspection/show variants, narration portraits, instant writing dismissal with persistent actors, success/reveal choreography.');
 
 assert(timed.some(t=>t.ms===2800));
