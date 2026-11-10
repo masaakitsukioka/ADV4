@@ -17,7 +17,7 @@ function hideItemGraphic(immediate=false){
 function showItemGraphic(key,label){
  const generation=++itemGraphicGeneration;const path='assets/items/'+key+'.png';
  $('itemGraphic').dataset.item=key;$('itemGraphic').setAttribute('aria-label',label||'手がかり');$('itemCaption').textContent=label||'';showWindow('itemGraphic',true);
- loadImage(path).then(image=>{if(generation!==itemGraphicGeneration||!image)return;const c=$('itemCanvas'),ctx=c.getContext('2d');if(!ctx?.drawImage)return;ctx.imageSmoothingEnabled=false;ctx.clearRect(0,0,96,96);ctx.drawImage(image,0,0,96,96)});
+ loadImage(path).then(image=>{if(generation!==itemGraphicGeneration||!image)return;const c=$('itemCanvas'),ctx=c.getContext('2d');if(!ctx?.drawImage)return;ctx.imageSmoothingEnabled=true;ctx.clearRect(0,0,96,96);ctx.drawImage(image,0,0,96,96)});
 }
 function itemGraphicFor(item){return SCENARIO.items[item]?.graphic?.[state.flags.okaboChecked?'examined':'closed']||SCENARIO.items[item]?.graphic?.closed}
 function stopTalking(){
@@ -36,6 +36,28 @@ function drawHarukiMouth(ctx,base,frame){
   if(colors[pixel]){ctx.fillStyle=colors[pixel];ctx.fillRect(51+x,65+y,1,1)}
  }));
 }
+// Full-canvas transparent mouth overlays share the portrait's origin and dimensions.
+// Legacy 104x144 assets keep their existing animation until the artwork is replaced.
+function drawTalkingPortrait(ctx,base,id,frame,strip,overlay){
+ const {width,height}=ASSETS.characterResolution;
+ ctx.imageSmoothingEnabled=true;ctx.clearRect(0,0,width,height);
+ ctx.drawImage(base,0,0,width,height);
+ if(!frame)return;
+ if(overlay&&overlay.width===width&&overlay.height===height){ctx.drawImage(overlay,0,0,width,height);return}
+ if(strip&&strip.width===width*3&&strip.height===height){ctx.drawImage(strip,frame*width,0,width,height,0,0,width,height);return}
+ // Never apply old mouth coordinates to a new portrait.
+ if(base.width!==104||base.height!==144)return;
+ const temp=document.createElement('canvas');temp.width=104;temp.height=144;
+ const tc=temp.getContext('2d');tc.imageSmoothingEnabled=true;tc.drawImage(base,0,0,104,144);
+ if(id==='haruki')drawHarukiMouth(tc,base,frame);
+ else if(strip&&strip.width===312&&strip.height===144){
+  const patch=document.createElement('canvas');patch.width=104;patch.height=144;
+  const pc=patch.getContext('2d');pc.imageSmoothingEnabled=true;
+  pc.drawImage(strip,frame*104,0,104,144,0,0,104,144);
+  const {source:a,target:b}=mouthGeometry[id];tc.drawImage(patch,a.x,a.y,a.w,a.h,b.x,b.y,b.w,b.h);
+ }
+ ctx.clearRect(0,0,width,height);ctx.drawImage(temp,0,0,width,height);
+}
 function startTalking(name,emotion,text){
  stopTalking();if(!['ハルキ','サイジ'].includes(name))return;
  const id=name==='ハルキ'?'haruki':'saiji',key=ASSETS.emotionMap[emotion]||'normal',generation=talkGeneration;
@@ -43,14 +65,14 @@ function startTalking(name,emotion,text){
  const basePath=ASSETS.characters[id][key],stripPath='assets/characters/talk/'+id+'-'+key+'-mouths.png';
  const duration=Math.min(4500,Math.max(500,Array.from(text).length*(textSettings.index===3?35:textSettings.speeds[textSettings.index])));
  const until=Date.now()+duration;const sequence=[0,1,2,1];let step=0;
- const images=Promise.all([loadImage(basePath),id==='haruki'?Promise.resolve(null):loadImage(stripPath)]);
+ const frames=ASSETS.mouthFrames?.[id]?.[key]||[];
+ const images=Promise.all([loadImage(basePath),id==='haruki'?Promise.resolve(null):loadImage(stripPath),loadImage(frames[1]),loadImage(frames[2])]);
  async function draw(frame){
-  const [base,strip]=await images;if(generation!==talkGeneration||!base||(id!=='haruki'&&!strip))return;
+  const [base,strip,open1,open2]=await images;if(generation!==talkGeneration||!base)return;
   const ctx=canvas.getContext('2d');if(!ctx?.drawImage)return;
-  const geom=mouthGeometry[id];ctx.imageSmoothingEnabled=false;ctx.clearRect(0,0,104,144);ctx.drawImage(base,0,0,104,144);
-  if(id==='haruki')drawHarukiMouth(ctx,base,frame);
-  else if(frame){const cell=strip.width/3;const temp=document.createElement('canvas');temp.width=104;temp.height=144;const tc=temp.getContext('2d');tc.imageSmoothingEnabled=false;tc.drawImage(strip,frame*cell,0,cell,strip.height,0,0,104,144);
-   const {source:a,target:b}=geom;ctx.drawImage(temp,a.x,a.y,a.w,a.h,b.x,b.y,b.w,b.h)}
+  const {width,height}=ASSETS.characterResolution;
+  if(canvas.width!==width)canvas.width=width;if(canvas.height!==height)canvas.height=height;
+  drawTalkingPortrait(ctx,base,id,frame,strip,frame===1?open1:open2);
   canvas.classList.remove('hidden');canvas.dataset.frame=String(frame);
  }
  function tick(){if(generation!==talkGeneration)return;const frame=sequence[step++%sequence.length];canvas.dataset.frame=String(frame);draw(frame);if(!typingDone||Date.now()<until)talkTimer=setTimeout(tick,120);else{draw(0);talkTimer=setTimeout(stopTalking,120)}}

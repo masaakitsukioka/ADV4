@@ -41,6 +41,7 @@ const MEASURE=()=>{
    if(!deferred(e)&&top&&top!==e&&!e.contains(top)&&!top.contains(e)&&getComputedStyle(e).pointerEvents!=='none')out.obscured.push(label(e)+' ← '+label(top));
   }
  }
+ out.graphics={resolution:ASSETS.resolution,portraits:['haruki','saiji'].map(id=>{const art=document.getElementById(id+'Art'),talk=document.getElementById(id+'Talk');return{id,visible:visible(art),heightRatio:art.getBoundingClientRect().height/vh,imageRendering:getComputedStyle(art).imageRendering,mouthCanvas:[talk.width,talk.height]}})};
  return out;
 };
 

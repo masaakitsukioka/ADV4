@@ -318,7 +318,7 @@ if(!SCENARIO||!SCENARIO.rooms||!SCENARIO.investigations){throw new Error('シナ
 const DATA={rooms:SCENARIO.rooms};
 
 // v0.7: external asset paths are replaceable; procedural backgrounds and emoji remain fallbacks.
-const ASSETS={resolution:{width:1920,height:1080},scenes:{
+const ASSETS={characterResolution:{width:1040,height:1440},mouthFrames:{},resolution:{width:1920,height:1080},scenes:{
  classroom:{background:'assets/backgrounds/classroom.png',targets:{shelf:{x:1452,y:504},desk:{x:714,y:714},window:{x:210,y:420},prepDoor:{x:750,y:498},floor:{x:1470,y:900}}},
  corridor:{background:'assets/backgrounds/corridor.png',targets:{notice:{x:1500,y:432},door:{x:870,y:624}}}
 },characters:{
