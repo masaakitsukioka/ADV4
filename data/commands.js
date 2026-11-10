@@ -49,6 +49,7 @@ function searchPerson(person){
 }
 function chooseCommand(kind){
  if(state.mode!=='exploration')return;
+ commandSelection=kind;
  if(kind==='chat'){randomConversation();return}
  if(kind==='show'&&!state.inventory.length){commandSpeak([['','見せられるアイテムをまだ持っていない。']]);return}
  if(kind==='listen'&&!(room().occupants||[]).length){commandSpeak([['','ここには誰もいない。']]);return}
@@ -61,10 +62,10 @@ function renderCommands(){
  if(!visible){commandSelection=null;return}
  const headings={listen:'聞く',investigate:'調べる',search:'探す',move:'移動',show:'見せる',showRecipient:'誰に見せる？'};
  for(const b of $('commandRoots').children){
-  const active=b.dataset.command===(commandSelection||'investigate');b.classList.toggle('active',active);b.setAttribute('aria-expanded',String(active));
+  const active=b.dataset.command===commandSelection;b.classList.toggle('active',active);b.setAttribute('aria-expanded',String(active));
  }
- showWindow('commandDetail',!!commandSelection);
- if(!commandSelection){if(typeof decorateMangaCommands==='function')decorateMangaCommands();return;}
+ showWindow('commandDetail',!!commandSelection&&commandSelection!=='chat');
+ if(!commandSelection||commandSelection==='chat'){$('commandChildren').replaceChildren();if(typeof decorateMangaCommands==='function')decorateMangaCommands();return;}
  $('commandHeading').textContent=headings[commandSelection];
  const box=$('commandChildren');box.replaceChildren();
  let entries=[];

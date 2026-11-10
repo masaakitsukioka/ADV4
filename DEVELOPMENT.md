@@ -7,7 +7,7 @@
 GitHub: https://github.com/masaakitsukioka/ADV4
 
 作業前に、このフォルダで `git status` を確認し、未保存の変更がなければ `git pull --ff-only origin main` を実行します。
-作業後は `git add .`、`git commit -m "変更内容"`、`git push origin main` を実行します。
+作業後は `git add .`、`git commit -m "変更内容"` でコミットします。**GitHub への push は自動でしない**（作者の決定 2026-11-10）。push は作者が必要な時に自分で `git push origin main` を実行します。
 各PCにはGitをインストールし、このリポジトリに書き込めるGitHubアカウントで認証してください。
 SSDの接続パスはPCごとに異なるため、実際のADV4フォルダを選んでください。
 別PCへの移動前には作業を保存し、SSDを安全に取り外してください。

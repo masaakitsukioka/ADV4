@@ -149,3 +149,60 @@ body,#game{background:#f7f5ee;color:#141414}
 @media(orientation:portrait) and (max-width:700px){#mangaStage #commandChildren.many-targets{max-height:650px;width:290px;padding-left:20px;padding-right:35px}}
 
 @media(orientation:portrait) and (max-width:700px){#game #mangaStage #characterStage .character-card:not(.active){visibility:hidden!important}}
+/* FIX1: one manuscript dialogue in exploration and deduction. */
+#game.deduction-layout #mangaStage{z-index:7;background:none}
+#game.deduction-layout #mangaStage #panel{position:absolute;inset:auto;left:385px;top:90px;width:1150px;max-height:680px;height:auto;margin:0;padding:26px 30px;z-index:7;background:#fff!important;background-image:none!important;border:3px solid #141414;box-shadow:6px 7px #14141435;clip-path:none;overflow:auto;color:#141414;font:26px var(--font-body)}
+#game.deduction-layout #mangaStage #panel h2{font:700 32px/1.4 var(--font-head);margin:0 0 18px;padding:0 0 16px;border-bottom:2px solid #141414}
+#game.deduction-layout #mangaStage #panel .deduction-choice{position:relative;display:block;width:100%;min-height:max(60px,calc(37px / var(--manga-scale)));margin:14px 0!important;padding:12px 24px;border:0;background:#fff!important;color:#141414!important;box-shadow:3px 4px #14141430;font:700 max(27px,calc(14px / var(--manga-scale)))/1.3 var(--font-head);text-align:left}
+#game.deduction-layout #mangaStage #panel .deduction-choice.paper-selected::after{content:'';position:absolute;inset:-7px -12px;background:url('../assets/ui/manga/topic-circle.png') center/100% 100% no-repeat;pointer-events:none}
+#game.deduction-layout #mangaStage #panel .answer-sentence{font-size:max(26px,calc(13px / var(--manga-scale)));gap:10px;margin-bottom:14px}
+#game.deduction-layout #mangaStage #panel .answer-slot,#game.deduction-layout #mangaStage #panel .answer-option,#game.deduction-layout #mangaStage #panel .answer-confirm{min-height:max(60px,calc(37px / var(--manga-scale)));font-size:max(26px,calc(13px / var(--manga-scale)));padding:8px;margin:0}
+#game.deduction-layout #mangaStage #panel .answer-slot,#game.deduction-layout #mangaStage #panel .answer-option{background:#fff!important;color:#141414!important;border:1px solid #141414!important;box-shadow:2px 3px #14141425}
+#game.deduction-layout #mangaStage #panel .answer-slot.active{outline:none;border-color:#141414!important}
+#game.deduction-layout #mangaStage #panel .answer-option.used{color:#685f55!important;text-decoration:line-through}
+#game.deduction-layout #mangaStage #panel .answer-pool{gap:10px;padding:10px;background:#fff;border:1px solid #141414}
+#game.deduction-layout #mangaStage #panel .answer-confirm{margin-top:16px;background:#fff!important;color:#141414!important;border:2px solid #141414;box-shadow:3px 4px #14141430}
+#game.deduction-layout #mangaStage #panel .answer-confirm:focus-visible{outline:3px solid #b0301a}
+/* Rows own their full height, including enlarged cutouts; the adjacent rows flow away. */
+#mangaStage #commandRoots{display:flex;flex-direction:column;align-items:flex-start;gap:20px;height:auto;padding-top:10px}
+#game #mangaStage #commandRoots button{position:relative;top:auto!important;height:auto;flex:none;min-height:max(60px,calc(37px / var(--manga-scale)))!important}
+/* Conversation choices share the destination-paper treatment. */
+#mangaStage #dialogueChoices{gap:20px;align-items:flex-start}
+#mangaStage #dialogueChoices button{position:relative;flex:0 1 auto;min-width:180px;max-width:100%;padding:10px 24px;border:0;background:#fff;color:#141414;box-shadow:4px 5px #14141430;transform:rotate(var(--choice-turn,0deg));overflow:visible}
+#mangaStage #dialogueChoices button:hover,#mangaStage #dialogueChoices button:focus-visible{outline:none}
+#mangaStage #dialogueChoices .choice-selected::after{content:'';position:absolute;inset:-12px -18px;background:url('../assets/ui/manga/topic-circle.png') center/100% 100% no-repeat;pointer-events:none}
+@media(orientation:landscape) and (max-height:460px){#mangaStage:not(.has-dialogue) #characterStage{display:none!important}}
+@media(orientation:portrait) and (min-width:701px) and (max-width:900px){#mangaStage:not(.has-dialogue) #characterStage{display:none!important}}
+@media(orientation:portrait) and (max-width:700px){
+ #mangaStage #commandRoots{gap:20px}
+ #game #mangaStage #commandRoots button{min-height:max(90px,calc(37px / var(--manga-scale)))!important}
+ #game.deduction-layout #mangaStage #panel{left:40px;top:170px;width:820px;max-height:1120px;padding:24px}
+ #game.deduction-layout #mangaStage #panel h2{font-size:42px}
+ #game.deduction-layout #mangaStage #panel .answer-pool{grid-template-columns:repeat(3,minmax(0,1fr))}
+ #game.deduction-layout #mangaStage #panel .answer-option{font-size:max(34px,calc(13px / var(--manga-scale)))}
+ #mangaStage #dialogueChoices button{min-height:max(90px,calc(37px / var(--manga-scale)))}
+}
+#mangaStage #commandRoots{gap:12px;padding-top:0}
+#game #mangaStage #commandRoots button{min-height:max(37px,calc(37px / var(--manga-scale)))!important}
+@media(orientation:portrait) and (max-width:700px){#game #mangaStage #commandRoots button{min-height:max(90px,calc(37px / var(--manga-scale)))!important}}
+#mangaStage #commandRoots{gap:17px}
+#game.deduction-layout #mangaStage #panel{max-height:720px;padding:20px 24px}
+#game.deduction-layout #mangaStage #panel .answer-sentence{grid-template-columns:minmax(0,1fr) auto minmax(0,1fr) auto minmax(0,1fr) auto}
+#game.deduction-layout #mangaStage #panel .answer-slot[data-slot="2"]{grid-column:auto}
+@media(orientation:landscape) and (max-height:460px){
+ #game.deduction-layout #mangaStage #panel h2{margin-bottom:12px;padding-bottom:10px;font-size:max(32px,calc(13px / var(--manga-scale)))}
+ #game.deduction-layout #mangaStage #panel .answer-pool{gap:5px;padding:6px}
+ #game.deduction-layout #mangaStage #panel .answer-sentence{margin-bottom:8px}
+ #game.deduction-layout #mangaStage #panel .answer-confirm{margin-top:10px}
+}
+@media(orientation:portrait) and (max-width:700px){
+ #game.deduction-layout #mangaStage #panel{max-height:1120px;z-index:13}
+ #game.deduction-layout #mangaStage #panel .answer-sentence{grid-template-columns:minmax(0,1fr) auto minmax(0,1fr) auto}
+ #game.deduction-layout #mangaStage #panel .answer-slot[data-slot="2"]{grid-column:auto}
+}
+#game.deduction-layout #mangaStage #nextMark{display:inline-block}
+#mangaStage.deducing #scene,#mangaStage.deducing #mangaHeader,#mangaStage.deducing #mangaArrow{display:none!important}
+
+#game.deduction-layout #mangaStage #panel .answer-slot,#game.deduction-layout #mangaStage #panel .answer-option,#game.deduction-layout #mangaStage #panel .answer-confirm{position:relative;overflow:visible}
+#game.deduction-layout #mangaStage #panel .answer-slot.active::after,#game.deduction-layout #mangaStage #panel .answer-option:focus-visible::after,#game.deduction-layout #mangaStage #panel .answer-confirm:focus-visible::after{content:'';position:absolute;inset:-6px -8px;background:url('../assets/ui/manga/topic-circle.png') center/100% 100% no-repeat;pointer-events:none}
+#game.deduction-layout #mangaStage #panel .answer-confirm:focus-visible{outline:none}

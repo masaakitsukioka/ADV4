@@ -1,5 +1,6 @@
 // UI_DEBUG A1-A5の回帰検証。ADV_URL / CHROME_PATH / OUT を指定できる。
 const{chromium}=require('playwright'),assert=require('assert'),fs=require('fs'),path=require('path');
+const {MEASURE}=require('./ui-audit.cjs');
 const sizes=[[1920,1080],[1280,720],[1024,768],[768,1024],[844,390],[667,375],[390,844],[375,667],[360,640]];
 const out=process.env.OUT||path.resolve(__dirname,'../design/ui-layout');fs.mkdirSync(out,{recursive:true});
 (async()=>{const browser=await chromium.launch({...(process.env.CHROME_PATH?{executablePath:process.env.CHROME_PATH}:{}),headless:true});
@@ -12,6 +13,11 @@ const graphics=await page.evaluate(()=>{const art=$('harukiArt'),r=art.getBoundi
 assert.deepEqual(graphics.resolution,{width:1920,height:1080});assert.deepEqual(graphics.canvas,[1040,1440]);assert(Math.abs(graphics.portraitHeight-590*(width<=700&&height>width?Math.min(width/900,height/1950):Math.min(width/1920,height/1080)))<1,`${width}: portrait height must match the approved logical stage`);assert.equal(graphics.rendering,'auto');if(width<=700&&height>width)assert(graphics.inactiveHidden);
 await page.screenshot({path:path.join(out,`${width}x${height}-dialogue.png`)});
 await page.evaluate(()=>{for(let i=0;i<200&&state.mode==='dialogue';i++)advance();state.flags.okaboChecked=true;startDeduction();state.deductionStep=4;buildDeduction()});
+for(let q=0;q<5;q++){
+ const expected=await page.evaluate(q=>{state.deductionStep=q;buildDeduction();return questions[q].lead||questions[q].q},q),pages=await page.evaluate(()=>state.dialogue.length),text=[];
+ for(let i=0;i<pages;i++){text.push(await page.evaluate(i=>{state.lineIndex=i;displayLine();return $('line').textContent},i));const audit=await page.evaluate(MEASURE);assert.deepEqual(audit.dialogue,[],`${width}: deduction q${q+1} page ${i+1} clips or narrows`)}
+ assert.equal(text.join('').replace(/\n/g,''),expected.replace(/\n/g,''),`${width}: deduction text lost`);
+}
 const q5=await page.evaluate(()=>{const panel=$('panel'),r=panel.getBoundingClientRect();return{scroll:panel.scrollHeight,client:panel.clientHeight,buttons:[...panel.querySelectorAll('button')].filter(b=>b.getClientRects().length).map(b=>{const br=b.getBoundingClientRect();return{text:b.textContent,height:br.height,top:br.top,bottom:br.bottom,inPanel:br.top>=r.top&&br.bottom<=r.bottom}})}});
 assert(q5.scroll<=q5.client+1,`${width}: q5 requires scroll`);assert(q5.buttons.every(b=>b.height>=36&&b.inPanel),`${width}: q5 button hidden/small`);await page.screenshot({path:path.join(out,`${width}x${height}-q5.png`)});
 await page.evaluate(()=>{deductionActive=false;closePanel();Object.assign(state.flags,{layoutChecked:true,dutyChecked:true});menu();selectNotebook('memo')});

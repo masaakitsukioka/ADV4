@@ -30,10 +30,10 @@ click('机');end();click('調べる');assert(allButtons().some(b=>b.textContent=
 check('!state.flags.layoutChecked');click('作品棚');end();check('state.inventory.length===1');
 click('調べる');click('作品棚');end();check('state.inventory.length===1');
 click('調べる');click('モチーフの配置図');end();check('state.flags.layoutChecked && state.flags.personOkabo');
-click('移動');click('旧校舎廊下');end();check('commandSelection===null');
+click('移動');click('旧校舎廊下');end();check('commandSelection==="investigate"');
 click('調べる');assert(!allButtons().some(b=>b.textContent.includes('スケッチブック')));
 click('掲示板');end();check('state.flags.dutyChecked');
-click('移動');click('美術準備室');check('commandSelection===null');
+click('移動');click('美術準備室');check('commandSelection==="investigate"');
 click('調べる');click('作品棚');end();check('state.inventory.length===2');
 run('Saves.write(2,Saves.snapshot(state,textSettings))');
 const beforeChat=run('JSON.stringify({inventory:state.inventory,room:state.room,layoutChecked:state.flags.layoutChecked})');

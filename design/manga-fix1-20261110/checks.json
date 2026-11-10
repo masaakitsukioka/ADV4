@@ -1,0 +1,221 @@
+{
+  "commands": [
+    {
+      "selected": "move",
+      "gaps": [
+        {
+          "before": "move",
+          "after": "listen",
+          "gap": 6.8953857421875
+        },
+        {
+          "before": "listen",
+          "after": "investigate",
+          "gap": 18.95526123046875
+        },
+        {
+          "before": "investigate",
+          "after": "search",
+          "gap": 11.98150634765625
+        },
+        {
+          "before": "search",
+          "after": "show",
+          "gap": 8.106536865234375
+        },
+        {
+          "before": "show",
+          "after": "chat",
+          "gap": 20.617034912109375
+        }
+      ]
+    },
+    {
+      "selected": "listen",
+      "gaps": [
+        {
+          "before": "move",
+          "after": "listen",
+          "gap": 6.386474609375
+        },
+        {
+          "before": "listen",
+          "after": "investigate",
+          "gap": 18.35723876953125
+        },
+        {
+          "before": "investigate",
+          "after": "search",
+          "gap": 11.98150634765625
+        },
+        {
+          "before": "search",
+          "after": "show",
+          "gap": 8.106536865234375
+        },
+        {
+          "before": "show",
+          "after": "chat",
+          "gap": 20.617034912109375
+        }
+      ]
+    },
+    {
+      "selected": "investigate",
+      "gaps": [
+        {
+          "before": "move",
+          "after": "listen",
+          "gap": 7.533355712890625
+        },
+        {
+          "before": "listen",
+          "after": "investigate",
+          "gap": 18.317276000976562
+        },
+        {
+          "before": "investigate",
+          "after": "search",
+          "gap": 10.7379150390625
+        },
+        {
+          "before": "search",
+          "after": "show",
+          "gap": 8.106536865234375
+        },
+        {
+          "before": "show",
+          "after": "chat",
+          "gap": 20.617034912109375
+        }
+      ]
+    },
+    {
+      "selected": "search",
+      "gaps": [
+        {
+          "before": "move",
+          "after": "listen",
+          "gap": 7.533355712890625
+        },
+        {
+          "before": "listen",
+          "after": "investigate",
+          "gap": 18.955245971679688
+        },
+        {
+          "before": "investigate",
+          "after": "search",
+          "gap": 10.996490478515625
+        },
+        {
+          "before": "search",
+          "after": "show",
+          "gap": 7.12152099609375
+        },
+        {
+          "before": "show",
+          "after": "chat",
+          "gap": 20.617034912109375
+        }
+      ]
+    },
+    {
+      "selected": "show",
+      "gaps": [
+        {
+          "before": "move",
+          "after": "listen",
+          "gap": 7.533355712890625
+        },
+        {
+          "before": "listen",
+          "after": "investigate",
+          "gap": 18.955245971679688
+        },
+        {
+          "before": "investigate",
+          "after": "search",
+          "gap": 11.98150634765625
+        },
+        {
+          "before": "search",
+          "after": "show",
+          "gap": 7.46856689453125
+        },
+        {
+          "before": "show",
+          "after": "chat",
+          "gap": 19.97906494140625
+        }
+      ]
+    },
+    {
+      "selected": "chat",
+      "gaps": [
+        {
+          "before": "move",
+          "after": "listen",
+          "gap": 7.533355712890625
+        },
+        {
+          "before": "listen",
+          "after": "investigate",
+          "gap": 18.955245971679688
+        },
+        {
+          "before": "investigate",
+          "after": "search",
+          "gap": 11.98150634765625
+        },
+        {
+          "before": "search",
+          "after": "show",
+          "gap": 8.106536865234375
+        },
+        {
+          "before": "show",
+          "after": "chat",
+          "gap": 22.85528564453125
+        }
+      ]
+    }
+  ],
+  "deduction": [
+    {
+      "question": 1,
+      "page": 1,
+      "width": 900,
+      "font": 31,
+      "parent": "mangaStage"
+    },
+    {
+      "question": 2,
+      "page": 1,
+      "width": 900,
+      "font": 31,
+      "parent": "mangaStage"
+    },
+    {
+      "question": 3,
+      "page": 1,
+      "width": 900,
+      "font": 31,
+      "parent": "mangaStage"
+    },
+    {
+      "question": 4,
+      "page": 1,
+      "width": 900,
+      "font": 31,
+      "parent": "mangaStage"
+    },
+    {
+      "question": 5,
+      "page": 1,
+      "width": 900,
+      "font": 31,
+      "parent": "mangaStage"
+    }
+  ]
+}
