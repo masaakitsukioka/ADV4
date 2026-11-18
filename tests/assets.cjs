@@ -20,14 +20,14 @@ for(const room of ['classroom','corridor']){
  for(const [id,target] of Object.entries(assets.scenes[room].targets))assert.deepEqual([target.x,target.y],Array.isArray(reference.scenes[room].targets[id])?reference.scenes[room].targets[id]:Object.values(reference.scenes[room].targets[id]));
 }
 for(const person of ['haruki','saiji'])for(const mood of ['normal','surprised','thinking','confident']){
- const file=assets.characters[person][mood];assert.equal(file,reference.characters[person][mood]);all.push([file,[[1040,1440]]]);
+ const file=assets.characters[person][mood];assert.equal(file,reference.characters[person][mood]);all.push([file,[[1280,1440]]]);
 }
 assert.deepEqual(assets.resolution,{width:1920,height:1080});assert.deepEqual(assets.resolution,reference.resolution);
-assert.deepEqual(assets.characterResolution,{width:1040,height:1440});assert.deepEqual(assets.characterResolution,reference.characterResolution);
+assert.deepEqual(assets.characterResolution,{width:1280,height:1440});assert.deepEqual(assets.characterResolution,reference.characterResolution);
 for(const [file,allowed] of all){const png=fs.readFileSync(path.join(base,file));assert.equal(png.toString('hex',0,8),'89504e470d0a1a0a');const w=png.readUInt32BE(16),h=png.readUInt32BE(20);assert(allowed.some(([aw,ah])=>w===aw&&h===ah),`${file}: unexpected ${w}x${h}`)}
 assert.equal(all.length,10);
 assert.deepEqual(assets.mouthFrames,reference.mouthFrames);assert.deepEqual(assets.blinkFrames,reference.blinkFrames);
-for(const kind of ['mouthFrames','blinkFrames'])for(const person of ['haruki','saiji'])for(const mood of ['normal','surprised','thinking','confident'])for(const file of assets[kind][person][mood].slice(1)){const png=fs.readFileSync(path.join(base,file));assert.equal(png.readUInt32BE(16),1040);assert.equal(png.readUInt32BE(20),1440)}
+for(const kind of ['mouthFrames','blinkFrames'])for(const person of ['haruki','saiji'])for(const mood of ['normal','surprised','thinking','confident'])for(const file of assets[kind][person][mood].slice(1)){const png=fs.readFileSync(path.join(base,file));assert.equal(png.readUInt32BE(16),1280);assert.equal(png.readUInt32BE(20),1440)}
 for(const file of Object.values(reference.windowMasks)){const png=fs.readFileSync(path.join(base,file));assert.equal(png.readUInt32BE(16),1920);assert.equal(png.readUInt32BE(20),1080)}
 assert(!html.includes('.svg'));assert(!html.includes('🧑🏻'));assert(!html.includes('background:#181b28!important'));
 for(const size of [{width:1280,height:800},{width:844,height:390},{width:667,height:375}]){

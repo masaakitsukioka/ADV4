@@ -33,9 +33,9 @@ body,#game{background:#f7f5ee;color:#141414}
 #mangaStage #dialogueChoices button:hover,#mangaStage #dialogueChoices button:focus-visible{outline:3px solid #d0372a}
 /* Full aligned portraits; switch entire images, never composite mouth/eye patches. */
 #game #mangaStage #characterStage{position:absolute;inset:0!important;width:1920px!important;height:1080px!important;z-index:12;display:block;pointer-events:none;transform:none;overflow:visible}
-#game #mangaStage .character-card{position:absolute!important;width:426px!important;height:590px!important;top:540px!important;left:-12px!important;right:auto!important;bottom:auto!important;padding:0;border:0;background:none;box-shadow:none;clip-path:none;transform:none!important;opacity:1!important;filter:drop-shadow(3px 0 0 #fff) drop-shadow(-3px 0 0 #fff) drop-shadow(0 3px 0 #fff) drop-shadow(0 -3px 0 #fff);overflow:visible;visibility:visible}
-#game #mangaStage #saijiCard{left:1521px!important;top:533px!important}
-#game #mangaStage .character-art{position:absolute;inset:0!important;width:426px!important;height:590px!important;max-width:none!important;max-height:none!important;transform:none!important;object-fit:contain;object-position:center}
+#game #mangaStage .character-card{position:absolute!important;width:524px!important;height:590px!important;top:540px!important;left:-12px!important;right:auto!important;bottom:auto!important;padding:0;border:0;background:none;box-shadow:none;clip-path:none;transform:none!important;opacity:1!important;filter:drop-shadow(3px 0 0 #fff) drop-shadow(-3px 0 0 #fff) drop-shadow(0 3px 0 #fff) drop-shadow(0 -3px 0 #fff);overflow:visible;visibility:visible}
+#game #mangaStage #saijiCard{left:1423px!important;top:533px!important}
+#game #mangaStage .character-art{position:absolute;inset:0!important;width:524px!important;height:590px!important;max-width:none!important;max-height:none!important;transform:none!important;object-fit:contain;object-position:center}
 #mangaStage .character-name,#mangaStage .emotion{display:none!important}
 .character-card.animating img.character-art{visibility:hidden}
 #mangaStage .asset-fallback{position:absolute;inset:0;background:#808080;color:#fff;font:31px var(--font-body)}
@@ -100,7 +100,8 @@ body,#game{background:#f7f5ee;color:#141414}
  #mangaStage #scene{left:30px;top:110px;width:840px;height:760px}
  #mangaStage #menu{left:650px;top:50px;width:250px;height:76px}
  #game #mangaStage #characterStage{width:900px!important;height:1950px!important}
- #game #mangaStage #characterStage .character-card,#game #mangaStage #characterStage #saijiCard{left:237px!important;top:820px!important}
+ #game #mangaStage #characterStage .character-card{left:237px!important;top:820px!important}
+ #game #mangaStage #characterStage #saijiCard{left:139px!important;top:820px!important}
  #mangaStage .manga-sheet.back{left:30px;top:1390px;width:840px;height:600px}
  #mangaStage .manga-sheet.front{left:30px;top:1410px;width:840px;height:600px}
  #mangaStage .dialogue,#mangaStage .dialogue.open{width:900px;height:1950px}
