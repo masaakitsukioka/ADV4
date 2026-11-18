@@ -71,6 +71,7 @@ function presentDialogueLine(line){
  startTalking(speaker,emotion||'通常',text);
 }
 function resetPresentation(){
+ if(typeof resetMangaDeduction==='function')resetMangaDeduction();
  presentationGeneration++;stopTalking();hideItemGraphic(true);state.itemPresentation=null;
  for(const id of ['questionAnnouncement','deductionResult'])$(id).classList.add('hidden');
  for(const id of ['commandWindows','commandDetail','panel']){delete $(id).dataset.visibilityTarget;$(id).dataset.visibilityToken=String(Number($(id).dataset.visibilityToken||0)+1);$(id).classList.remove('window-out');$(id).classList.remove('window-in')}

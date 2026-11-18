@@ -14,10 +14,10 @@ function renderManga(){
  const deducing=typeof deductionActive!=='undefined'&&deductionActive;
  const mailDialogue=typeof notebookOpen!=='undefined'&&notebookOpen&&state.mode==='dialogue';
  mangaStage.classList.toggle('mail-dialogue',mailDialogue);
- for(const id of ['dialogue','characterStage'])if($(id).parentElement!==mangaStage)mangaStage.appendChild($(id))
+ const content=$('monoLayer')||mangaStage;for(const id of ['dialogue','characterStage'])if($(id).parentElement!==content)content.appendChild($(id))
  mangaStage.classList.toggle('deducing',deducing);
- if(deducing&&$('panel').parentElement!==mangaStage)mangaStage.appendChild($('panel'));
- else if(!deducing&&$('panel').parentElement===mangaStage)$('game').appendChild($('panel'));
+ if(deducing&&$('panel').parentElement!==content)content.appendChild($('panel'));
+ else if(!deducing&&mangaStage.contains($('panel')))$('game').appendChild($('panel'));
  const c=typeof calendar==='function'?calendar():{label:'放課後'},label=c.label;
  const key=({'朝':'asa','昼':'hiru','放課後':'houkago','夕':'houkago','夜':'yoru'})[label]||'hiru';
  $('timeCircle').src='assets/ui/manga/time-circle-'+key+'.png';$('timeCircle').alt=label;

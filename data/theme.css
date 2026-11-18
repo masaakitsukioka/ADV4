@@ -90,11 +90,6 @@ body,button,input,select,.line,.panel,.nb-book,#notebook button{font-family:var(
 #questionAnnouncement{color:var(--t-ink)}
 #questionNumber{color:var(--t-red)}
 
-/* 1920×1080の画像を画面全体にcoverし、その左右半分を閉じる。 */
-.deduction-door{background:none!important;overflow:hidden}
-.deduction-door::before{content:'';position:absolute;top:0;bottom:0;width:200%;background:#808080 url('../assets/backgrounds/deduction-notebook.png') center/cover no-repeat}
-.deduction-door.left::before{left:0}.deduction-door.right::before{right:0}
-
 /* 背景のトリミング倍率と切り離し、人物は常に画面高の80%。 */
 #game #characterStage{height:80dvh!important;bottom:0;top:auto}
 #game .character-card{height:100%!important;width:71.111111dvh!important;flex-shrink:0}

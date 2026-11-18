@@ -1,0 +1,35 @@
+{
+  "reference": "deduce-transition_261118b.mp4",
+  "timing": {
+    "100": {
+      "targetMs": 1000,
+      "capturedMs": 996
+    },
+    "145": {
+      "targetMs": 1450,
+      "capturedMs": 1446
+    },
+    "200": {
+      "targetMs": 2000,
+      "capturedMs": 1980
+    },
+    "350": {
+      "targetMs": 3500,
+      "capturedMs": 3496
+    },
+    "440": {
+      "targetMs": 4400,
+      "capturedMs": 4296
+    },
+    "600": {
+      "targetMs": 6000,
+      "capturedMs": 5996
+    },
+    "070": {
+      "targetMs": 700,
+      "capturedMs": 696
+    }
+  },
+  "frameCount": 237,
+  "errors": []
+}

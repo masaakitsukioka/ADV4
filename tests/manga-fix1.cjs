@@ -32,10 +32,10 @@ require('./browser-harness.cjs')(async(page,assert)=>{
   for(let i=0;i<count;i++){
    const displayed=await page.evaluate(i=>{state.lineIndex=i;displayLine();return $('line').textContent},i);text.push(displayed);
    const audit=await page.evaluate(MEASURE);assert.deepEqual(audit.dialogue,[],`deduction ${q+1} page ${i+1}`);
-   const r=await page.evaluate(()=>({width:$('messageBody').clientWidth,font:parseFloat(getComputedStyle($('line')).fontSize),parent:$('dialogue').parentElement.id}));assert.equal(r.parent,'mangaStage');assert(r.width/r.font>=12);metrics.deduction.push({question:q+1,page:i+1,...r});
+   const r=await page.evaluate(()=>({width:$('messageBody').clientWidth,font:parseFloat(getComputedStyle($('line')).fontSize),parent:$('dialogue').parentElement.id}));assert.equal(r.parent,'monoLayer');assert(r.width/r.font>=12);metrics.deduction.push({question:q+1,page:i+1,...r});
   }
   assert.equal(text.join('').replace(/\n/g,''),original.replace(/\n/g,''),'all deduction text preserved and visible');
-  const selected=q===4?'.answer-slot.active':'.deduction-choice.paper-selected .deduction-choice-label';assert((await page.locator(selected).evaluate(e=>getComputedStyle(e,'::after').backgroundImage)).includes('topic-circle.png'));
+  await page.waitForFunction(()=>document.querySelector('#deduceRedMarks img')?.getAttribute('src')?.includes('topic-circle.png'));assert.equal(await page.locator('#redLayer').evaluate(e=>getComputedStyle(e).filter),'none');
   await page.screenshot({path:path.join(output,`deduction-q${q+1}.png`)});
  }
  // Prove the audit catches the exact two failure classes that escaped the old audit.

@@ -81,6 +81,7 @@ function startDeduction(){
  cancelTextTimers();hideItemGraphic();deductionActive=true;state.deductionStep=0;state.errors=0;state.mode='deduction-transition';
  showWindow('panel',false);$('textControls').classList.add('hidden');$('characterStage').classList.remove('hidden');$('characterStage').classList.add('open');
  $('dialogue').classList.remove('hidden');$('dialogue').classList.add('open');render();
+ if(typeof beginMangaDeduction==='function'){beginMangaDeduction();return}
  $('deductionStage').classList.remove('closing');$('deductionStage').classList.remove('hidden');$('deductionStage').getBoundingClientRect();
  const generation=++deductionTransitionGeneration;
  const finish=()=>{if(generation!==deductionTransitionGeneration)return;$('deductionStart').classList.remove('announce');deduction()};
@@ -97,7 +98,7 @@ function deductionMessage(text){
  $('characterStage').classList.remove('hidden');$('characterStage').classList.add('open');$('textControls').classList.add('hidden');
  state.dialogue=paginateDialogue(state.dialogue);displayLine();if(typeof renderManga==='function')renderManga();
 }
-function deduction(){questionPresentation(buildDeduction)}
+function deduction(){if(typeof nextMangaQuestion==='function')nextMangaQuestion(buildDeduction);else questionPresentation(buildDeduction)}
 function buildDeduction(){
  panel('謎'+(state.deductionStep+1)+' / 5：'+questions[state.deductionStep].q,[]);
  state.mode='deduction';render();
@@ -137,9 +138,9 @@ function buildDeduction(){
   };$('panelBody').appendChild(confirm);
  }else q.opts.forEach((option,i)=>{
   const b=document.createElement('button');b.className='deduction-choice';const text=document.createElement('span');text.className='deduction-choice-label';text.textContent=option;b.appendChild(text);
-  b.onclick=()=>{if(state.mode==='deduction')i===q.correct?correct():wrong()};b.onmouseenter=b.onfocus=()=>{for(const option of $('panelBody').querySelectorAll('.deduction-choice'))option.classList.toggle('paper-selected',option===b)};if(i===0)b.classList.add('paper-selected');$('panelBody').appendChild(b);
+  b.dataset.number=String(i+1);b.onclick=()=>{if(state.mode!=='deduction')return;for(const option of ($('panelBody').querySelectorAll?.('.deduction-choice')||[]))option.classList.toggle('paper-selected',option===b);if(typeof updateDeduceMarks==='function')updateDeduceMarks();i===q.correct?correct():wrong()};b.onmouseenter=b.onfocus=()=>{for(const option of $('panelBody').querySelectorAll('.deduction-choice'))option.classList.toggle('paper-selected',option===b)};if(i===0)b.classList.add('paper-selected');$('panelBody').appendChild(b);
  });
-
+ if(typeof renderDeductionLayout==='function')renderDeductionLayout();
 }
 function showEnding(){
  $('game').classList.add('ending-screen');deductionActive=false;state.mode='ending-out';

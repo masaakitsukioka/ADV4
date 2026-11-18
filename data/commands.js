@@ -58,7 +58,7 @@ function chooseCommand(kind,focusFirst=true){
  if(focusFirst)$('commandChildren').querySelector('button')?.focus();
 }
 function renderCommands(){
- const visible=['exploration','dialogue'].includes(state.mode)&&state.flags.introSeen&&!deductionActive;
+ const visible=((['exploration','dialogue'].includes(state.mode)&&!deductionActive)||state.mode==='deduction-transition')&&state.flags.introSeen;
  showWindow('commandWindows',visible);
  if(!visible){commandSelection=null;commandListKey=null;commandListContext=null;if(typeof updateCommandArrow==='function')updateCommandArrow();return}
  const headings={listen:'聞く',investigate:'調べる',search:'探す',move:'移動',show:'見せる',showRecipient:'誰に見せる？'};

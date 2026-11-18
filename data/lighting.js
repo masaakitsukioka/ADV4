@@ -20,7 +20,7 @@ const lightingJobs=new Map();
 async function applyTimeOfDay(roomId,image){
  const scene=$('scene'),time=lightingTime(typeof calendar==='function'?calendar().label:'放課後'),key=roomId+':'+time;
  scene.dataset.lighting=key;scene.dataset.lightingStatus='base';
- try{const bitmap=await lightingResult(roomId,image,typeof calendar==='function'?calendar().label:'放課後');if(scene.dataset.lighting!==key||state.room!==roomId)return;
+ try{const bitmap=await lightingResult(roomId,image,typeof calendar==='function'?calendar().label:'放課後');if(scene.dataset.lighting!==key||state.room!==roomId||(typeof deductionActive!=='undefined'&&deductionActive))return;
   if(bitmap){const c=$('pixelScene');c.width=bitmap.width;c.height=bitmap.height;c.getContext('2d').drawImage(bitmap,0,0);c.style.visibility='visible'}scene.dataset.lightingStatus='ready';
  }catch(e){scene.dataset.lightingStatus='fallback';console.warn('Background light: base image retained',e)}
 }

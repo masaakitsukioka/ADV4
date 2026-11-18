@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8">
+<title>推理移行の試作</title>
+<style>
+:root{--ink:#141414;--red:#d33a2c;--blue:#4a7fc1}
+html,body{margin:0;width:1920px;height:1080px;overflow:hidden;background:#f5f2ea}
+*{box-sizing:border-box}
+.L{position:absolute;inset:0;width:1920px;height:1080px;pointer-events:none}
+#shake{position:absolute;inset:0;animation:shake1 .7s linear .5s both, shake2 .5s linear 1.5s forwards, shake3 .35s linear 5.82s forwards}
+#mono{position:absolute;inset:0;animation:toMono .35s ease-in .55s both, toColor .12s linear 5.82s forwards, backMono .45s ease-in 6.95s forwards}
+/* 探索の部品が吹き飛ぶ */
+.cmd{animation:fly .36s cubic-bezier(.2,.6,.6,1) both}
+#chars{animation:hop .5s cubic-bezier(.2,.8,.3,1) .5s both, hop .4s cubic-bezier(.2,.8,.3,1) 1.5s forwards}
+@keyframes hop{0%{transform:none}18%{transform:translateY(-46px) scale(1.04)}45%{transform:translateY(10px)}70%{transform:translateY(-6px)}100%{transform:none}}
+#impact{background:#fff;opacity:0;animation:whiteFlash .22s ease-out .5s both}
+#cmdtitle{animation:fade .2s linear .5s both}
+#sheets{animation:sheetsOut .34s cubic-bezier(.4,0,.9,.6) .5s both, sheetsIn .45s cubic-bezier(.2,.9,.3,1.15) 3.3s forwards}
+#menu{animation:menuJolt .5s ease-out .5s both}
+/* 場面のコマ */
+#komaWrap{position:absolute;inset:0;transform-origin:760px 432px;animation:komaPunch .45s cubic-bezier(.2,.8,.3,1) .5s both, komaZoom .5s cubic-bezier(.2,1.5,.3,1) 1.0s forwards}
+#scenetone{animation:fadeIn .35s linear .55s both}
+#koma{position:absolute;left:65px;top:70px;width:1393px;height:724px;overflow:hidden;transform:rotate(.9deg);transform-origin:center}
+#komaWhite{position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(255,255,255,.92) 0%,rgba(255,255,255,.72) 45%,rgba(255,255,255,.35) 100%);animation:fadeIn .25s linear 1.25s both}
+#linesA{position:absolute;inset:0;background:url(lines_koma.png) center/100% 100%;animation:linesIn .3s cubic-bezier(.1,.8,.3,1) 1.25s both, linesOut .45s ease-out 5.85s forwards}
+#linesB{position:absolute;inset:0;background:url(lines_koma2.png) center/100% 100%;opacity:0;animation:linesIn .3s cubic-bezier(.1,.8,.3,1) 5.0s both, linesOut .45s ease-out 5.85s forwards}
+/* ベタフラッシュ */
+#beta{background:#000;opacity:0;animation:betaIn .08s linear .9s both, betaOut .1s linear 1.25s forwards}
+#betaLines{background:url(lines_flash.png) center/100% 100%;opacity:0;transform-origin:center;animation:flashLines2 .45s ease-out .88s both}
+/* 推理開始！ */
+#start{position:absolute;left:300px;top:170px;width:1320px;height:690px;transform-origin:center;opacity:0;animation:stampIn .32s cubic-bezier(.2,1.4,.4,1) 1.35s both, stampOut .26s ease-in 2.55s forwards}
+#start img{position:absolute;inset:0;width:100%;height:100%}
+#start span{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font:900 228px/1 "Noto Serif CJK JP",serif;color:var(--ink);letter-spacing:-.04em;transform:rotate(-6deg) skewX(-6deg);-webkit-text-stroke:4px var(--ink);text-shadow:10px 10px 0 #fff, -5px -5px 0 #fff}
+#burstLines{background:url(lines_burst.png) center/100% 100%;opacity:0;transform-origin:center;animation:flashLines2 .6s ease-out 1.35s both}
+/* 推理の画面の部品 */
+.strip{position:absolute;background:#fbfaf6;box-shadow:4px 5px 0 rgba(0,0,0,.18);padding:6px 24px 10px;font:700 70px/1.15 "Noto Serif CJK JP",serif;color:var(--ink);white-space:nowrap;opacity:0;transform-origin:center}
+.slap{animation:slap .28s cubic-bezier(.2,1.5,.4,1) both}
+.choice{font-size:46px;padding:10px 22px 12px 14px}
+.choice b{display:inline-block;background:var(--ink);color:#fff;font:700 34px/1 "Noto Sans CJK JP",sans-serif;padding:7px 11px;margin-right:16px;vertical-align:6px}
+.pop{animation:pop .24s cubic-bezier(.2,1.6,.4,1) both}
+#qno{position:absolute;left:104px;top:96px;opacity:0;animation:slap .28s cubic-bezier(.2,1.5,.4,1) 2.85s both}
+.cut{display:inline-block;font:900 74px/1 "Noto Serif CJK JP",serif;padding:4px 8px;margin-right:4px;vertical-align:bottom}
+.cut.k{background:var(--ink);color:#fff}.cut.w{background:#fbfaf6;color:var(--ink);box-shadow:3px 3px 0 rgba(0,0,0,.2)}
+.cut.s{font-size:30px;padding:3px 5px}
+#colTitle{position:absolute;left:1510px;top:112px;font:700 22px "Noto Sans CJK JP",sans-serif;color:var(--blue);opacity:0;animation:fadeIn .2s linear 2.75s both}
+.q{position:absolute;opacity:0;animation:drop .36s cubic-bezier(.2,1.4,.4,1) both}
+.q .cut{font-size:44px}.q.now .cut{font-size:78px}
+#vcap{position:absolute;left:1808px;top:150px;writing-mode:vertical-rl;font:500 21px "Noto Sans CJK JP",sans-serif;color:var(--blue);letter-spacing:.08em;opacity:0;animation:fadeIn .3s linear 3.8s both}
+#line{position:absolute;left:618px;top:880px;width:880px;font:300 34px/1.6 "Noto Serif CJK JP",serif;color:var(--ink);opacity:0;animation:fadeIn .25s linear 3.75s both}
+/* 赤入れ（白黒の中で赤だけ残る） */
+#redCircle{position:absolute;left:0;top:0}
+#redCircle ellipse{stroke-dasharray:1500;stroke-dashoffset:1500;animation:draw .45s ease-out 5.15s both}
+#white{background:#fff;opacity:0;animation:whiteFlash .3s ease-out 5.8s both}
+#ok{position:absolute;left:760px;top:330px;width:560px;height:260px;opacity:0;transform-origin:center;animation:stampIn .26s cubic-bezier(.2,1.6,.4,1) 5.85s both, stampOut .2s ease-in 6.75s forwards}
+#ok span{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font:900 150px/1 "Noto Serif CJK JP",serif;color:var(--red);transform:rotate(-8deg);border:12px solid var(--red);border-radius:18px;background:rgba(255,255,255,.75)}
+
+@keyframes shake1{0%{transform:translate(0,0)}6%{transform:translate(-48px,26px) rotate(-1.4deg) scale(1.03)}12%{transform:translate(42px,-34px) rotate(1.2deg) scale(1.03)}20%{transform:translate(-36px,22px) rotate(-.9deg)}28%{transform:translate(32px,24px) rotate(.8deg)}38%{transform:translate(-24px,-18px) rotate(-.5deg)}50%{transform:translate(18px,12px)}62%{transform:translate(-12px,-8px)}76%{transform:translate(7px,5px)}88%{transform:translate(-3px,2px)}100%{transform:translate(0,0)}}
+@keyframes shake2{0%{transform:translate(0,0)}8%{transform:translate(36px,-26px) rotate(1deg) scale(1.025)}18%{transform:translate(-34px,22px) rotate(-.9deg)}30%{transform:translate(26px,16px) rotate(.5deg)}44%{transform:translate(-18px,-12px)}60%{transform:translate(10px,7px)}78%{transform:translate(-5px,-3px)}100%{transform:translate(0,0)}}
+@keyframes shake3{0%{transform:none}15%{transform:translate(-22px,14px) rotate(-.6deg)}35%{transform:translate(18px,-12px)}60%{transform:translate(-8px,5px)}100%{transform:none}}
+@keyframes toMono{from{filter:grayscale(0) contrast(1)}to{filter:grayscale(1) contrast(1.18) brightness(1.03)}}
+@keyframes toColor{from{filter:grayscale(1) contrast(1.18) brightness(1.03)}to{filter:grayscale(0) contrast(1.05) saturate(1.25)}}
+@keyframes backMono{from{filter:grayscale(0) contrast(1.05) saturate(1.25)}to{filter:grayscale(1) contrast(1.18) brightness(1.03)}}
+@keyframes fly{0%{transform:none;opacity:1}12%{transform:translate(calc(var(--dx)*-.06),calc(var(--dy)*-.06 - 30px)) rotate(calc(var(--r)*-.15)) scale(1.25);opacity:1}100%{transform:translate(calc(var(--dx)*1.9),calc(var(--dy)*1.9)) rotate(calc(var(--r)*3.2)) scale(2.2);opacity:0}}
+@keyframes fade{to{opacity:0}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes sheetsOut{0%{transform:none}15%{transform:translateY(-30px) rotate(-1.5deg)}100%{transform:translateY(480px) rotate(7deg)}}
+@keyframes sheetsIn{from{transform:translateY(480px) rotate(7deg)}to{transform:none}}
+@keyframes menuJolt{0%{transform:none}15%{transform:rotate(-16deg) translate(-30px,24px) scale(1.12)}40%{transform:rotate(9deg) translate(10px,-6px)}65%{transform:rotate(-4deg)}100%{transform:none}}
+@keyframes komaPunch{0%{transform:none}20%{transform:scale(.94) rotate(1.5deg)}100%{transform:none}}
+@keyframes komaZoom{from{transform:scale(1.15) rotate(-4deg)}to{transform:scale(1.035) rotate(-1.4deg) translate(6px,4px)}}
+@keyframes linesIn{from{opacity:0;transform:scale(1.9)}to{opacity:1;transform:scale(1)}}
+@keyframes linesOut{from{opacity:1;transform:scale(1)}to{opacity:0;transform:scale(1.6)}}
+@keyframes betaIn{to{opacity:1}}
+@keyframes betaOut{from{opacity:1}to{opacity:0}}
+@keyframes flashLines2{0%{opacity:0;transform:scale(2.2) rotate(-12deg)}20%{opacity:1}100%{opacity:.2;transform:scale(1) rotate(4deg)}}
+@keyframes flashLines{0%{opacity:0;transform:scale(1.5)}25%{opacity:1}100%{opacity:0;transform:scale(1)}}
+@keyframes stampIn{0%{opacity:0;transform:scale(6) rotate(-24deg)}55%{opacity:1;transform:scale(.82) rotate(3deg)}78%{transform:scale(1.07) rotate(-1deg)}100%{opacity:1;transform:scale(1) rotate(0)}}
+@keyframes stampOut{from{opacity:1;transform:scale(1)}to{opacity:0;transform:scale(2.4) rotate(14deg)}}
+@keyframes slap{0%{opacity:0;transform:scale(2.6) rotate(calc(var(--r0,-7deg)*2))}70%{opacity:1;transform:scale(.94) rotate(var(--r1,0deg))}100%{opacity:1;transform:rotate(var(--r1,0deg))}}
+@keyframes pop{0%{opacity:0;transform:scale(.1) rotate(calc(var(--r0,8deg)*3))}100%{opacity:1;transform:rotate(var(--r1,0deg))}}
+@keyframes drop{0%{opacity:0;transform:translateY(-420px) rotate(-40deg)}100%{opacity:1;transform:rotate(var(--r1,0deg))}}
+@keyframes draw{to{stroke-dashoffset:0}}
+@keyframes whiteFlash{0%{opacity:0}30%{opacity:.85}100%{opacity:0}}
+</style></head>
+<body>
+<div id="shake">
+ <div id="mono">
+  <img class="L" src="A_paper.png">
+  <img class="L" src="A_header.png">
+  <div id="komaWrap">
+   <img class="L" src="A_scene.png">
+   <img class="L" id="scenetone" src="A_scenetone.png">
+   <div id="koma"><div id="komaWhite"></div><div id="linesA"></div><div id="linesB"></div></div>
+   <!-- 推理の画面：コマの中 -->
+   <div id="qno"><span class="cut k">問</span><span class="cut w">一</span><span class="cut w s">／五</span></div>
+   <div class="strip slap" style="left:360px;top:190px;--r1:-1deg;animation-delay:3.0s">ナカコのスケッチを</div>
+   <div class="strip slap" style="left:640px;top:300px;--r1:1deg;--r0:6deg;animation-delay:3.15s">破ったのは誰か？</div>
+   <div class="strip choice pop" style="left:330px;top:470px;animation-delay:3.4s"><b>1</b>ナカコ</div>
+   <div class="strip choice pop" id="c2" style="left:830px;top:470px;--r1:1deg;animation-delay:3.5s"><b>2</b>オカボー</div>
+   <div class="strip choice pop" style="left:380px;top:610px;--r1:-1deg;animation-delay:3.6s"><b>3</b>サイジ</div>
+   <div class="strip choice pop" style="left:870px;top:610px;animation-delay:3.7s"><b>4</b>ハルキ</div>
+  </div>
+  <img class="L" id="menu" src="A_menu.png" style="transform-origin:1780px 60px">
+  <div class="L" id="sheets"><img class="L" src="A_sheets.png"><div id="line">今回の事件に登場人物はそんなにいない。ハルキ、お前でももうわかるだろ？</div></div>
+  <img class="L" id="chars" src="A_haruki.png">
+  <img class="L" id="cmdtitle" src="A_cmdtitle.png">
+  <img class="L cmd" src="A_cmd-move.png" style="--dx:520px;--dy:-260px;--r:38deg;animation-delay:.50s;transform-origin:1540px 170px">
+  <img class="L cmd" src="A_cmd-listen.png" style="--dx:620px;--dy:-60px;--r:-50deg;animation-delay:.54s;transform-origin:1540px 230px">
+  <img class="L cmd" src="A_cmd-investigate.png" style="--dx:560px;--dy:120px;--r:62deg;animation-delay:.58s;transform-origin:1530px 305px">
+  <img class="L cmd" src="A_cmd-search.png" style="--dx:640px;--dy:240px;--r:-34deg;animation-delay:.62s;transform-origin:1540px 380px">
+  <img class="L cmd" src="A_cmd-show.png" style="--dx:500px;--dy:380px;--r:48deg;animation-delay:.66s;transform-origin:1560px 450px">
+  <img class="L cmd" src="A_cmd-chat.png" style="--dx:600px;--dy:520px;--r:-70deg;animation-delay:.70s;transform-origin:1560px 520px">
+  <!-- 右の列：問一〜五 -->
+  <div id="colTitle">推理</div>
+  <div class="q now" style="left:1490px;top:140px;animation-delay:2.8s"><span class="cut k">問</span><span class="cut w">一</span></div>
+  <div class="q" style="left:1530px;top:250px;--r1:-2deg;animation-delay:2.88s"><span class="cut w">問</span><span class="cut k">二</span></div>
+  <div class="q" style="left:1515px;top:330px;--r1:2deg;animation-delay:2.96s"><span class="cut k">問</span><span class="cut w">三</span></div>
+  <div class="q" style="left:1535px;top:410px;--r1:-1deg;animation-delay:3.04s"><span class="cut w">問</span><span class="cut k">四</span></div>
+  <div class="q" style="left:1520px;top:490px;--r1:1deg;animation-delay:3.12s"><span class="cut k">問</span><span class="cut w">五</span></div>
+  <div id="vcap">推理中は捜査に戻れない</div>
+ </div>
+ <!-- 白黒にならない層 -->
+ <div class="L" id="impact"></div>
+ <div class="L" id="beta"></div>
+ <div class="L" id="betaLines"></div>
+ <div class="L" id="burstLines"></div>
+ <div id="start"><img src="burst.svg"><span>推理開始！</span></div>
+ <svg id="redCircle" class="L" viewBox="0 0 1920 1080"><ellipse cx="990" cy="512" rx="205" ry="60" transform="rotate(-3 990 512)" fill="none" stroke="#d33a2c" stroke-width="7" stroke-linecap="round" opacity=".9"/></svg>
+ <div class="L" id="white"></div>
+ <div id="ok"><span>正解！</span></div>
+</div>
+</body></html>

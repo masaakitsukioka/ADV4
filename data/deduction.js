@@ -1,0 +1,58 @@
+'use strict';
+// Keep the actual exploration DOM inside one monochrome layer; red editorial marks live beside it.
+const deduceStage=$('mangaStage'),monoLayer=document.createElement('div');monoLayer.id='monoLayer';
+while(deduceStage.firstChild)monoLayer.appendChild(deduceStage.firstChild);deduceStage.appendChild(monoLayer);
+const redLayer=document.createElement('div');redLayer.id='redLayer';redLayer.innerHTML='<div id="deduceImpact"></div><div id="deduceBeta"></div><div id="deduceFlashLines"></div><div id="deduceBurstLines"></div><div id="deduceStartStamp"><img src="assets/ui/manga/deduce/burst.svg" alt=""><span>推理開始！</span></div><div id="deduceRedMarks"></div><div id="deduceWhite"></div>';deduceStage.appendChild(redLayer);redLayer.appendChild($('deductionResult'));
+const scene=$('scene');const tone=document.createElement('img');tone.id='deduceTone';tone.alt='';tone.setAttribute('aria-hidden','true');scene.appendChild(tone);
+for(const id of ['deduceWhiteCenter','deduceLines','deduceLinesMore']){const n=document.createElement('div');n.id=id;scene.appendChild(n)}
+const side=document.createElement('aside');side.id='deduceSide';side.setAttribute('aria-label','推理の進み具合');monoLayer.appendChild(side);
+const qnumber=document.createElement('div');qnumber.id='deduceNumber';monoLayer.appendChild(qnumber);
+let deduceVisualGeneration=0,deduceVisualFinished=false,redFrame=0;
+function splitDeductionQuestion(text){
+ const chars=Array.from(text),lines=[];while(chars.length>12){let cut=12;for(let i=11;i>=5;i--)if('はをの、'.includes(chars[i])){cut=i+1;break}lines.push(chars.splice(0,cut).join(''))}if(chars.length)lines.push(chars.join(''));return lines;
+}
+function refreshDeduceSide(){
+ const digits=['一','二','三','四','五'];side.replaceChildren();const title=document.createElement('div');title.className='deduce-side-title';title.textContent='推理';side.appendChild(title);
+ digits.forEach((digit,i)=>{const row=document.createElement('div');row.className='deduce-side-row'+(i===state.deductionStep?' now':'');row.dataset.question=String(i);row.innerHTML='<span>問</span><span>'+digit+'</span>';row.style.setProperty('--row-delay',(2.25+i*.08)+'s');side.appendChild(row)});
+ const note=document.createElement('div');note.className='deduce-note';note.textContent='推理中は捜査に戻れない';side.appendChild(note);
+ qnumber.innerHTML='<span>問</span><span>'+digits[state.deductionStep]+'</span><small>／五</small>';
+ $('deduceLinesMore').classList.toggle('visible',state.deductionStep>=2);
+}
+function renderDeductionLayout(){
+ if(!deduceStage.classList.contains('deduce-intro')||!side.children.length)refreshDeduceSide();const q=questions[state.deductionStep],title=$('panelTitle');title.replaceChildren();
+ for(const [i,chunk] of splitDeductionQuestion(q.q).entries()){const strip=document.createElement('span');strip.className='deduce-question-strip';strip.textContent=chunk;strip.style.setProperty('--strip-index',i);title.appendChild(strip)}
+ $('panel').classList.toggle('deduce-compose',q.type==='compose');
+ [...$('panelBody').querySelectorAll('.deduction-choice,.answer-option')].forEach((node,i)=>{node.style.setProperty('--choice-index',i);if(!node.dataset.number)node.dataset.number=String(i+1)});
+ scheduleDeduceMarks();
+}
+function scheduleDeduceMarks(){if(!redFrame)redFrame=requestAnimationFrame(updateDeduceMarks)}
+function updateDeduceMarks(){
+ redFrame=0;const marks=$('deduceRedMarks');marks.replaceChildren();if(!deduceStage.classList.contains('deduce-active')||deduceVisualFinished)return;
+ const bounds=deduceStage.getBoundingClientRect(),scale=parseFloat(deduceStage.style.getPropertyValue('--manga-scale'))||1;
+ const place=(el,src,padX,padY)=>{if(!el||!el.getClientRects().length)return;const r=el.getBoundingClientRect(),image=document.createElement('img');image.src=src;image.style.left=((r.left-bounds.left)/scale-padX)+'px';image.style.top=((r.top-bounds.top)/scale-padY)+'px';image.style.width=(r.width/scale+padX*2)+'px';image.style.height=(r.height/scale+padY*2)+'px';marks.appendChild(image)};
+ if(state.mode==='deduction')place(document.querySelector('#panel .deduction-choice.paper-selected, #panel .answer-slot.active'),'assets/ui/manga/topic-circle.png',12,8);
+ side.querySelectorAll('.deduce-side-row').forEach((el,i)=>{if(i>=state.deductionStep)return;const r=el.getBoundingClientRect(),image=document.createElement('img');image.src='assets/ui/manga/check-'+(i%2?'a':'b')+'.png';image.style.left=((r.right-bounds.left)/scale-10)+'px';image.style.top=((r.top-bounds.top)/scale-12)+'px';image.style.width='64px';image.style.height='56px';marks.appendChild(image)});
+}
+const markObserver=new MutationObserver(()=>scheduleDeduceMarks());markObserver.observe($('panel'),{attributes:true,subtree:true,childList:true,attributeFilter:['class','style']});window.addEventListener('resize',scheduleDeduceMarks);
+function setDeduceTone(){tone.dataset.room=state.room;tone.dataset.status='loading';tone.onload=()=>{tone.dataset.status='ready'};tone.onerror=()=>{tone.dataset.status='fallback'};tone.src='assets/backgrounds/'+state.room+'-tone.png';$('scene').dataset.lighting='deduction-off'}
+function resetMangaDeduction(){deduceVisualGeneration++;deduceVisualFinished=false;deduceStage.classList.remove('deduce-intro','deduce-active','deduce-correct','deduce-finish','deduce-question-out','deduce-question-in','deduce-new-intensity');$('deduceRedMarks').replaceChildren();side.replaceChildren();qnumber.replaceChildren();$('deductionResult').classList.add('hidden');tone.removeAttribute('src');tone.dataset.status='idle'}
+function beginMangaDeduction(){
+ const token=++deduceVisualGeneration;deduceVisualFinished=false;setDeduceTone();refreshDeduceSide();deduceStage.classList.remove('deduce-correct','deduce-finish');
+ const reduced=presentationReduced();deduceStage.classList.add('deduce-intro');
+ const activate=()=>{if(token!==deduceVisualGeneration)return;deduceStage.classList.add('deduce-active');scheduleDeduceMarks()};
+ const build=()=>{if(token!==deduceVisualGeneration)return;buildDeduction();state.mode='deduction-transition';for(const b of $('panelBody').querySelectorAll('button'))b.disabled=true};
+ const ready=()=>{if(token!==deduceVisualGeneration)return;state.mode='deduction';for(const b of $('panelBody').querySelectorAll('button'))b.disabled=false;deduceStage.classList.remove('deduce-intro');scheduleDeduceMarks()};
+ if(reduced){activate();build();ready();return}setTimeout(activate,550);setTimeout(build,2850);setTimeout(ready,4000);
+}
+function nextMangaQuestion(after){
+ if(presentationReduced()){after();return}const token=deduceVisualGeneration;state.mode='deduction-transition';deduceStage.classList.add('deduce-question-out');deduceStage.classList.toggle('deduce-new-intensity',state.deductionStep===2);refreshDeduceSide();scheduleDeduceMarks();
+ setTimeout(()=>{if(token!==deduceVisualGeneration)return;deduceStage.classList.remove('deduce-question-out');deduceStage.classList.add('deduce-question-in');after();state.mode='deduction-transition';for(const b of $('panelBody').querySelectorAll('button'))b.disabled=true},450);
+ setTimeout(()=>{if(token!==deduceVisualGeneration)return;deduceStage.classList.remove('deduce-question-in','deduce-new-intensity');state.mode='deduction';for(const b of $('panelBody').querySelectorAll('button'))b.disabled=false;scheduleDeduceMarks()},1000);
+}
+correctPresentation=function(solved,after){
+ const token=++presentationGeneration;state.mode='deduction-result';stopTalking();render();const result=$('deductionResult');$('resultText').replaceChildren();
+ if(solved)for(const letter of ['解','明']){const span=document.createElement('span');span.textContent=letter;$('resultText').appendChild(span)}else $('resultText').textContent='正解！';
+ result.classList.toggle('solved',solved);result.classList.remove('hidden','result-out');result.classList.add('result-in');deduceStage.classList.add(solved?'deduce-finish':'deduce-correct');
+ const finish=()=>{if(token!==presentationGeneration)return;result.classList.add('hidden');result.classList.remove('result-in');deduceStage.classList.remove('deduce-correct');if(solved){deduceVisualFinished=true;deduceStage.classList.remove('deduce-active','deduce-intro','deduce-finish');$('deduceRedMarks').replaceChildren();$('panel').classList.add('hidden');$('panel').dataset.visibilityTarget='hidden'}after()};
+ if(presentationReduced()){setTimeout(finish,180);return}setTimeout(finish,solved?1500:1550);
+};
