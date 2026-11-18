@@ -34,7 +34,7 @@ function drawTalkingPortrait(ctx,base,id,frame,strip,replacement){
  if(image)ctx.drawImage(image,0,0,width,height);
 }
 async function displayPortraitFrame(id,paths,frame,valid){
- const expression=ASSETS.emotionMap[$(id+'Emotion').textContent]||'normal';
+ const expression=characterExpression(id,$(id+'Emotion').textContent);
  const [base,replacement]=await Promise.all([loadImage(ASSETS.characters[id][expression]),loadImage(paths?.[frame])]);
  if(!valid()||!base)return;
  const canvas=$(id+'Talk'),{width,height}=ASSETS.characterResolution;
@@ -45,7 +45,7 @@ function scheduleBlink(id){
  clearBlink(id);if(presentationReduced())return;const token=portraitTokens.get(id);
  const valid=()=>portraitTokens.get(id)===token;
  const start=()=>{if(!valid())return;if($('characterStage').classList.contains('hidden')){scheduleBlink(id);return}
-  const key=ASSETS.emotionMap[$(id+'Emotion').textContent]||'normal',frames=ASSETS.blinkFrames?.[id]?.[key];let i=0;
+  const key=characterExpression(id,$(id+'Emotion').textContent),frames=ASSETS.blinkFrames?.[id]?.[key];let i=0;
   function tick(){if(!valid())return;const frame=[1,2,1,0][i++];canvasState(frame);if(i<4)blinkTimers.set(id,setTimeout(tick,70));else{hidePortraitFrame(id);scheduleBlink(id)}}
   function canvasState(frame){$(id+'Talk').dataset.animation='blink';displayPortraitFrame(id,frames,frame,valid)}tick();
  };
@@ -59,7 +59,7 @@ function startTalking(name,emotion,text){
  stopTalking();const speaker=({'ハルキ':'haruki','サイジ':'saiji'})[name];
  for(const id of ['haruki','saiji'])if(id!==speaker)scheduleBlink(id);
  if(!speaker||typingDone||presentationReduced()){if(speaker)scheduleBlink(speaker);return}
- const key=ASSETS.emotionMap[emotion]||'normal',frames=ASSETS.mouthFrames?.[speaker]?.[key],generation=talkGeneration;let step=0;
+ const key=characterExpression(speaker,emotion),frames=ASSETS.mouthFrames?.[speaker]?.[key],generation=talkGeneration;let step=0;
  function tick(){if(generation!==talkGeneration)return;if(typingDone){finishTalking();return}
   $(speaker+'Talk').dataset.animation='talk';displayPortraitFrame(speaker,frames,[0,1,2,1][step++%4],()=>generation===talkGeneration);
   talkTimer=setTimeout(tick,120);

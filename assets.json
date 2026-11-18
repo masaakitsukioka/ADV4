@@ -61,13 +61,19 @@
       "normal": "assets/characters/haruki_normal.png",
       "surprised": "assets/characters/haruki_surprised.png",
       "thinking": "assets/characters/haruki_thinking.png",
-      "confident": "assets/characters/haruki_confident.png"
+      "confident": "assets/characters/haruki_confident.png",
+      "smile": "assets/characters/haruki_smile.png",
+      "troubled": "assets/characters/haruki_troubled.png",
+      "annoyed": "assets/characters/haruki_annoyed.png"
     },
     "saiji": {
       "normal": "assets/characters/saiji_normal.png",
       "surprised": "assets/characters/saiji_surprised.png",
       "thinking": "assets/characters/saiji_thinking.png",
-      "confident": "assets/characters/saiji_confident.png"
+      "confident": "assets/characters/saiji_confident.png",
+      "tease": "assets/characters/saiji_tease.png",
+      "question": "assets/characters/saiji_question.png",
+      "annoyed": "assets/characters/saiji_annoyed.png"
     }
   },
   "emotionMap": {
@@ -171,6 +177,21 @@
         null,
         "assets/characters/talk/haruki-confident-mouth-1.png",
         "assets/characters/talk/haruki-confident-mouth-2.png"
+      ],
+      "smile": [
+        null,
+        "assets/characters/talk/haruki-smile-mouth-1.png",
+        "assets/characters/talk/haruki-smile-mouth-2.png"
+      ],
+      "troubled": [
+        null,
+        "assets/characters/talk/haruki-troubled-mouth-1.png",
+        "assets/characters/talk/haruki-troubled-mouth-2.png"
+      ],
+      "annoyed": [
+        null,
+        "assets/characters/talk/haruki-annoyed-mouth-1.png",
+        "assets/characters/talk/haruki-annoyed-mouth-2.png"
       ]
     },
     "saiji": {
@@ -193,6 +214,21 @@
         null,
         "assets/characters/talk/saiji-confident-mouth-1.png",
         "assets/characters/talk/saiji-confident-mouth-2.png"
+      ],
+      "tease": [
+        null,
+        "assets/characters/talk/saiji-tease-mouth-1.png",
+        "assets/characters/talk/saiji-tease-mouth-2.png"
+      ],
+      "question": [
+        null,
+        "assets/characters/talk/saiji-question-mouth-1.png",
+        "assets/characters/talk/saiji-question-mouth-2.png"
+      ],
+      "annoyed": [
+        null,
+        "assets/characters/talk/saiji-annoyed-mouth-1.png",
+        "assets/characters/talk/saiji-annoyed-mouth-2.png"
       ]
     }
   },
@@ -217,6 +253,21 @@
         null,
         "assets/characters/blink/haruki-confident-eyes-1.png",
         "assets/characters/blink/haruki-confident-eyes-2.png"
+      ],
+      "smile": [
+        null,
+        "assets/characters/blink/haruki-smile-eyes-1.png",
+        "assets/characters/blink/haruki-smile-eyes-2.png"
+      ],
+      "troubled": [
+        null,
+        "assets/characters/blink/haruki-troubled-eyes-1.png",
+        "assets/characters/blink/haruki-troubled-eyes-2.png"
+      ],
+      "annoyed": [
+        null,
+        "assets/characters/blink/haruki-annoyed-eyes-1.png",
+        "assets/characters/blink/haruki-annoyed-eyes-2.png"
       ]
     },
     "saiji": {
@@ -239,6 +290,21 @@
         null,
         "assets/characters/blink/saiji-confident-eyes-1.png",
         "assets/characters/blink/saiji-confident-eyes-2.png"
+      ],
+      "tease": [
+        null,
+        "assets/characters/blink/saiji-tease-eyes-1.png",
+        "assets/characters/blink/saiji-tease-eyes-2.png"
+      ],
+      "question": [
+        null,
+        "assets/characters/blink/saiji-question-eyes-1.png",
+        "assets/characters/blink/saiji-question-eyes-2.png"
+      ],
+      "annoyed": [
+        null,
+        "assets/characters/blink/saiji-annoyed-eyes-1.png",
+        "assets/characters/blink/saiji-annoyed-eyes-2.png"
       ]
     }
   },
@@ -246,5 +312,17 @@
   "windowMasks": {
     "classroom": "assets/backgrounds/masks/classroom-window.png",
     "corridor": "assets/backgrounds/masks/corridor-window.png"
+  },
+  "emotionOverrides": {
+    "haruki": {
+      "笑顔": "smile",
+      "困惑": "troubled",
+      "呆れ": "annoyed"
+    },
+    "saiji": {
+      "からかい": "tease",
+      "疑問": "question",
+      "呆れ": "annoyed"
+    }
   }
 }
