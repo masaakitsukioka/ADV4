@@ -1,3 +1,4 @@
+@font-face{font-family:'ADV Mincho Light';src:url('../assets/fonts/NotoSerifJP-Light.subset.woff') format('woff');font-weight:300;font-display:swap}
 /* =====================================================================
    v0.15 共通テーマ層（最後に読み込む）
    基準は「捜査手帳」：墨・紙（方眼）・朱。全画面をこの言語に揃える。

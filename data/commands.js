@@ -6,9 +6,9 @@ function learnCommandNames(text){
  for(const person of SCENARIO.commands.people)if(text.includes(person.name))state.flags[person.flag]=true;
 }
 function commandInvestigations(){
- const entries=room().targets.map(t=>({id:t.id,label:t.name,run:()=>examine(t.id)}));
+ const entries=room().targets.map(t=>({id:t.id,label:t.name,run:()=>examine(t.id,t.name)}));
  for(const extra of SCENARIO.commands.investigations){
-  if(extra.room===state.room&&Events.matches(extra.when,state))entries.push({id:extra.target,label:extra.label,run:()=>examine(extra.target)});
+  if(extra.room===state.room&&Events.matches(extra.when,state))entries.push({id:extra.target,label:extra.label,run:()=>examine(extra.target,extra.label)});
  }
  for(const item of state.inventory.filter(item=>SCENARIO.items[item]?.room===state.room))entries.push({label:item,run:()=>inspectItem(item)});
  return entries;
@@ -49,10 +49,11 @@ function searchPerson(person){
 }
 function chooseCommand(kind,focusFirst=true){
  if(state.mode!=='exploration')return;
- commandSelection=kind;
+ commandSelection=null;
  if(kind==='chat'){randomConversation();return}
- if(kind==='show'&&!state.inventory.length){commandSpeak([['','見せられるアイテムをまだ持っていない。']]);return}
- if(kind==='listen'&&!(room().occupants||[]).length){commandSpeak([['','ここには誰もいない。']]);return}
+ if(kind==='search'&&!commandPeople().length){renderCommands();commandSpeak([['','まだ探す相手がいない。']]);return}
+ if(kind==='show'&&!state.inventory.length){renderCommands();commandSpeak([['','見せられるアイテムをまだ持っていない。']]);return}
+ if(kind==='listen'&&!(room().occupants||[]).length){renderCommands();commandSpeak([['','ここには誰もいない。']]);return}
  commandSelection=kind;renderCommands();
  if(focusFirst)$('commandChildren').querySelector('button')?.focus();
 }
@@ -71,8 +72,7 @@ function renderCommands(){
  let entries=[];
  if(commandSelection==='listen'){
   const occupants=room().occupants||[];
-  entries=occupants.map(person=>{const key=state.room+':'+(person.id||person.name);return{label:person.name,listenKey:key,run:()=>commandSpeak(person.lines,()=>{state.listened??={};state.listened[key]=true;render()})}});
-  if(!entries.length)entries=[{label:'ここには誰もいない',run:()=>commandSpeak([['','ここには誰もいない。']])}];
+  entries=occupants.map(person=>{const key=state.room+':'+(person.id||person.name),events=person.events||[{lines:person.lines}],event=Events.select(events,state),index=events.indexOf(event);return{label:person.name,listenKey:key,listenIndex:index,run:()=>{if(!event)return;const record=()=>{state.listened??={};state.listened[key]??=[];if(!state.listened[key].includes(index))state.listened[key].push(index);render()};if(person.events){record();runEvent(event)}else commandSpeak(event.lines,record)}}});
  }else if(commandSelection==='investigate')entries=commandInvestigations();
  else if(commandSelection==='search')entries=commandPeople().map(p=>({label:p.name,run:()=>searchPerson(p)}));
  else if(commandSelection==='show')entries=state.inventory.map(item=>({label:item,run:()=>chooseItemToShow(item)}));
@@ -87,8 +87,8 @@ function renderCommands(){
  }
  const selectedKey=box.querySelector?.('.paper-selected')?.dataset.entryKey,context=JSON.stringify([state.room,commandSelection]),enter=context!==commandListContext;
  commandListKey=key;commandListContext=context;box.replaceChildren();box.classList.toggle('many-targets',entries.length>5);
- if(!entries.length){const empty=document.createElement('p');empty.textContent='まだ手がかりがない。';box.appendChild(empty)}
- for(const entry of entries){const b=document.createElement('button');b.type='button';b.textContent=entry.label;b.dataset.entryKey=JSON.stringify([entry.id||entry.listenKey||'',entry.label]);if(b.dataset.entryKey===selectedKey)b.classList.add('paper-selected');if(entry.id)b.dataset.target=entry.id;if(entry.listenKey)b.dataset.listenKey=entry.listenKey;b.onclick=()=>{if(state.mode==='exploration')entry.run()};box.appendChild(b)}
+ if(!entries.length){commandSelection=null;commandListKey=null;commandListContext=null;showWindow('commandDetail',false);return}
+ for(const entry of entries){const b=document.createElement('button');b.type='button';b.textContent=entry.label;b.dataset.entryKey=JSON.stringify([entry.id||entry.listenKey||'',entry.label]);if(b.dataset.entryKey===selectedKey)b.classList.add('paper-selected');if(entry.id){b.dataset.target=entry.id;b.dataset.itemLabel=entry.label;}if(entry.listenKey){b.dataset.listenKey=entry.listenKey;b.dataset.listenIndex=entry.listenIndex;}b.onclick=()=>{if(state.mode==='exploration')entry.run()};box.appendChild(b)}
  const back=document.createElement('button');back.type='button';back.className='command-back';back.textContent='もどる';back.onclick=()=>{commandSelection=null;renderCommands();$('commandRoots').querySelector('button')?.focus()};box.appendChild(back);$('commandDetail').style.setProperty?.('--command-count',entries.length+1);if(typeof decorateMangaCommands==='function'){decorateMangaCommands(enter);return}if(window.innerHeight){const available=window.innerHeight-$('commandDetail').getBoundingClientRect().top-90;const row=Math.max(20,Math.min(42,available/(entries.length+1)));$('commandDetail').style.setProperty('--command-row',row+'px');$('commandDetail').style.setProperty('--command-font',Math.min(17,row*.53,$('commandDetail').getBoundingClientRect().width/15)+'px')}
 }
 for(const [kind,label] of [['move','移動'],['listen','聞く'],['investigate','調べる'],['search','探す'],['show','見せる'],['chat','会話']]){

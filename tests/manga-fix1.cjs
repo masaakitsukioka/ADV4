@@ -4,7 +4,7 @@ require('./browser-harness.cjs')(async(page,assert)=>{
  const metrics={commands:[],deduction:[]};
  // Measure transformed letter cutouts, rather than only their button hit boxes.
  for(const kind of ['move','listen','investigate','search','show','chat']){
-  await page.locator(`[data-command="${kind}"]`).hover();assert.equal(await page.evaluate(()=>commandSelection),kind);
+  await page.locator(`[data-command="${kind}"]`).hover();assert.equal(await page.evaluate(()=>commandSelection),null);
   const overlap=await page.evaluate(()=>{const rows=[...$('commandRoots').children].map(b=>{const rs=[...b.querySelectorAll('b')].map(c=>c.getBoundingClientRect());return{kind:b.dataset.command,top:Math.min(...rs.map(r=>r.top)),bottom:Math.max(...rs.map(r=>r.bottom))}});return rows.slice(1).map((r,i)=>({before:rows[i].kind,after:r.kind,gap:r.top-rows[i].bottom}))});
   assert(overlap.every(o=>o.gap>=6),`${kind}: adjacent cutouts overlap ${JSON.stringify(overlap)}`);metrics.commands.push({selected:kind,gaps:overlap});
   await page.screenshot({path:path.join(output,'command-'+kind+'.png')});
@@ -35,7 +35,7 @@ require('./browser-harness.cjs')(async(page,assert)=>{
    const r=await page.evaluate(()=>({width:$('messageBody').clientWidth,font:parseFloat(getComputedStyle($('line')).fontSize),parent:$('dialogue').parentElement.id}));assert.equal(r.parent,'mangaStage');assert(r.width/r.font>=12);metrics.deduction.push({question:q+1,page:i+1,...r});
   }
   assert.equal(text.join('').replace(/\n/g,''),original.replace(/\n/g,''),'all deduction text preserved and visible');
-  const selected=q===4?'.answer-slot.active':'.deduction-choice.paper-selected';assert((await page.locator(selected).evaluate(e=>getComputedStyle(e,'::after').backgroundImage)).includes('topic-circle.png'));
+  const selected=q===4?'.answer-slot.active':'.deduction-choice.paper-selected .deduction-choice-label';assert((await page.locator(selected).evaluate(e=>getComputedStyle(e,'::after').backgroundImage)).includes('topic-circle.png'));
   await page.screenshot({path:path.join(output,`deduction-q${q+1}.png`)});
  }
  // Prove the audit catches the exact two failure classes that escaped the old audit.

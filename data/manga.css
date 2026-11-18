@@ -88,7 +88,7 @@ body,#game{background:#f7f5ee;color:#141414}
 #mangaStage #menu:disabled{opacity:1}
 #mangaStage.commands-disabled #commandWindows button{pointer-events:none}
 #mangaStage #mangaArrow.hidden{display:none}
-#mangaStage #messageBody,#mangaStage #line{font-family:var(--font-head)!important}
+#mangaStage #messageBody,#mangaStage #line{font-family:'ADV Mincho Light',serif!important;font-weight:300!important}
 @media(orientation:landscape){
  #mangaStage #commandRoots button{min-height:max(60px,calc(36px / var(--manga-scale)))!important;min-width:calc(36px / var(--manga-scale))}
  #mangaStage #commandChildren button{min-height:max(50px,calc(36px / var(--manga-scale)))!important;min-width:max(72px,calc(36px / var(--manga-scale)))}
@@ -155,7 +155,7 @@ body,#game{background:#f7f5ee;color:#141414}
 #game.deduction-layout #mangaStage #panel{position:absolute;inset:auto;left:385px;top:90px;width:1150px;max-height:680px;height:auto;margin:0;padding:26px 30px;z-index:7;background:#fff!important;background-image:none!important;border:3px solid #141414;box-shadow:6px 7px #14141435;clip-path:none;overflow:auto;color:#141414;font:26px var(--font-body)}
 #game.deduction-layout #mangaStage #panel h2{font:700 32px/1.4 var(--font-head);margin:0 0 18px;padding:0 0 16px;border-bottom:2px solid #141414}
 #game.deduction-layout #mangaStage #panel .deduction-choice{position:relative;display:block;width:100%;min-height:max(60px,calc(37px / var(--manga-scale)));margin:14px 0!important;padding:12px 24px;border:0;background:#fff!important;color:#141414!important;box-shadow:3px 4px #14141430;font:700 max(27px,calc(14px / var(--manga-scale)))/1.3 var(--font-head);text-align:left}
-#game.deduction-layout #mangaStage #panel .deduction-choice.paper-selected::after{content:'';position:absolute;inset:-7px -12px;background:url('../assets/ui/manga/topic-circle.png') center/100% 100% no-repeat;pointer-events:none}
+#game.deduction-layout #mangaStage #panel .deduction-choice-label{position:relative;display:inline-block}#game.deduction-layout #mangaStage #panel .deduction-choice-label::before{content:'○';margin-right:.3em}#game.deduction-layout #mangaStage #panel .paper-selected .deduction-choice-label::before{content:'●';color:#b0301a}#game.deduction-layout #mangaStage #panel .paper-selected .deduction-choice-label::after{content:'';position:absolute;inset:-7px -12px;background:url('../assets/ui/manga/topic-circle.png') center/100% 100% no-repeat;pointer-events:none}
 #game.deduction-layout #mangaStage #panel .answer-sentence{font-size:max(26px,calc(13px / var(--manga-scale)));gap:10px;margin-bottom:14px}
 #game.deduction-layout #mangaStage #panel .answer-slot,#game.deduction-layout #mangaStage #panel .answer-option,#game.deduction-layout #mangaStage #panel .answer-confirm{min-height:max(60px,calc(37px / var(--manga-scale)));font-size:max(26px,calc(13px / var(--manga-scale)));padding:8px;margin:0}
 #game.deduction-layout #mangaStage #panel .answer-slot,#game.deduction-layout #mangaStage #panel .answer-option{background:#fff!important;color:#141414!important;border:1px solid #141414!important;box-shadow:2px 3px #14141425}
@@ -241,3 +241,21 @@ body,#game{background:#f7f5ee;color:#141414}
 /* Mail reactions use the same fixed paper/actors above the notebook overlay. */
 #mangaStage.mail-dialogue{z-index:6;background:none}
 #mangaStage.mail-dialogue #scene,#mangaStage.mail-dialogue #mangaHeader,#mangaStage.mail-dialogue #commandWindows,#mangaStage.mail-dialogue #mangaArrow{display:none!important}
+
+/* 2026-11-18: compact, unscrolled command lists above portraits. */
+#mangaStage #commandWindows{z-index:13}
+#mangaStage #commandDetail{left:1690px;width:210px}
+#mangaStage #commandChildren,#mangaStage #commandChildren.many-targets{max-height:none;width:210px;overflow:visible;gap:4px;padding:0;margin-top:8px}
+#game #mangaStage #commandChildren button{max-width:200px;font-size:max(22px,calc(12.1px / var(--manga-scale)))!important;letter-spacing:0;padding:5px 6px!important;line-height:1.2}
+#mangaStage #commandDetail:has(.many-targets) h2::after{content:none}
+#mangaStage #menu.has-mail::after{top:55px;left:-330px;white-space:nowrap}
+#questionText{font-family:var(--font-head)!important;font-weight:700!important}
+@media(orientation:portrait) and (max-width:700px){
+ #mangaStage #commandDetail{left:530px;width:310px}
+ #mangaStage #commandChildren,#mangaStage #commandChildren.many-targets{max-height:none;overflow:visible;width:310px;gap:4px;padding:0;margin-top:8px}
+ #game #mangaStage #commandChildren button{max-width:290px;font-size:max(29px,calc(12.1px / var(--manga-scale)))!important}
+ #mangaStage #menu.has-mail::after{top:75px;left:-30px}
+}
+
+@media(orientation:landscape){#mangaStage #commandMain{left:1462px}}
+#mangaStage #commandChildren .command-back{background:#fdfcf8!important}

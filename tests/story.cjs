@@ -18,7 +18,7 @@ run(fs.readFileSync(root+'/data/story-ui.js','utf8'));
 assert.deepEqual(JSON.parse(JSON.stringify(sandbox.window.SAIKACHI_SCENARIO)),JSON.parse(fs.readFileSync(root+'/data/scenario.json')));
 const end=()=>run('for(let i=0;i<100&&state.mode==="dialogue"&&!choicesPending;i++)advance()');
 const allButtons=()=>{const out=[];const walk=e=>{for(const child of e?.children||[]){out.push(child);walk(child)}};for(const id of ['panelBody','commandRoots','commandChildren','openingActions'])walk(elements[id]);return out};
-const click=label=>{const b=allButtons().find(b=>b.textContent===label);assert(b,'missing button '+label);assert(!b.disabled,'disabled '+label);b.onclick({stopPropagation(){}})};
+const click=label=>{const b=allButtons().find(b=>typeof b.onclick==='function'&&(b.textContent===label||b.children?.some(c=>c.textContent===label))); assert(b,'missing button '+label);assert(!b.disabled,'disabled '+label);b.onclick({stopPropagation(){}})};
 const begin=()=>{run('showTitle()');click('最初から');for(let i=0;i<3;i++)run('advanceOpening()');end()};
 check('state.mode==="opening"');begin();check('state.mode==="exploration" && state.flags.introSeen');
 assert.equal(elements.commandRoots.children[0].textContent,'移動');
@@ -61,7 +61,7 @@ for(const slot of [1,2,3]){
  const expected=JSON.parse(run(`JSON.stringify(Saves.read(${slot}))`));run('showTitle()');click('途中から');
  const b=elements.panelBody.children.find(b=>b.textContent.startsWith('記録'+slot+'：'));assert(b);b.onclick();click('再開する');
  assert.deepEqual(JSON.parse(run('JSON.stringify({room:state.room,flags:state.flags,inventory:state.inventory,visits:state.visits,completedEvents:state.completedEvents,examined:state.examined,listened:state.listened,notebook:state.notebook})')),expected.progress);
- assert.deepEqual(JSON.parse(run('JSON.stringify({textSpeed:textSettings.index,auto:textSettings.auto})')),expected.settings);
+ assert.deepEqual(JSON.parse(run('JSON.stringify({textSpeed:textSettings.index,auto:textSettings.auto,sound:textSettings.sound})')),expected.settings);
 }
 const storageBefore=Array.from(storage.entries());begin();assert.deepEqual(Array.from(storage.entries()),storageBefore);
 check('state.inventory.length===0 && !state.flags.deductionDone && state.visits.classroom===1');

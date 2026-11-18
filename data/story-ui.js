@@ -136,7 +136,7 @@ function buildDeduction(){
    selected.every((v,i)=>v===q.groups[i].opts[q.groups[i].correct])?correct():wrong();
   };$('panelBody').appendChild(confirm);
  }else q.opts.forEach((option,i)=>{
-  const b=document.createElement('button');b.className='deduction-choice';b.textContent=option;
+  const b=document.createElement('button');b.className='deduction-choice';const text=document.createElement('span');text.className='deduction-choice-label';text.textContent=option;b.appendChild(text);
   b.onclick=()=>{if(state.mode==='deduction')i===q.correct?correct():wrong()};b.onmouseenter=b.onfocus=()=>{for(const option of $('panelBody').querySelectorAll('.deduction-choice'))option.classList.toggle('paper-selected',option===b)};if(i===0)b.classList.add('paper-selected');$('panelBody').appendChild(b);
  });
 

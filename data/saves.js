@@ -25,14 +25,8 @@
    if(!object(p)||typeof p.room!=='string'||!own(scenario.rooms,p.room)||!object(p.flags)||!object(p.visits)||
       !object(p.completedEvents)||!Array.isArray(p.inventory)||!object(settings))fail();
    const flags={...scenario.initial.flags},visits={},completedEvents={},examined={},listened={};
-   if(p.examined!==undefined){if(!object(p.examined))fail();for(const [k,v] of Object.entries(p.examined)){const parts=k.split(':');if(!safe(k)||parts.length!==2||!own(scenario.rooms,parts[0])||!own(scenario.investigations,parts[1])||v!==true)fail();examined[k]=true}}
-   if(p.listened!==undefined){
-    if(!object(p.listened))fail();
-    for(const [key,done] of Object.entries(p.listened)){const parts=key.split(':');
-     if(!safe(key)||parts.length!==2||!own(scenario.rooms,parts[0])||done!==true||!(scenario.rooms[parts[0]].occupants||[]).some(person=>(person.id||person.name)===parts[1]))fail();
-     listened[key]=true;
-    }
-   }
+   if(p.examined!==undefined&&!object(p.examined))fail();
+   if(p.listened!==undefined&&!object(p.listened))fail();
    const discoveryFlags=new Set(scenario.commands?.discoveryFlags||[]);
    for(const key of Object.keys(scenario.initial.flags))if(!own(p.flags,key)&&!discoveryFlags.has(key))fail();
    const legacyDiscoveries={layoutSeen:!!p.flags.layoutChecked,noticeSeen:!!p.flags.dutyChecked,personNakako:!!p.flags.introSeen,personOkabo:!!(p.flags.layoutChecked||p.flags.dutyChecked||p.flags.okaboChecked),personCulprit:!!p.flags.introSeen};
@@ -50,17 +44,34 @@
    for(const [k,v] of Object.entries(p.completedEvents)){
     if(!safe(k)||!events.has(k)||v!==true)fail();completedEvents[k]=true;
    }
+   const selectionState={room:p.room,flags,visits,completedEvents,inventory:p.inventory};
+   for(const [key,value] of Object.entries(p.examined||{})){
+    const parts=key.split(':');if(!safe(key)||parts.length<2||parts.length>3||!own(scenario.rooms,parts[0])||!own(scenario.investigations,parts[1]))fail();
+    const [roomId,target,label]=parts,room=scenario.rooms[roomId],base=(room.targets||[]).find(t=>t.id===target);
+    const extra=(scenario.commands?.investigations||[]).find(x=>x.room===roomId&&x.target===target&&x.label===label);
+    if(!base||(!label&&value!==true)||(label&&label!==base.name&&!extra))fail();
+    const events=scenario.investigations[target],newKey=roomId+':'+target+':'+(label||base.name);
+    if(value===true){const event=global.SaikachiEvents.select(events,{...selectionState,room:roomId});if(event)examined[newKey]=[events.indexOf(event)];}
+    else {if(!Array.isArray(value)||value.some(i=>!Number.isInteger(i)||i<0||i>=events.length)||new Set(value).size!==value.length)fail();examined[newKey]=[...value];}
+   }
+   for(const [key,value] of Object.entries(p.listened||{})){
+    const parts=key.split(':');if(!safe(key)||parts.length!==2||!own(scenario.rooms,parts[0]))fail();
+    const person=(scenario.rooms[parts[0]].occupants||[]).find(x=>(x.id||x.name)===parts[1]);if(!person)fail();
+    const events=person.events||[{lines:person.lines}];
+    if(value===true){const event=global.SaikachiEvents.select(events,{...selectionState,room:parts[0]});if(event)listened[key]=[events.indexOf(event)];}
+    else {if(!Array.isArray(value)||value.some(i=>!Number.isInteger(i)||i<0||i>=events.length)||new Set(value).size!==value.length)fail();listened[key]=[...value];}
+   }
    if(p.inventory.some(i=>typeof i!=='string'||!items.has(i))||new Set(p.inventory).size!==p.inventory.length)fail();
-   if(!Number.isInteger(settings.textSpeed)||settings.textSpeed<0||settings.textSpeed>3||typeof settings.auto!=='boolean')fail();
+   if(!Number.isInteger(settings.textSpeed)||settings.textSpeed<0||settings.textSpeed>3||typeof settings.auto!=='boolean'||(settings.sound!==undefined&&typeof settings.sound!=='boolean'))fail();
    return {format:FORMAT,scenarioId:data.scenarioId,saveRevision:data.saveRevision,savedAt:data.savedAt,
     progress:{room:p.room,flags,inventory:[...p.inventory],visits,completedEvents,examined,listened,notebook:global.SaikachiNotebook.validate(p.notebook,scenario)},
-    settings:{textSpeed:settings.textSpeed,auto:settings.auto}};
+    settings:{textSpeed:settings.textSpeed,auto:settings.auto,sound:settings.sound!==false}};
   }
   function snapshot(state,settings){
    if(!['exploration','menu'].includes(state.mode))throw new Error('会話や推理を終えてから保存してください。');
    return validate({format:FORMAT,scenarioId:scenario.meta.id,saveRevision:scenario.meta.saveRevision,
     savedAt:new Date().toISOString(),progress:{room:state.room,flags:state.flags,inventory:state.inventory,
-     visits:state.visits,completedEvents:state.completedEvents,examined:state.examined||{},listened:state.listened||{},notebook:state.notebook},settings:{textSpeed:settings.index,auto:settings.auto}});
+     visits:state.visits,completedEvents:state.completedEvents,examined:state.examined||{},listened:state.listened||{},notebook:state.notebook},settings:{textSpeed:settings.index,auto:settings.auto,sound:settings.sound!==false}});
   }
   function key(slot){if(!Number.isInteger(slot)||slot<1||slot>3)throw new Error('保存枠が正しくありません。');return PREFIX+scenario.meta.id+'.'+slot;}
   function raw(slot){
