@@ -348,7 +348,7 @@ function drawScene(roomId){
 
 const state={mode:'exploration',room:SCENARIO.initial.room,flags:{...SCENARIO.initial.flags},inventory:[],visits:{[SCENARIO.initial.room]:1},completedEvents:{},examined:{},listened:{},selected:null,dialogue:[],lineIndex:0,afterDialogue:null,deductionStep:0,errors:0};
 const $=id=>document.getElementById(id), room=()=>DATA.rooms[state.room];
-const textSettings={speeds:[60,26,13,0],labels:['おそい','ふつう','はやい','一瞬'],index:1,auto:false,sound:true};let typingTimer=null,autoTimer=null,typingDone=false,displayedChars=0,dialogueGeneration=0;
+const textSettings={speeds:[60,26,13,0],labels:['おそい','ふつう','はやい','一瞬'],index:1,auto:false,sound:true,se:true};let typingTimer=null,autoTimer=null,typingDone=false,displayedChars=0,dialogueGeneration=0;
 function setSpeaker(name){
  const box=$('speaker');box.replaceChildren();box.setAttribute('aria-label',name);
  if(name==='ハルキ'||name==='サイジ'){const img=document.createElement('img');img.src='assets/ui/name-'+(name==='ハルキ'?'haruki':'saiji')+'.png';img.alt=name;box.appendChild(img)}else box.textContent=name;
@@ -384,6 +384,16 @@ function paginateDialogue(lines){
 const typingPitches={'ハルキ':880,'サイジ':784};let typingAudio=null,lastTypingSound=0;
 function unlockTypingAudio(){try{const Audio=window.AudioContext||window.webkitAudioContext;if(!Audio)return;if(!typingAudio)typingAudio=new Audio();if(typingAudio.state==='suspended')typingAudio.resume().catch(()=>{});}catch(e){}}
 function playTypingSound(speaker,char){if(!textSettings.sound||!speaker||!char||/[\s、。！？,.!?…「」『』・：；]/u.test(char)||!typingAudio||typingAudio.state!=='running')return;const now=typingAudio.currentTime;if(now-lastTypingSound<.06)return;lastTypingSound=now;try{const osc=typingAudio.createOscillator(),gain=typingAudio.createGain();osc.type='triangle';osc.frequency.value=typingPitches[speaker]||typingPitches['ハルキ'];gain.gain.setValueAtTime(.025,now);gain.gain.exponentialRampToValueAtTime(.0001,now+.035);osc.connect(gain);gain.connect(typingAudio.destination);osc.start(now);osc.stop(now+.035)}catch(e){}}
+// Synthesis is isolated here so the same event API can later use authored audio files.
+const SE_SPEC={floor:.0001,steps:{interval:.15,duration:.055,filterQ:.8,endHz:75,filterHz:[1400,1550,1380,1500],noiseGain:[.032,.029,.031,.021],toneHz:[125,135,124,130],toneGain:[.017,.016,.017,.011]},item:{notes:[784,1046.5,1318.5],interval:.13,duration:.22,gain:.028}};
+function renderSE(context,kind,start=context.currentTime){
+ if(kind==='steps'){const spec=SE_SPEC.steps;for(let i=0;i<4;i++){
+  const t=start+i*spec.interval,noise=context.createBuffer(1,Math.ceil(context.sampleRate*spec.duration),context.sampleRate),samples=noise.getChannelData(0);for(let j=0;j<samples.length;j++)samples[j]=Math.random()*2-1;
+  const source=context.createBufferSource(),filter=context.createBiquadFilter(),gain=context.createGain();source.buffer=noise;filter.type='bandpass';filter.frequency.value=spec.filterHz[i];filter.Q.value=spec.filterQ;gain.gain.setValueAtTime(spec.noiseGain[i],t);gain.gain.exponentialRampToValueAtTime(SE_SPEC.floor,t+spec.duration);source.connect(filter);filter.connect(gain);gain.connect(context.destination);source.start(t);source.stop(t+spec.duration);
+  const tone=context.createOscillator(),thump=context.createGain();tone.type='sine';tone.frequency.setValueAtTime(spec.toneHz[i],t);tone.frequency.exponentialRampToValueAtTime(spec.endHz,t+spec.duration);thump.gain.setValueAtTime(spec.toneGain[i],t);thump.gain.exponentialRampToValueAtTime(SE_SPEC.floor,t+spec.duration);tone.connect(thump);thump.connect(context.destination);tone.start(t);tone.stop(t+spec.duration);
+ }}else if(kind==='item'){const spec=SE_SPEC.item;spec.notes.forEach((frequency,i)=>{const t=start+i*spec.interval,osc=context.createOscillator(),gain=context.createGain();osc.type='triangle';osc.frequency.setValueAtTime(frequency,t);gain.gain.setValueAtTime(spec.gain,t);gain.gain.exponentialRampToValueAtTime(SE_SPEC.floor,t+spec.duration);osc.connect(gain);gain.connect(context.destination);osc.start(t);osc.stop(t+spec.duration)});}
+}
+function playSE(kind){if(!textSettings.se||!typingAudio||typingAudio.state!=='running')return;try{renderSE(typingAudio,kind)}catch(e){}}
 document.addEventListener('pointerdown',unlockTypingAudio,{once:true});document.addEventListener('keydown',unlockTypingAudio,{once:true});
 function cancelTextTimers(){clearTimeout(typingTimer);clearTimeout(autoTimer);typingTimer=null;autoTimer=null}
 function closeDialogueLayer(){
@@ -430,7 +440,8 @@ function advance(){
 }
 const Events=window.SaikachiEvents;
 function runEvent(event){
- if(!event||!Events.apply(event,state))return false;state.pendingDeduction=!!event.deduction;
+ if(!event)return false;const acquired=(event.give||[]).filter(item=>!state.inventory.includes(item));if(!Events.apply(event,state))return false;state.pendingDeduction=!!event.deduction;
+ let lines=event.lines;if(acquired.length&&lines?.length){let marker=-1;for(let i=0;i<lines.length;i++){const visual=lines[i][3];if(visual?.item&&(!visual.label||acquired.includes(visual.label)))marker=i}if(marker>=0){const ticket={played:false};lines=lines.map((line,i)=>i===marker?[line[0],line[1],line[2],{...line[3],seAcquisition:ticket}]:line)}}
  const finish=()=>{
   if(event.deduction){state.pendingDeduction=false;startDeduction();return}
   if(event.topic){playTopic(event.topic);return}
@@ -438,7 +449,7 @@ function runEvent(event){
   if(event.choices){showTopicChoices(event.choices);return}
   closeDialogueLayer();state.mode='exploration';render();
  };
- if(event.lines&&event.lines.length)say(event.lines,finish);else finish();
+ if(lines&&lines.length)say(lines,finish);else finish();
  return true;
 }
 function investigationKey(id,label){return state.room+':'+id+':'+(label||(room().targets.find(t=>t.id===id)?.name||id))}
@@ -449,7 +460,7 @@ function examine(id,label){
 }
 function moveTo(id){
  if(!DATA.rooms[id])return;
- const changed=Events.enter(id,state);if(typeof commandSelection!=='undefined')commandSelection=changed?'investigate':commandSelection;if(changed)resetCharacterExpressions();closePanel();
+ const changed=Events.enter(id,state);if(changed&&textSettings.se)playSE('steps');if(typeof commandSelection!=='undefined')commandSelection=changed?'investigate':commandSelection;if(changed)resetCharacterExpressions();closePanel();
  if(changed)$('commandChildren').querySelector?.('button')?.focus?.({preventScroll:true});
  if(changed)runEvent(Events.select(DATA.rooms[id].onEnter||[],state));
 }
@@ -498,7 +509,7 @@ function restoreSave(saved){if(typeof resetNotebookUI==='function')resetNotebook
  $('dialogueChoices').replaceChildren();$('nextMark').classList.remove('ready');
  Object.assign(state,checked.progress,{mode:'exploration',selected:null,dialogue:[],lineIndex:0,
   afterDialogue:null,deductionStep:0,errors:0});
- textSettings.index=checked.settings.textSpeed;textSettings.auto=checked.settings.auto;textSettings.sound=checked.settings.sound;
+ textSettings.index=checked.settings.textSpeed;textSettings.auto=checked.settings.auto;textSettings.sound=checked.settings.sound;textSettings.se=checked.settings.se;
  updateTextControls();$('panel').classList.add('hidden');$('actions').classList.add('hidden');render();
 }
 

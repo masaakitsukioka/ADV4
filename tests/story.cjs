@@ -61,7 +61,7 @@ for(const slot of [1,2,3]){
  const expected=JSON.parse(run(`JSON.stringify(Saves.read(${slot}))`));run('showTitle()');click('途中から');
  const b=elements.panelBody.children.find(b=>b.textContent.startsWith('記録'+slot+'：'));assert(b);b.onclick();click('再開する');
  assert.deepEqual(JSON.parse(run('JSON.stringify({room:state.room,flags:state.flags,inventory:state.inventory,visits:state.visits,completedEvents:state.completedEvents,examined:state.examined,listened:state.listened,notebook:state.notebook})')),expected.progress);
- assert.deepEqual(JSON.parse(run('JSON.stringify({textSpeed:textSettings.index,auto:textSettings.auto,sound:textSettings.sound})')),expected.settings);
+ assert.deepEqual(JSON.parse(run('JSON.stringify({textSpeed:textSettings.index,auto:textSettings.auto,sound:textSettings.sound,se:textSettings.se})')),expected.settings);
 }
 const storageBefore=Array.from(storage.entries());begin();assert.deepEqual(Array.from(storage.entries()),storageBefore);
 check('state.inventory.length===0 && !state.flags.deductionDone && state.visits.classroom===1');

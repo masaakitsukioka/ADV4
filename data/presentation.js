@@ -67,7 +67,7 @@ function startTalking(name,emotion,text){
 }
 function presentDialogueLine(line){
  const [speaker,text,emotion,visual]=line;
- if(visual?.item){state.itemPresentation=visual;showItemGraphic(visual.item,visual.label)}
+ if(visual?.item){state.itemPresentation=visual;showItemGraphic(visual.item,visual.label);if(visual.seAcquisition&&!visual.seAcquisition.played){visual.seAcquisition.played=true;if(textSettings.se)playSE('item')}}
  startTalking(speaker,emotion||'通常',text);
 }
 function resetPresentation(){

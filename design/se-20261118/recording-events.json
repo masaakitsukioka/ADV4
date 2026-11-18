@@ -1,0 +1,21 @@
+{
+  "events": [
+    {
+      "kind": "steps",
+      "ms": 0,
+      "audioState": "running"
+    },
+    {
+      "kind": "steps",
+      "ms": 1880,
+      "audioState": "running"
+    },
+    {
+      "kind": "item",
+      "ms": 6465,
+      "audioState": "running"
+    }
+  ],
+  "line": "ナカコのスケッチブックを手に入れた。",
+  "audioState": "running"
+}

@@ -12,6 +12,7 @@ function renderTextSettings(){
  };
  row('文字の速さ',textSettings.labels,textSettings.index,i=>{textSettings.index=i;updateTextControls()});
  row('文字の音',['OFF','ON'],textSettings.sound?1:0,i=>{textSettings.sound=i===1});
+ row('効果音',['OFF','ON'],textSettings.se?1:0,i=>{textSettings.se=i===1});
  row('自動送り',['OFF','ON'],textSettings.auto?1:0,i=>{textSettings.auto=i===1;updateTextControls()});
  $('panelBody').prepend(box);
 }
