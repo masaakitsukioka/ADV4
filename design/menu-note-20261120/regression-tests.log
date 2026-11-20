@@ -9,41 +9,41 @@ PASS 1920x1080
 PASS 1280x720
 PASS 390x844
 
-debug-dialogue.cjs: PASS (1.7s)
+debug-dialogue.cjs: PASS (1.6s)
 PASS 1920x1080: 180 dialogue entries
 PASS 1280x720: 180 dialogue entries
 PASS 390x844: 180 dialogue entries
 
-deduce-261118.cjs: PASS (17.2s)
+deduce-261118.cjs: PASS (17.5s)
 PASS 1920x1080
 PASS 1280x720
 PASS 390x844
 
-deduce-polish.cjs: PASS (12.4s)
+deduce-polish.cjs: PASS (12.9s)
 PASS: five centred questions at nine sizes, q3/q4 no overlap, varied sidebar/no duplicate number, balanced ink stamp, 140% solved with 1.8s reveal/1s hold/.5s fade, live ending scene and reset
 
 expr-a.cjs: PASS (1.8s)
 PASS: six expression images, full-image blink/mouth frames, character-specific mappings and missing-tag fallbacks
 
-logic.cjs: PASS (0.9s)
+logic.cjs: PASS (1.0s)
 PASS: room-local commands, once-only acquisition, current movement and visits
 
-manga-fix1.cjs: PASS (5.4s)
+manga-fix1.cjs: PASS (5.3s)
 PASS: six enlarged command rows have operable letter centres; corridor targets on arrival/click; no orphan arrow; paper choices; all five deduction leads readable; audit rejects narrow/clipped text
 
-manga-fix2.cjs: PASS (3.6s)
+manga-fix2.cjs: PASS (3.7s)
 PASS: permanent paper/actors; retained expressions; normal 26ms typing; stale command focus Enter/Space; 80ms stagger; same list and selection after dialogue; listener completion/save/legacy/validation; room/new-game reset
 
-manga-rebuild.cjs: PASS (6.5s)
+manga-rebuild.cjs: PASS (6.6s)
 PASS: examination mark, speaker/name/body/inline advance, choices, notebook, movement, rotated cover coordinates, 8 time/place renders, light cache and screenshots
 
-menu-note-261120.cjs: PASS (8.4s)
-PASS: five tabs/keyboard, P from every page, persistent arrival/read/reaction, inline PHS selection, 3-slot save/load/settings/legacy, 5/17-person unscrolled charts/no overlap/no round frames, ArmedLemon swap, empty doodles, deduction lock, 1920/1280 screenshots
+menu-note-261120.cjs: PASS (8.5s)
+PASS: five tabs/keyboard, P from every page, persistent arrival/read/reaction, inline PHS selection, 3-slot save/load/settings/legacy, 5/17-person unscrolled charts/no overlap/no round frames, labels within 80px/short leaders/unchanged five-person layout, ArmedLemon swap, empty doodles, deduction lock, 1920/1280 screenshots
 
-menu-phs-browser.cjs: PASS (5.5s)
+menu-phs-browser.cjs: PASS (5.6s)
 PASS: persistent/deferred arrival, five-tab navigation, inline PHS/reactions/read state, actual 3-slot save/load/title/legacy, unscrolled relation chart at three sizes, memo full text, focus trap, touch, deduction lock
 
-menu-phs.cjs: PASS (0.0s)
+menu-phs.cjs: PASS (0.1s)
 PASS: conditional one-time receipt, unread/read, undiscovered nodes, conditional real names, hinted/deceased records, relation update tokens, save roundtrip, old saves, invalid notebook rejection, scenario equality.
 
 portrait-animation.cjs: PASS (8.5s)
@@ -52,7 +52,7 @@ PASS: closed/half/open mouth cycle, immediate close after reveal, idle half/clos
 presentation-resolution.cjs: PASS (0.0s)
 PASS: aligned full-portrait replacement, closed base, missing/invalid fallback, no stacked image
 
-saves.cjs: PASS (0.8s)
+saves.cjs: PASS (0.9s)
 PASS: examination save/restore, old-save migration, rejection of malformed keys, new-game reset and retained slot
 
 scene-transfers.cjs: PASS (0.9s)
@@ -61,7 +61,7 @@ PASS: place stamp/background transition, shared manuscript dialogue and exit gua
 se-261118.cjs: PASS (0.9s)
 PASS: real movement and item acquisition timing, no repeat/show/load sounds, multiple items, separate OFF setting and legacy saves
 
-stability.cjs: PASS (6.3s)
+stability.cjs: PASS (6.5s)
 PASS: reveal/advance, IME and repeated-key guards, native button activation, choice cancels automatic advance, stale dialogue stays closed
 
 story.cjs: PASS (0.1s)
@@ -85,7 +85,7 @@ ReferenceError: showWindow is not defined
     at Object.<anonymous> (/Volumes/Extreme SSD/ADV4/tests/transfers.cjs:86:3)
     at Module._compile (node:internal/modules/cjs/loader:1929:14)
 
-ui-layout.cjs: PASS (9.1s)
+ui-layout.cjs: PASS (9.2s)
 PASS 1920x1080: all dialogue pages, q5, five notebook tabs, relation labels, populated title saves
 PASS 1280x720: all dialogue pages, q5, five notebook tabs, relation labels, populated title saves
 PASS 1024x768: all dialogue pages, q5, five notebook tabs, relation labels, populated title saves

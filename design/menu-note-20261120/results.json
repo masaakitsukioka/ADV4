@@ -49,6 +49,78 @@
         "radius": "0px",
         "imageRadius": null
       }
+    ],
+    "labels": [
+      {
+        "leaderOffset": 0,
+        "perpendicularError": 0.000024414062522737368,
+        "leaderLength": 0,
+        "text": "相棒",
+        "left": 375,
+        "top": 509.1,
+        "rotation": "0deg",
+        "distance": 0.006215410174457854,
+        "overlapsPerson": false,
+        "overlapsGroup": false,
+        "overlapsLabel": false,
+        "leader": false
+      },
+      {
+        "leaderOffset": 0,
+        "perpendicularError": 0.000016561205949366325,
+        "leaderLength": 0,
+        "text": "同級生",
+        "left": 730,
+        "top": 509.1,
+        "rotation": "26.886934192476716deg",
+        "distance": 0.006277036110448518,
+        "overlapsPerson": false,
+        "overlapsGroup": false,
+        "overlapsLabel": false,
+        "leader": false
+      },
+      {
+        "leaderOffset": 0,
+        "perpendicularError": 0,
+        "leaderLength": 0,
+        "text": "同級生",
+        "left": 730,
+        "top": 689.1,
+        "rotation": "0deg",
+        "distance": 0.006240728504688004,
+        "overlapsPerson": false,
+        "overlapsGroup": false,
+        "overlapsLabel": false,
+        "leader": false
+      },
+      {
+        "leaderOffset": 0,
+        "perpendicularError": 0,
+        "leaderLength": 0,
+        "text": "クロ研の当番",
+        "left": 1270,
+        "top": 689.1,
+        "rotation": "0deg",
+        "distance": 0.006197876884019944,
+        "overlapsPerson": false,
+        "overlapsGroup": false,
+        "overlapsLabel": false,
+        "leader": false
+      },
+      {
+        "leaderOffset": 0,
+        "perpendicularError": 2.576653038635093e-7,
+        "leaderLength": 0,
+        "text": "配置図を記した顧問",
+        "left": 730,
+        "top": 344.1,
+        "rotation": "2.4195092166563366deg",
+        "distance": 0.006246714640127134,
+        "overlapsPerson": false,
+        "overlapsGroup": false,
+        "overlapsLabel": false,
+        "leader": false
+      }
     ]
   },
   "1920-chart17": {
@@ -197,6 +269,64 @@
         "radius": "0px",
         "imageRadius": null
       }
+    ],
+    "labels": [
+      {
+        "leaderOffset": 0,
+        "perpendicularError": 0,
+        "leaderLength": 63.95001220703125,
+        "text": "相棒",
+        "left": 186,
+        "top": 231.65,
+        "rotation": "0deg",
+        "distance": 79.95939358154007,
+        "overlapsPerson": false,
+        "overlapsGroup": false,
+        "overlapsLabel": false,
+        "leader": true
+      },
+      {
+        "leaderOffset": 0,
+        "perpendicularError": 0,
+        "leaderLength": 63.95001220703125,
+        "text": "親友",
+        "left": 426,
+        "top": 231.65,
+        "rotation": "0deg",
+        "distance": 79.95938147050389,
+        "overlapsPerson": false,
+        "overlapsGroup": false,
+        "overlapsLabel": false,
+        "leader": true
+      },
+      {
+        "leaderOffset": 0,
+        "perpendicularError": 0,
+        "leaderLength": 63.95001220703125,
+        "text": "部員と顧問",
+        "left": 836,
+        "top": 231.65,
+        "rotation": "0deg",
+        "distance": 79.95938305367218,
+        "overlapsPerson": false,
+        "overlapsGroup": false,
+        "overlapsLabel": false,
+        "leader": true
+      },
+      {
+        "leaderOffset": 0,
+        "perpendicularError": 0.0000061035156022626325,
+        "leaderLength": 31.949951171875,
+        "text": "同じ日？",
+        "left": 1066.05,
+        "top": 421.6,
+        "rotation": "0deg",
+        "distance": 79.953104708259,
+        "overlapsPerson": false,
+        "overlapsGroup": false,
+        "overlapsLabel": false,
+        "leader": true
+      }
     ]
   },
   "1280-chart": {
@@ -248,6 +378,78 @@
         "bottom": 364.98309326171875,
         "radius": "0px",
         "imageRadius": null
+      }
+    ],
+    "labels": [
+      {
+        "leaderOffset": 0,
+        "perpendicularError": 0.000024414062522737368,
+        "leaderLength": 0,
+        "text": "相棒",
+        "left": 375,
+        "top": 509.1,
+        "rotation": "0deg",
+        "distance": 0.006202238721788697,
+        "overlapsPerson": false,
+        "overlapsGroup": false,
+        "overlapsLabel": false,
+        "leader": false
+      },
+      {
+        "leaderOffset": 0,
+        "perpendicularError": 0.000016561205949366325,
+        "leaderLength": 0,
+        "text": "同級生",
+        "left": 730,
+        "top": 509.1,
+        "rotation": "26.886934192476716deg",
+        "distance": 0.006286463953914287,
+        "overlapsPerson": false,
+        "overlapsGroup": false,
+        "overlapsLabel": false,
+        "leader": false
+      },
+      {
+        "leaderOffset": 0,
+        "perpendicularError": 0,
+        "leaderLength": 0,
+        "text": "同級生",
+        "left": 730,
+        "top": 689.1,
+        "rotation": "0deg",
+        "distance": 0.006232794896619767,
+        "overlapsPerson": false,
+        "overlapsGroup": false,
+        "overlapsLabel": false,
+        "leader": false
+      },
+      {
+        "leaderOffset": 0,
+        "perpendicularError": 0,
+        "leaderLength": 0,
+        "text": "クロ研の当番",
+        "left": 1270,
+        "top": 689.1,
+        "rotation": "0deg",
+        "distance": 0.006205533754579894,
+        "overlapsPerson": false,
+        "overlapsGroup": false,
+        "overlapsLabel": false,
+        "leader": false
+      },
+      {
+        "leaderOffset": 0,
+        "perpendicularError": 2.576653038635093e-7,
+        "leaderLength": 0,
+        "text": "配置図を記した顧問",
+        "left": 730,
+        "top": 344.1,
+        "rotation": "2.4195092166563366deg",
+        "distance": 0.006251222625635446,
+        "overlapsPerson": false,
+        "overlapsGroup": false,
+        "overlapsLabel": false,
+        "leader": false
       }
     ]
   },
@@ -396,6 +598,64 @@
         "bottom": 619.63525390625,
         "radius": "0px",
         "imageRadius": null
+      }
+    ],
+    "labels": [
+      {
+        "leaderOffset": 0,
+        "perpendicularError": 0,
+        "leaderLength": 63.95001220703125,
+        "text": "相棒",
+        "left": 186,
+        "top": 231.65,
+        "rotation": "0deg",
+        "distance": 79.95939496400861,
+        "overlapsPerson": false,
+        "overlapsGroup": false,
+        "overlapsLabel": false,
+        "leader": true
+      },
+      {
+        "leaderOffset": 0,
+        "perpendicularError": 0,
+        "leaderLength": 63.95001220703125,
+        "text": "親友",
+        "left": 426,
+        "top": 231.65,
+        "rotation": "0deg",
+        "distance": 79.95938289957786,
+        "overlapsPerson": false,
+        "overlapsGroup": false,
+        "overlapsLabel": false,
+        "leader": true
+      },
+      {
+        "leaderOffset": 0,
+        "perpendicularError": 0,
+        "leaderLength": 63.95001220703125,
+        "text": "部員と顧問",
+        "left": 836,
+        "top": 231.65,
+        "rotation": "0deg",
+        "distance": 79.95938839036629,
+        "overlapsPerson": false,
+        "overlapsGroup": false,
+        "overlapsLabel": false,
+        "leader": true
+      },
+      {
+        "leaderOffset": 0,
+        "perpendicularError": 0.0000061035156022626325,
+        "leaderLength": 28,
+        "text": "同じ日？",
+        "left": 1070,
+        "top": 421.6,
+        "rotation": "0deg",
+        "distance": 76.00007096303061,
+        "overlapsPerson": false,
+        "overlapsGroup": false,
+        "overlapsLabel": false,
+        "leader": true
       }
     ]
   }

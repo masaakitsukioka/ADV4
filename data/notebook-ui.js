@@ -96,11 +96,52 @@ function showNotebookRelations(){
  renderNotebookDoodles(mini?'relations17':'relations');state.notebook.seenRelations=Notebook.tokens(state.notebook);updateNotebookNav();
 }
 function drawNotebookEdges(chart,nodes,edges){
- const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');svg.setAttribute('viewBox',notebookPortrait()?'0 0 720 1740':'0 0 1640 944');svg.setAttribute('aria-hidden','true');chart.prepend(svg);const occupied=nodes.map(n=>({x:n.px,y:n.py,w:n.w,h:n.h})),labels=[];
+ // Preserve every existing large-chart placement, including the narrow-screen layout.
+ if(!chart.classList.contains('mini'))return drawNotebookLargeEdges(chart,nodes,edges);
+ const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');svg.classList.add('nb-edge-svg');svg.setAttribute('viewBox',notebookPortrait()?'0 0 720 1740':'0 0 1640 944');svg.setAttribute('aria-hidden','true');chart.prepend(svg);
+ // Protect the rendered artwork and text, rather than the unused space in a person button.
+ const inverse=svg.getScreenCTM().inverse();
+ const box=el=>{const r=el.getBoundingClientRect(),center=new DOMPoint((r.left+r.right)/2,(r.top+r.bottom)/2).matrixTransform(inverse);return{x:center.x-el.offsetWidth/2,y:center.y-el.offsetHeight/2,w:el.offsetWidth,h:el.offsetHeight}};
+ const occupied=[...chart.querySelectorAll('.person .face,.person .nm,.person .rn,.person .new')].filter(el=>el.getClientRects().length).map(box),labels=[];
  const hit=(a,b)=>a.x<b.x+b.w&&a.x+a.w>b.x&&a.y<b.y+b.h&&a.y+a.h>b.y;
- for(const edge of edges){const a=nodes.find(n=>n.id===edge.from),b=nodes.find(n=>n.id===edge.to);if(!a?.known||!b?.known)continue;const p={x:a.px+a.w/2,y:a.py+a.fh*.55},q={x:b.px+b.w/2,y:b.py+b.fh*.55},dx=q.x-p.x,dy=q.y-p.y,L=Math.hypot(dx,dy)||1,ux=dx/L,uy=dy/L,x1=p.x+ux*Math.min(a.fw/2+14,L*.45),y1=p.y+uy*Math.min(a.fw/2+14,L*.45),x2=q.x-ux*Math.min(b.fw/2+14,L*.45),y2=q.y-uy*Math.min(b.fw/2+14,L*.45);
- const line=document.createElementNS('http://www.w3.org/2000/svg','path');line.setAttribute('d',`M${x1} ${y1} L${x2} ${y2}`);line.setAttribute('stroke','#1d1d22');line.setAttribute('stroke-width','4');line.setAttribute('stroke-linecap','round');line.setAttribute('fill','none');if(edge.style!=='solid')line.setAttribute('stroke-dasharray',edge.style==='dashed'?'14 10':'2 10');svg.appendChild(line);
- const label=nbElement('div',edge.label,'rel nb-edge-label');chart.appendChild(label);let ang=Math.atan2(dy,dx)*180/Math.PI;if(ang>90)ang-=180;if(ang<-90)ang+=180;label.style.setProperty('--r',(notebookPortrait()||Math.abs(ang)>60?0:ang)+'deg');
+ const path=(d,cls,width)=>{const p=document.createElementNS('http://www.w3.org/2000/svg','path');p.setAttribute('d',d);p.setAttribute('class',cls);p.setAttribute('stroke','#1d1d22');p.setAttribute('stroke-width',width);p.setAttribute('stroke-linecap','round');p.setAttribute('fill','none');svg.appendChild(p);return p};
+ for(const [index,edge] of edges.entries()){
+  const a=nodes.find(n=>n.id===edge.from),b=nodes.find(n=>n.id===edge.to);if(!a?.known||!b?.known)continue;
+  const anchor=.55,p={x:a.px+a.w/2,y:a.py+a.fh*anchor},q={x:b.px+b.w/2,y:b.py+b.fh*anchor},dx=q.x-p.x,dy=q.y-p.y,L=Math.hypot(dx,dy)||1,ux=dx/L,uy=dy/L,x1=p.x+ux*Math.min(a.fw/2+14,L*.45),y1=p.y+uy*Math.min(a.fw/2+14,L*.45),x2=q.x-ux*Math.min(b.fw/2+14,L*.45),y2=q.y-uy*Math.min(b.fw/2+14,L*.45),mx=(x1+x2)/2,my=(y1+y2)/2;
+  const line=path(`M${x1} ${y1} L${x2} ${y2}`,'nb-edge-line',4);line.dataset.edge=index;if(edge.style!=='solid')line.setAttribute('stroke-dasharray',edge.style==='dashed'?'14 10':'2 10');
+  const label=nbElement('div',edge.label,'rel nb-edge-label');label.dataset.edge=index;chart.appendChild(label);
+  let ang=Math.atan2(dy,dx)*180/Math.PI;if(ang>90)ang-=180;if(ang<-90)ang+=180;ang=notebookPortrait()||Math.abs(ang)>60?0:ang;label.style.setProperty('--r',ang+'deg');
+  const radians=ang*Math.PI/180,c=Math.abs(Math.cos(radians)),s=Math.abs(Math.sin(radians)),w=label.offsetWidth,h=label.offsetHeight,bw=w*c+h*s,bh=w*s+h*c;
+  // Only the midpoint and its perpendicular are candidates. Never search remote blank areas.
+  const offsets=[0];for(let d=4;d<80;d+=4)offsets.push(d,-d);offsets.push(79.95,-79.95);
+  const regionW=notebookPortrait()?720:1640,regionH=notebookPortrait()?1740:944;
+  let chosen=null;
+  for(const offset of offsets){const x=mx-uy*offset,y=my+ux*offset,r={x:x-bw/2-2,y:y-bh/2-2,w:bw+4,h:bh+4};if(r.x>=0&&r.x+r.w<=regionW&&r.y>=190&&r.y+r.h<=regionH-100&&!occupied.concat(labels).some(b=>hit(r,b))){chosen={x,y,r,offset};break}}
+  // Keep the midpoint bound even if future data supplies an impossibly crowded arrangement.
+  const placement=chosen||{x:mx,y:my,offset:0,r:{x:mx-bw/2,y:my-bh/2,w:bw,h:bh}};
+  label.style.left=placement.x+'px';label.style.top=placement.y+'px';labels.push(placement.r);
+  const short=Math.hypot(x2-x1,y2-y1)<Math.abs(ux)*w+Math.abs(uy)*h;
+  if(placement.offset&&(short||chart.classList.contains('mini'))){
+   // Stop at the label edge; the paper backing leaves the text unobstructed.
+   const distance=Math.abs(placement.offset),nx=(placement.x-mx)/distance,ny=(placement.y-my)/distance;
+   const reach=Math.min(Math.abs(nx)>1e-6?bw/2/Math.abs(nx):Infinity,Math.abs(ny)>1e-6?bh/2/Math.abs(ny):Infinity);
+   const leader=path(`M${mx} ${my} L${placement.x-nx*(reach+2)} ${placement.y-ny*(reach+2)}`,'nb-edge-leader',1.5);leader.dataset.edge=index;
+  }
+ }
+ // A short relation may occupy the strip just above the portraits. Keep a group
+ // caption readable too, without moving either the portraits or their relation.
+ if(chart.classList.contains('mini'))for(const caption of chart.querySelectorAll('.grp > i')){
+  const initial=parseFloat(getComputedStyle(caption).top);
+  for(let shift=0;shift<=40;shift+=4){caption.style.top=(initial-shift)+'px';const r=box(caption);if(!labels.some(b=>hit({x:r.x-2,y:r.y-2,w:r.w+4,h:r.h+4},b)))break}
+ }
+}
+// The large (five-person) chart keeps the f1b9ef9 layout unchanged.
+function drawNotebookLargeEdges(chart,nodes,edges){
+ const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');svg.classList.add('nb-edge-svg');svg.setAttribute('viewBox',notebookPortrait()?'0 0 720 1740':'0 0 1640 944');svg.setAttribute('aria-hidden','true');chart.prepend(svg);const occupied=nodes.map(n=>({x:n.px,y:n.py,w:n.w,h:n.h})),labels=[];
+ const hit=(a,b)=>a.x<b.x+b.w&&a.x+a.w>b.x&&a.y<b.y+b.h&&a.y+a.h>b.y;
+ for(const [index,edge] of edges.entries()){const a=nodes.find(n=>n.id===edge.from),b=nodes.find(n=>n.id===edge.to);if(!a?.known||!b?.known)continue;const p={x:a.px+a.w/2,y:a.py+a.fh*.55},q={x:b.px+b.w/2,y:b.py+b.fh*.55},dx=q.x-p.x,dy=q.y-p.y,L=Math.hypot(dx,dy)||1,ux=dx/L,uy=dy/L,x1=p.x+ux*Math.min(a.fw/2+14,L*.45),y1=p.y+uy*Math.min(a.fw/2+14,L*.45),x2=q.x-ux*Math.min(b.fw/2+14,L*.45),y2=q.y-uy*Math.min(b.fw/2+14,L*.45);
+ const line=document.createElementNS('http://www.w3.org/2000/svg','path');line.classList.add('nb-edge-line');line.dataset.edge=index;line.setAttribute('d',`M${x1} ${y1} L${x2} ${y2}`);line.setAttribute('stroke','#1d1d22');line.setAttribute('stroke-width','4');line.setAttribute('stroke-linecap','round');line.setAttribute('fill','none');if(edge.style!=='solid')line.setAttribute('stroke-dasharray',edge.style==='dashed'?'14 10':'2 10');svg.appendChild(line);
+ const label=nbElement('div',edge.label,'rel nb-edge-label');label.dataset.edge=index;chart.appendChild(label);let ang=Math.atan2(dy,dx)*180/Math.PI;if(ang>90)ang-=180;if(ang<-90)ang+=180;label.style.setProperty('--r',(notebookPortrait()||Math.abs(ang)>60?0:ang)+'deg');
  const candidates=[0,36,-36,72,-72,108,-108,144,-144,180,-180].map(offset=>({x:(x1+x2)/2-uy*offset,y:(y1+y2)/2+ux*offset}));
  for(let y=240;y<(notebookPortrait()?1580:840);y+=48)for(let x=70;x<(notebookPortrait()?650:1570);x+=50)candidates.push({x,y});
  const regionW=notebookPortrait()?720:1640,regionH=notebookPortrait()?1740:944;
