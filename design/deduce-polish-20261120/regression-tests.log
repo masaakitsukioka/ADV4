@@ -1,0 +1,118 @@
+assets.cjs: PASS (0.2s)
+PASS: 72 PNG dimensions (70 portraits + 2 backgrounds), masks and aligned frame registrations, asset definitions, target coordinate transforms at 3 sizes, image success/failure and stale image callbacks
+
+conditions.cjs: PASS (0.1s)
+PASS: condition/effect/once/visit unit tests; scenario JS/JSON equality
+
+debug-261118.cjs: PASS (4.1s)
+PASS 1920x1080
+PASS 1280x720
+PASS 390x844
+
+debug-dialogue.cjs: PASS (2.2s)
+PASS 1920x1080: 180 dialogue entries
+PASS 1280x720: 180 dialogue entries
+PASS 390x844: 180 dialogue entries
+
+deduce-261118.cjs: PASS (18.0s)
+PASS 1920x1080
+PASS 1280x720
+PASS 390x844
+
+deduce-polish.cjs: FAIL (5.3s)
+AssertionError [ERR_ASSERTION]: 2 == 1
+    at require.motion (/Volumes/Extreme SSD/ADV4/tests/deduce-polish.cjs:19:409)
+    at async module.exports (/Volumes/Extreme SSD/ADV4/tests/browser-harness.cjs:5:510) {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: 2,
+  expected: 1,
+  operator: '==',
+  diff: 'simple'
+}
+
+expr-a.cjs: PASS (2.2s)
+PASS: six expression images, full-image blink/mouth frames, character-specific mappings and missing-tag fallbacks
+
+logic.cjs: PASS (1.1s)
+PASS: room-local commands, once-only acquisition, current movement and visits
+
+manga-fix1.cjs: PASS (6.8s)
+PASS: six enlarged command rows have operable letter centres; corridor targets on arrival/click; no orphan arrow; paper choices; all five deduction leads readable; audit rejects narrow/clipped text
+
+manga-fix2.cjs: PASS (4.1s)
+PASS: permanent paper/actors; retained expressions; normal 26ms typing; stale command focus Enter/Space; 80ms stagger; same list and selection after dialogue; listener completion/save/legacy/validation; room/new-game reset
+
+manga-rebuild.cjs: PASS (8.0s)
+PASS: examination mark, speaker/name/body/inline advance, choices, notebook, movement, rotated cover coordinates, 8 time/place renders, light cache and screenshots
+
+menu-phs-browser.cjs: PASS (5.7s)
+PASS: actual Chrome, deferred 2.5s notification, arrow/Enter/Esc navigation, mail reaction and read state, notebook save/load, title load, old save, relation update, three viewports, reduced-motion, deduction lock, no JS errors.
+
+menu-phs.cjs: PASS (0.1s)
+PASS: conditional one-time receipt, unread/read, undiscovered nodes, conditional real names, hinted/deceased records, relation update tokens, save roundtrip, old saves, invalid notebook rejection, scenario equality.
+
+portrait-animation.cjs: PASS (8.8s)
+PASS: closed/half/open mouth cycle, immediate close after reveal, idle half/closed/open blink and no simultaneous speaking blink
+
+presentation-resolution.cjs: PASS (0.1s)
+PASS: aligned full-portrait replacement, closed base, missing/invalid fallback, no stacked image
+
+saves.cjs: PASS (1.2s)
+PASS: examination save/restore, old-save migration, rejection of malformed keys, new-game reset and retained slot
+
+scene-transfers.cjs: PASS (1.2s)
+PASS: place stamp/background transition, shared manuscript dialogue and exit guard, restart restores manga stage
+
+se-261118.cjs: PASS (1.2s)
+PASS: real movement and item acquisition timing, no repeat/show/load sounds, multiple items, separate OFF setting and legacy saves
+
+stability.cjs: PASS (6.8s)
+PASS: reveal/advance, IME and repeated-key guards, native button activation, choice cancels automatic advance, stale dialogue stays closed
+
+story.cjs: PASS (0.1s)
+PASS: command-only story, room-local discovery, random chat, transition ordering, no deduction exit, persistent problem window, ABC replacement/swapping, three saves, restart, legacy saves, three-line message pagination.
+PASS: no-repeat incident priority then ten daily chats per scene, saveable chat history, show excludes Saiji, item discovery/inspection/show variants, narration portraits, instant writing dismissal with persistent actors, success/reveal choreography.
+
+transfers.cjs: FAIL (0.1s)
+evalmachine.<anonymous>:114
+function say(lines,after=null){if(state.mode==='dialogue-out'&&typeof presentationGeneration!=='undefined'){presentationGeneration++;$('dialogue').classList.remove('leaving');$('characterStage').classList.remove('leaving')}if(typeof hideItemGraphic==='function')hideItemGraphic();state.itemPresentation=null;cancelTextTimers();state.mode='dialogue';state.dialogue=lines;if(typeof learnCommandNames==='function')for(const v of lines)learnCommandNames(String(v[1]));state.lineIndex=0;state.afterDialogue=after;state.selected=null;if(!(typeof deductionActive!=='undefined'&&deductionActive))showWindow('panel',false);$('actions').classList.add('hidden');$('dialogue').classList.remove('hidden');$('portraitRail').classList.remove('hidden');$('characterStage').classList.remove('hidden');$('textControls').classList.remove('hidden');const generation=++dialogueGeneration;requestAnimationFrame(()=>{if(generation===dialogueGeneration&&state.mode==='dialogue'){$('dialogue').classList.add('open');$('characterStage').classList.add('open')}});$('dialogue').classList.toggle('narration',!lines[0]?.[0]);state.dialogue=paginateDialogue(lines);displayLine();render();$('dialogue').tabIndex=-1;$('dialogue').focus?.({preventScroll:true})}
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            ^
+
+ReferenceError: showWindow is not defined
+    at say (evalmachine.<anonymous>:114:589)
+    at runEvent (evalmachine.<anonymous>:139:25)
+    at examine (evalmachine.<anonymous>:146:279)
+    at evalmachine.<anonymous>:1:1
+    at Script.runInContext (node:vm:149:12)
+    at Object.runInContext (node:vm:301:6)
+    at run (/Volumes/Extreme SSD/ADV4/tests/transfers.cjs:18:17)
+    at /Volumes/Extreme SSD/ADV4/tests/transfers.cjs:32:2
+    at Object.<anonymous> (/Volumes/Extreme SSD/ADV4/tests/transfers.cjs:86:3)
+    at Module._compile (node:internal/modules/cjs/loader:1929:14)
+
+ui-layout.cjs: FAIL (2.9s)
+PASS 1920x1080: all dialogue pages, q5, seven notebook rows, relation labels, populated title saves
+AssertionError [ERR_ASSERTION]: 1280: q5 button hidden/small
+    at /Volumes/Extreme SSD/ADV4/tests/ui-layout.cjs:23:63 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
+
+最終再実行：deduce-polish.cjs PASS
+PASS: five centred questions at nine sizes, q3/q4 no overlap, varied sidebar/no duplicate number, balanced ink stamp, 140% solved with 1.8s reveal/1s hold/.5s fade, live ending scene and reset
+
+最終再実行：ui-layout.cjs PASS
+PASS 1920x1080: all dialogue pages, q5, seven notebook rows, relation labels, populated title saves
+PASS 1280x720: all dialogue pages, q5, seven notebook rows, relation labels, populated title saves
+PASS 1024x768: all dialogue pages, q5, seven notebook rows, relation labels, populated title saves
+PASS 768x1024: all dialogue pages, q5, seven notebook rows, relation labels, populated title saves
+PASS 844x390: all dialogue pages, q5, seven notebook rows, relation labels, populated title saves
+PASS 667x375: all dialogue pages, q5, seven notebook rows, relation labels, populated title saves
+PASS 390x844: all dialogue pages, q5, seven notebook rows, relation labels, populated title saves
+PASS 375x667: all dialogue pages, q5, seven notebook rows, relation labels, populated title saves
+PASS 360x640: all dialogue pages, q5, seven notebook rows, relation labels, populated title saves

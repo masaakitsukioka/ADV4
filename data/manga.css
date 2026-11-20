@@ -37,8 +37,8 @@ body,#game{background:#f7f5ee;color:#141414}
 #game #mangaStage #saijiCard{left:1475px!important;top:592px!important}
 #game #mangaStage .character-art{position:absolute;inset:0!important;width:100%!important;height:100%!important;max-width:none!important;max-height:none!important;transform:none!important;object-fit:contain;object-position:center}
 /* One moving body keeps the base portrait and replacement canvas aligned. */
-#mangaStage .character-body{position:absolute;inset:0;width:100%;height:100%;transform-origin:50% 100%;animation:portraitBreathe 3.6s ease-in-out infinite}
-#mangaStage #saijiCard .character-body{animation-duration:4.3s;animation-delay:-1.2s}
+#mangaStage .character-body{position:absolute;inset:0;width:100%;height:100%;transform-origin:50% 100%;animation:portraitBreathe 3.6s ease-in-out -.35s infinite}
+#mangaStage #saijiCard .character-body{animation-duration:4.3s;animation-delay:-2.1s}
 @keyframes portraitBreathe{0%,100%{transform:translateY(2.2px) scaleY(.996)}50%{transform:translateY(-2.2px) scaleY(1.004)}}
 @media(prefers-reduced-motion:reduce){#mangaStage .character-body{animation:none;translate:none!important}}
 #mangaStage .character-name,#mangaStage .emotion{display:none!important}

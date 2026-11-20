@@ -144,7 +144,7 @@ function buildDeduction(){
 }
 function showEnding(){
  $('game').classList.add('ending-screen');deductionActive=false;state.mode='ending-out';
- moveOutDialogue(()=>{$('deductionStage').classList.add('hidden');panel('消えたスケッチ — 終わり',[['タイトルへ',showTitle]]);note('試作版をプレイしていただき、ありがとうございました。')});
+ moveOutDialogue(()=>{$('deductionStage').classList.add('hidden');panel('消えたスケッチ — 終わり',[['タイトルへ',showTitle]]);note('試作版をプレイしていただき、ありがとうございました。');if(typeof presentMangaEnding==='function')presentMangaEnding()});
 }
 if(typeof document.fonts?.load==='function'){
  $('opening').style.visibility='hidden';
