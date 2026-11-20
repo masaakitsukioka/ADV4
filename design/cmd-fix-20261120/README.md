@@ -42,3 +42,11 @@ character-body、img、canvasは親の472×531に追従する。画像とcanvas�
 - 最終UI監査も合格（9サイズ×35状態＝315状態）。本文・画面外・枠切れ・操作サイズ・隠れた操作・コントラスト・書体・JS/HTTPエラーは0件、既存PHS装飾のミニ文字のみ従来の除外。結果は[集計](ui-audit-summary.txt) / [全状態](ui-audit-report.json)に記録。画像素材・シナリオのgit diffは0。
 
 追加テストはローカルHTTP配信＋Playwright/Chromeで実行。ADV_URL / CHROME_PATH / OUTに対応。比較資料はこのフォルダでnode compare.cjsを実行して再生成できる（PlaywrightとChromeが必要）。
+
+## 追記：「← もどる」の下地
+
+サイジの髪と重なっても読めるよう、戻るリンクにrgba(253,252,248,.9)の下地を追加。角丸2px、影なし、余白は上下4px・左右8px。青#3e6ea8、通常画面の22px、上余白8pxを維持。小画面の既存補正はそのまま。文字は不透明度1で、下地だけ90%。影付きの項目紙片とは区別できる。上記の「背景なし」は追記前の記録で、この追記が現在の仕様。
+
+[8項目＋戻るの写真](eight-targets-backplate.png) / [テストログ](backplate-test.log) / [9サイズの測定値](backplate-results.json)
+
+tests/cmd-261120.cjsの8項目の検証に、下地の色・alpha、角丸、影なし、余白、文字の色と不透明度、項目紙片との区別を追加。9サイズすべて合格し、既存の画面内表示・操作性も合格。元のCSSルールを書き換え、画像素材やシナリオは変更していない。pushは行わない。
