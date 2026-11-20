@@ -324,5 +324,17 @@
       "疑問": "question",
       "呆れ": "annoyed"
     }
+  },
+  "notebook": {
+    "phs": {
+      "body": "assets/ui/phs-silver.svg",
+      "strap": "assets/ui/phs-strap.svg"
+    },
+    "handwritingFont": "assets/fonts/ArmedLemon.ttf",
+    "chibi": {
+      "haruki": "art_sources/rough/chibi/haruki.png",
+      "saiji": "art_sources/rough/chibi/saiji.png",
+      "nakako": "art_sources/rough/chibi/nakako.png"
+    }
   }
 }

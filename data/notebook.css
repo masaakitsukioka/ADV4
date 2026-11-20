@@ -1,81 +1,291 @@
-/* 捜査手帳：墨・紙・朱、見開きと方眼。 */
-:root{--nb-ink:#111219;--nb-paper:#efe5cf;--nb-red:#da391c;--nb-line:#afa389;--nb-lcd:#a7b98f;--nb-lcd-ink:#1f2a1a}
-#notebook{position:absolute;inset:0;z-index:24;background:#070e109e;color:var(--nb-ink);padding:6vh 6vw 5vh}
-#notebook.hidden,#mailToast.hidden{display:none}
-#notebook button{font:inherit;touch-action:manipulation}
-#notebook button:focus-visible{outline:3px solid var(--nb-red);outline-offset:2px}
-.nb-book{position:relative;width:100%;height:100%;padding:18px;background:#16222c;border:3px solid #080e14;border-radius:9px;box-shadow:12px 12px #b63e31}
-.nb-book:before{content:'';position:absolute;inset:6px;border:2px dashed #da391c88;pointer-events:none;border-radius:5px}
-.nb-cover{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;object-fit:fill;}
-.nb-spread{height:100%;display:grid;grid-template-columns:1fr 1fr;position:relative;background:var(--nb-paper);background-image:linear-gradient(#8c785a21 1px,transparent 1px),linear-gradient(90deg,#8c785a21 1px,transparent 1px);background-size:22px 22px;border-radius:2px}
-.nb-left,.nb-right{position:relative;min-width:0;min-height:0;padding:clamp(18px,3vw,40px);padding-bottom:54px}
-.nb-left{border-right:2px solid #503c2855;box-shadow:inset -16px 0 22px -18px #3c281499;display:flex;flex-direction:column}
-.nb-title{position:absolute;left:-16px;top:-36px;width:210px;height:76px;object-fit:contain;transform:rotate(-3deg);}
-.nb-date{display:flex;gap:15px;align-items:center;margin-top:32px;border-bottom:2px solid var(--nb-ink);padding-bottom:10px;font-size:14px}
-.nb-day{font:700 clamp(25px,3.4vw,44px)/1.2 'Hiragino Mincho ProN',serif;white-space:nowrap}
-.nb-date small{display:block;margin-top:3px}.nb-stamp{display:grid;place-items:center;margin-left:auto;border:3px solid var(--nb-red);color:var(--nb-red);border-radius:50%;flex:0 0 54px;height:54px;font:700 26px serif;transform:rotate(-12deg)}
-.nb-place{color:#5b4f40;font-size:13px;margin:10px 0 13px}
-#nbNav{display:flex;flex-direction:column;gap:4px;min-height:0;overflow-y:auto;padding:3px 4px}
-#nbNav .nb-entry{position:relative;display:flex;align-items:center;gap:10px;background:none;border:0;color:var(--nb-ink);text-align:left;padding:8px;min-height:39px;flex-shrink:0}
-.nb-entry strong{font-size:clamp(16px,1.7vw,22px)}.nb-number{font-family:serif;color:#b63e31;width:24px;font-size:18px}.nb-entry small{font-size:11px;margin-left:auto;color:#6b5d4a}.nb-entry small.nb-new{color:var(--nb-red);font-weight:700}
-#nbNav [aria-current=page]{background:linear-gradient(transparent 56%,#da391c40 56%,#da391c40 86%,transparent 86%)}
-#nbNav [aria-current=page]:before{content:'▶';position:absolute;left:-5px;color:var(--nb-red);font-size:12px}.nb-keys{position:absolute;bottom:22px;left:36px;color:#6b5d4a;font-size:11px}
-.nb-tabs{position:absolute;right:-30px;top:60px;display:flex;flex-direction:column;gap:5px}.nb-tab{writing-mode:vertical-rl;background:#e4d6b8;color:var(--nb-ink);border:2px solid var(--nb-ink);border-left:0;padding:9px 5px;min-height:58px;font-weight:700!important;letter-spacing:.15em;border-radius:0 4px 4px 0}
-.nb-tab[aria-current=page]{background:var(--nb-red);color:var(--nb-paper)}
-.nb-close{position:absolute;bottom:24px;right:32px;background:#070e10;color:var(--nb-paper);border:0;box-shadow:4px 4px var(--nb-red);font-weight:900!important;padding:7px 16px;min-height:36px}
-#notebook .panel{position:relative!important;inset:auto!important;transform:none!important;box-shadow:none!important;background:transparent!important;border:0!important;color:var(--nb-ink);padding:0!important;width:100%!important;height:100%!important;max-height:none!important;max-width:none!important;overflow:auto;animation:none!important;display:block}
-#notebook .panel.hidden{display:none}
-#notebook .panel>.close{display:none}
-#notebook .panel h2{font:700 clamp(20px,2.1vw,28px) 'Hiragino Mincho ProN',serif;border-bottom:2px solid var(--nb-ink);padding:0 0 8px;margin:0 0 15px;color:var(--nb-ink);background:none;box-shadow:none;letter-spacing:.06em}
-#notebook #panelBody{display:block;padding:0;max-height:none;overflow:visible}
-#notebook #panelBody button{display:block;width:100%;border:1px solid #afa389;background:#efe5cfaa;color:var(--nb-ink);padding:10px 12px;margin:8px 0;font-size:15px;text-align:left;min-height:42px;box-shadow:2px 2px #afa389}
-#notebook #panelBody p{font-size:15px;line-height:1.65;margin:10px 0;overflow-wrap:anywhere}
-#notebook .nb-memo{padding-left:0;color:var(--nb-ink)}.nb-memo b{display:block;font-weight:700}.nb-memo span{display:block;padding-left:20px}.nb-memo.fresh b{color:#b63e31;background:linear-gradient(transparent 55%,#da391c21 55%)}
-#notebook .nb-question{border:2px dashed #b63e31;padding:9px 12px;background:#ffffff44;color:#6a3428}
-.nb-special{position:absolute;inset:0;padding:24px 28px 65px;display:flex;flex-direction:column;min-height:0}.nb-special.hidden{display:none}
-.nb-wide .nb-left,.nb-wide .nb-right{visibility:hidden;pointer-events:none}
-.nb-special-head{display:flex;align-items:center;justify-content:space-between;gap:15px;border-bottom:2px solid var(--nb-ink);padding-bottom:8px;flex-shrink:0}
-.nb-special-head h2{font:700 clamp(20px,2.3vw,30px) serif;margin:0}.nb-special-head h2 small{font:400 13px system-ui;display:inline-block;margin-left:14px;color:#6b5d4a}
-.nb-special-head button{border:0;background:transparent;color:var(--nb-ink);font-size:13px!important;min-height:36px}
-.nb-chart{flex:1;min-height:0;overflow:auto}.nb-chart-canvas{height:100%;min-height:290px;min-width:660px;position:relative}
-.nb-chart svg{position:absolute;inset:0;width:100%;height:100%;stroke:#3b3128;stroke-width:3;fill:none}
-.nb-node{position:absolute;width:140px;transform:translate(-50%,-50%);text-align:center;line-height:1.3;z-index:2}.nb-face{width:64px;height:64px;position:relative;display:grid;place-items:center;margin:0 auto 5px;border:3px solid var(--nb-ink);border-radius:50%;font-weight:900;font-size:29px;color:#fff;box-shadow:2px 2px #0002}
-.nb-face img{width:100%;height:100%;border-radius:50%;object-fit:cover;object-position:center 5%;}.nb-node strong{display:block;font-size:18px}.nb-node small{font-size:11px;display:block;color:#5b4f40}.nb-node .unknown{color:#b63e31}.nb-node.locked .nb-face{border-style:dashed;background:#333!important}.nb-node.deceased .nb-face{filter:grayscale(.7)}.nb-dead{position:absolute;top:-8px;right:-8px;background:var(--nb-ink);color:var(--nb-paper);border-radius:50%;font-size:14px;padding:3px}
-.nb-edge-label{position:absolute;transform:translate(-50%,-50%);font-size:12px;font-weight:700;color:#b63e31;background:#efe5cfee;padding:2px 5px;white-space:nowrap;z-index:1}
-.nb-legend{font-size:12px;margin:8px 0 3px;color:#5b4f40}.nb-chart-help{font-size:11px;color:#6b5d4a}
-.nb-phs-view{min-height:0;flex:1;display:grid;grid-template-columns:minmax(0,1fr) minmax(180px,32%);gap:7%;padding:10px 4%;align-items:center;overflow:auto}
-.nb-mail-enlarged{min-width:0}.nb-mail-caption{font-size:13px;color:#5b4f40;margin:0 0 8px}
-.nb-phone{position:relative;height:100%;max-height:500px;aspect-ratio:2/5;max-width:100%;margin:auto;transform:rotate(4deg);isolation:isolate}.nb-phone>img{position:relative;width:100%;height:100%;object-fit:fill;z-index:2;pointer-events:none}
-.nb-lcd{background:var(--nb-lcd);color:var(--nb-lcd-ink);font-family:'DotGothic16',monospace;position:relative;isolation:isolate;border:3px solid #242d25;padding:10px;box-shadow:inset 0 0 16px #28391e44;overflow:auto}
-.nb-lcd:after{content:'';position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,#0000000b 0 1px,transparent 1px 3px),repeating-linear-gradient(90deg,#00000009 0 1px,transparent 1px 3px);z-index:-1}
-.nb-phone>.nb-lcd{position:absolute;z-index:1;left:16%;top:24%;width:68%;height:29%;font-size:clamp(7px,.85vw,12px);padding:5px;border:0;overflow:auto}
-.nb-lcd.enlarged{width:100%;min-height:240px;padding:16px;font-size:19px;border:6px solid #20292c;border-radius:4px;box-shadow:5px 5px #11121933}
-.nb-lcd-bar{display:flex;justify-content:space-between;gap:8px;border-bottom:2px solid currentColor;padding-bottom:4px;font-size:.7em;white-space:nowrap}.nb-mail-from{font-size:.85em;margin:10px 0}.nb-mail-body{font-size:1.3em;line-height:1.6;overflow-wrap:anywhere;white-space:pre-wrap;margin:12px 0}.nb-mail-count{font-size:.65em;opacity:.8}
-.nb-soft{display:flex;justify-content:space-between;align-items:center;gap:10px;border-top:1px solid currentColor;margin-top:16px;padding-top:4px;font-size:.65em}.nb-soft button{border:0;background:transparent;color:inherit;min-height:28px;padding:3px}.nb-mail-list{padding-top:5px}.nb-mail-row{display:flex;justify-content:space-between;gap:6px;width:100%;background:transparent;color:inherit;border:0;padding:7px 2px;text-align:left;font-size:inherit!important;min-height:32px}.nb-mail-row.selected,.nb-mail-row:focus{background:var(--nb-lcd-ink);color:var(--nb-lcd)}
-.nb-phone .nb-mail-row{padding:3px 0;min-height:18px;flex-wrap:wrap}.nb-phone .nb-mail-body{font-size:1em;margin:4px 0}.nb-phone .nb-mail-from{margin:3px 0}.nb-phone .nb-soft{margin-top:5px;gap:2px}.nb-phone .nb-soft button{min-height:18px;padding:1px}
-#notebook.nb-mail-dialogue{z-index:5;background:#070e1060}#notebook.nb-mail-dialogue .nb-book{height:67%}#notebook.nb-mail-dialogue .nb-special{padding-bottom:16px}#notebook.nb-mail-dialogue .nb-close{display:none}#notebook.nb-mail-dialogue .nb-lcd.enlarged{min-height:150px}
-#mailToast{position:absolute;bottom:25px;left:6%;z-index:20;display:flex;gap:12px;align-items:center;max-width:88%;background:#070e10;color:var(--nb-paper);padding:12px 18px;box-shadow:5px 5px var(--nb-red);animation:nb-toast .24s ease-out}
-#mailToast img{width:24px;height:40px;object-fit:contain;}#mailToast strong{display:block;font-size:16px}#mailToast small{display:block;font-size:11px;margin-top:4px;color:#c9bda8}
-@keyframes nb-toast{from{opacity:0;transform:translateX(-20px)}to{opacity:1;transform:none}}
-@media(max-height:460px) and (min-width:601px){#notebook{padding:5vh 5vw}.nb-book{padding:12px;box-shadow:7px 7px #b63e31}.nb-left,.nb-right{padding:16px 20px 36px}.nb-title{width:155px;top:-25px;height:50px}.nb-date{margin-top:14px;font-size:11px;gap:10px;padding-bottom:5px}.nb-day{font-size:28px}.nb-stamp{height:34px;flex-basis:34px;font-size:20px;border-width:2px}.nb-place{font-size:11px;margin:6px 0}#nbNav{gap:0}#nbNav .nb-entry{min-height:26px;padding:3px 6px}.nb-entry strong{font-size:15px}.nb-entry small{font-size:9px}.nb-number{font-size:14px;width:18px}.nb-keys{font-size:9px;bottom:12px;left:22px}.nb-close{bottom:16px;right:22px;padding:4px 12px;min-height:28px;font-size:12px!important}.nb-tabs{right:-26px;top:28px;gap:3px}.nb-tab{min-height:42px;font-size:11px!important;padding:5px 4px}.nb-special{padding:12px 18px 42px}.nb-special-head h2{font-size:22px}.nb-special-head{padding-bottom:3px}.nb-chart-canvas{min-height:190px}.nb-face{width:44px;height:44px;font-size:22px}.nb-node strong{font-size:14px}.nb-node small{font-size:10px}.nb-edge-label{font-size:10px}.nb-legend,.nb-chart-help{font-size:9px;margin:2px}.nb-phs-view{grid-template-columns:minmax(0,1fr) 30%;gap:6%;padding:3px 4%}.nb-lcd.enlarged{min-height:165px;font-size:16px;padding:10px}.nb-mail-caption{font-size:11px}.nb-mail-body{margin:8px 0}.nb-mail-row{min-height:27px;padding:5px 2px}.nb-phone{max-height:245px}.nb-phone>.nb-lcd{font-size:7px;padding:2px}.nb-phone .nb-mail-row{font-size:7px!important;min-height:12px;padding:1px 0}.nb-phone .nb-lcd-bar{gap:2px;font-size:6px}#notebook .panel h2{font-size:21px;margin-bottom:8px}#notebook #panelBody p{font-size:13px;line-height:1.55;margin:8px 0}#notebook #panelBody button{padding:7px;font-size:13px;min-height:32px}}
-@media(max-width:600px){#notebook{padding:24px 28px 18px 12px}.nb-book{padding:10px;box-shadow:6px 6px #b63e31}.nb-spread{display:flex;flex-direction:column}.nb-left{padding:16px 12px 8px;border-right:0;border-bottom:1px solid #503c2855;flex:none;box-shadow:none}.nb-title{top:-28px;left:-13px;width:145px;height:54px}.nb-date{margin-top:10px;gap:8px;font-size:10px;padding-bottom:5px}.nb-day{font-size:25px}.nb-stamp{height:32px;flex-basis:32px;font-size:19px;border-width:2px}.nb-place{font-size:11px;margin:7px 0}.nb-date small{margin-top:1px}#nbNav{display:grid;grid-template-columns:1fr 1fr;gap:3px;padding:2px;overflow:visible}#nbNav .nb-entry{padding:5px 3px;min-height:32px;gap:5px;flex-wrap:wrap}.nb-entry strong{font-size:12px}.nb-number{font-size:12px;width:15px}.nb-entry small{font-size:9px;margin-left:20px;width:100%;line-height:1}.nb-entry small:empty{display:none}.nb-keys{position:static;font-size:9px;margin-top:5px}.nb-right{flex:1;min-height:0;padding:12px 12px 46px}#notebook .panel h2{font-size:19px;padding-bottom:5px;margin-bottom:9px}#notebook #panelBody p{font-size:13px;margin:8px 0;line-height:1.6}#notebook #panelBody button{font-size:13px;padding:8px;min-height:36px}.nb-close{bottom:15px;right:18px;font-size:12px!important;padding:5px 12px;min-height:28px}.nb-tabs{right:-23px;top:38px;gap:3px}.nb-tab{font-size:10px!important;padding:5px 3px;min-height:47px}.nb-special{padding:14px 10px 48px}.nb-special-head{display:block;position:relative;padding-bottom:5px}.nb-special-head h2{font-size:22px}.nb-special-head h2 small{font-size:10px;margin-left:8px}.nb-special-head button{font-size:11px!important;padding:0;min-height:30px}.nb-chart-canvas{min-width:660px;min-height:300px}.nb-node{width:125px}.nb-face{width:52px;height:52px}.nb-node strong{font-size:15px}.nb-legend{font-size:10px;line-height:1.6}.nb-chart-help{font-size:10px}.nb-phs-view{display:flex;flex-direction:column;gap:5px;padding:7px 0;align-items:stretch}.nb-mail-caption{font-size:10px;margin:0 0 4px}.nb-lcd.enlarged{min-height:175px;font-size:14px;padding:10px;border-width:4px}.nb-phone{height:210px;width:100px;flex:0 0 210px;align-self:center}.nb-phone>.nb-lcd{font-size:6px;padding:2px}.nb-phone .nb-lcd-bar{font-size:5px;gap:2px}.nb-phone .nb-mail-row{font-size:6px!important;min-height:10px;padding:1px 0}.nb-phone .nb-soft{font-size:5px;gap:0}.nb-phone .nb-soft button{min-height:10px}.nb-soft{margin-top:10px}.nb-mail-row{padding:5px 2px;min-height:29px}.nb-mail-body{font-size:21px;line-height:1.4;margin:9px 0}.nb-mail-count{font-size:9px}#notebook.nb-mail-dialogue .nb-book{height:67%}#notebook.nb-mail-dialogue .nb-phone{display:none}#notebook.nb-mail-dialogue .nb-lcd.enlarged{min-height:130px}#mailToast{left:5%;bottom:18px;padding:10px 12px}#mailToast strong{font-size:14px}#mailToast small{font-size:10px}}
-@media(prefers-reduced-motion:reduce){#notebook,#notebook *,#mailToast{animation:none!important;transition:none!important}}
-@font-face{font-family:DotGothic16;src:url('../assets/fonts/DotGothic16-Regular.ttf') format('truetype');font-weight:400;font-style:normal;font-display:swap}
-/* 生成された端末の余白と液晶開口にHTMLを合わせる。 */
-.nb-phone>img{width:200%;max-width:none;left:-50%}
-.nb-phone>.nb-lcd{left:12%;top:28%;width:80%;height:18%}
-.nb-book{font-family:system-ui,'Hiragino Kaku Gothic ProN',sans-serif}
-#notebook.nb-mail-dialogue .nb-book{pointer-events:none}
-/* 端末は表示領域より小さく取り、傾きによる上下の欠けも避ける。 */
-.nb-phone{height:min(57dvh,410px);max-height:none}
-.nb-phone>.nb-lcd{left:15%;width:77%;font-size:8px;line-height:1.3;display:flex;flex-direction:column;padding:3px}
-.nb-phone .nb-mail-body{margin:3px 0;line-height:1.3;font-size:1em}
-.nb-phone .nb-mail-from{margin:3px 0;font-size:.9em}
-.nb-phone .nb-soft{margin-top:auto;font-size:.7em}
-.nb-phone .nb-lcd-bar{font-size:.7em;gap:2px;padding-bottom:2px}
-.nb-phone .nb-soft button{min-height:10px}
-.nb-face{overflow:hidden}.nb-face img{position:absolute;left:-35%;top:-30%;width:170%;height:auto;max-width:none;border-radius:0}
-.nb-face .nb-dead{top:0;right:0;z-index:1;padding:2px;font-size:12px}
-.nb-node[style*="#e8e0cc"] .nb-face{color:#555}
-@media(max-height:460px) and (min-width:601px){.nb-phone{height:190px}.nb-phone>.nb-lcd{font-size:5px;padding:2px}.nb-lcd.enlarged{font-size:14px;line-height:1.3;min-height:150px}.nb-lcd.enlarged .nb-mail-from{margin:6px 0}.nb-lcd.enlarged .nb-mail-body{margin:7px 0}.nb-lcd.enlarged .nb-soft{margin-top:8px}.nb-mail-caption{margin-bottom:4px}.nb-phs-view{padding-top:5px;padding-bottom:5px}}
-@media(max-width:600px){.nb-phone{height:210px;max-height:none}.nb-phone>.nb-lcd{font-size:5px}.nb-phone .nb-mail-body{font-size:5px}.nb-phone .nb-soft{font-size:4px}.nb-chart{border:1px solid #afa38988}.nb-node small{line-height:1.5}}
+#notebook #notebookStage button{all:unset;box-sizing:border-box;cursor:pointer;touch-action:manipulation}
+/* Saiji's notebook: coordinates, paper and traces follow the author reference. */
+@font-face{font-family:'ArmedLemon';src:local('ArmedLemon'),url('../assets/fonts/ArmedLemon.ttf') format('truetype');font-weight:400;font-display:swap}
+@font-face{font-family:'Dot';src:url('../assets/fonts/DotGothic16-Regular.ttf') format('truetype');font-display:swap}
+@font-face{font-family:'Noto Sans JP';src:url('../assets/fonts/NotoSansJP-Regular.subset.woff');font-weight:400;font-display:swap}
+@font-face{font-family:'Noto Sans JP';src:url('../assets/fonts/NotoSansJP-Bold.subset.woff');font-weight:500 900;font-display:swap}
+@font-face{font-family:'Noto Serif JP';src:url('../assets/fonts/NotoSerifJP-Bold.subset.woff');font-weight:400 900;font-display:swap}
+#notebook{position:absolute;inset:0;padding:0;background:#0000008c;backdrop-filter:blur(2px);z-index:24;color:#1d1d22;--hw-font:'ArmedLemon','Noto Sans JP',sans-serif;--hw-weight:400}
+#notebook.hidden,#mailToast.hidden{display:none!important}
+#notebookStage{position:absolute;left:50%;top:50%;width:1920px;height:1080px;transform:translate(-50%,-50%) scale(var(--nb-scale,1));transform-origin:center;font-family:var(--sans);color:var(--ink)}
+#notebook{--ink:#1d1d22;--pen:#24407a;--red:#c8372a;--line:#a9c1df;--paper:#fbfaf3;
+  --sans:'Noto Sans JP',sans-serif;--serif:'Noto Serif JP',serif}
+#notebook #notebookStage #nbBook *{box-sizing:border-box}
+#notebook #notebookStage #nbBook.book{position:absolute;left:118px;top:64px;width:1640px;height:944px;transform:rotate(-.7deg);transform-origin:50% 50%}
+#notebook #notebookStage #nbBook .stack{position:absolute;inset:0;background:#efece2;border-radius:6px;box-shadow:0 18px 40px #0008}
+#notebook #notebookStage #nbBook .stack.s2{transform:translate(5px,6px);background:#e6e2d6}
+#notebook #notebookStage #nbBook .stack.s1{transform:translate(2px,3px)}
+#notebook #notebookStage #nbBook .page{position:absolute;top:0;width:820px;height:944px;background:var(--paper);overflow:hidden}
+#notebook #notebookStage #nbBook .page.l{left:0;border-radius:6px 0 0 6px}
+#notebook #notebookStage #nbBook .page.r{left:820px;border-radius:0 6px 6px 0}
+#notebook #notebookStage #nbBook .page::before{content:'';position:absolute;left:0;right:0;top:108px;bottom:36px;
+  background:repeating-linear-gradient(to bottom,transparent 0 35px,var(--line) 35px 36px)}
+#notebook #notebookStage #nbBook .page .head{position:absolute;left:44px;right:44px;top:30px;height:60px;border-bottom:2px solid #7fa2cf;
+  font:500 15px/1 var(--sans);color:#7fa2cf;letter-spacing:.12em;display:flex;align-items:flex-end;gap:28px;padding-bottom:8px}
+#notebook #notebookStage #nbBook .page .head span{white-space:nowrap}
+#notebook #notebookStage #nbBook .gutter{position:absolute;left:770px;top:0;width:100px;height:944px;pointer-events:none;
+  background:linear-gradient(to right,transparent 0,#0000 30%,#00000022 47%,#0000004a 50%,#00000022 53%,#0000 70%,transparent)}
+#notebook #notebookStage #nbBook .stitch{position:absolute;left:818px;top:0;width:4px;height:944px;background:repeating-linear-gradient(to bottom,#cfc8b7 0 14px,transparent 14px 30px)}
+#notebook #notebookStage #nbBook .ring{position:absolute;width:150px;height:150px;border-radius:50%;border:6px solid #8a5a2a18;box-shadow:inset 0 0 0 2px #8a5a2a10}
+#notebook #notebookStage #nbBook .dirt{position:absolute;left:0;top:0;width:1640px;height:944px;pointer-events:none;mix-blend-mode:multiply}
+#notebook{--hw-font:'ArmedLemon','Noto Sans JP',sans-serif;--hw-weight:400}
+#notebook #notebookStage #nbBook .hw,#notebook #notebookStage #nbBook .hwt{font-family:var(--hw-font)!important;font-weight:var(--hw-weight)}
+#notebook #notebookStage #nbBook .hw{filter:none!important;-webkit-text-stroke:.6px currentColor}
+#notebook #notebookStage #nbBook .trace text.hwt{stroke:currentColor;stroke-width:.6px;paint-order:stroke}
+#notebook #notebookStage #nbBook .hw{position:absolute;font-size:30px;line-height:1.25;color:#2b3f86;filter:url(#hand);white-space:nowrap;letter-spacing:.02em}
+#notebook #notebookStage #nbBook .hw.pencil{color:#5d5d62;opacity:.85}
+#notebook #notebookStage #nbBook .trace{position:absolute;overflow:visible;pointer-events:none}
+#notebook #notebookStage #nbBook .trace .ink{fill:none;stroke:#2b3f86;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+#notebook #notebookStage #nbBook .trace .pc{fill:none;stroke:#6a6a70;stroke-width:1.6;stroke-linecap:round;opacity:.8}
+#notebook #notebookStage #nbBook .trace text{fill:#2b3f86}
+#notebook #notebookStage #nbBook .trace text.p{fill:#5d5d62}
+#notebook #notebookStage #nbBook .hw.red{color:#b8352a}
+#notebook #notebookStage #nbBook .hw span{display:inline-block}
+#notebook #notebookStage #nbBook .strike{position:relative}
+#notebookStage[data-v^=chart] .doodle,#notebookStage[data-v=phs] .doodle{display:none}
+#notebook #notebookStage #nbBook .strike::after{content:'';position:absolute;left:-6px;right:-6px;top:52%;height:3px;background:#2b3f86;transform:rotate(-2deg);border-radius:2px}
+#notebook #notebookStage #nbBook .tabs{position:absolute;left:1630px;top:110px;display:flex;flex-direction:column;gap:12px}
+#notebook #notebookStage #nbBook .tab{position:relative;width:74px;height:148px;border-radius:0 8px 8px 0;padding:0 0 0 14px;writing-mode:vertical-rl;display:flex;align-items:center;justify-content:center;
+  font:900 24px/1 var(--sans);letter-spacing:.12em;color:#1d1d22;box-shadow:3px 3px 0 #0003;opacity:.92;text-orientation:upright}
+#notebook #notebookStage #nbBook .tab::before{content:'';position:absolute;left:0;top:0;bottom:0;width:12px;background:#fff6}
+#notebook #notebookStage #nbBook .tab.on{width:96px;opacity:1;box-shadow:4px 4px 0 #0004}
+#notebook #notebookStage #nbBook .tab .badge{position:absolute;right:-12px;top:-10px;writing-mode:horizontal-tb;min-width:28px;height:28px;border-radius:14px;background:var(--red);color:#fff;font:900 17px/28px var(--sans);text-align:center;padding:0 6px}
+#notebook #notebookStage #nbBook .tab .dot{position:absolute;right:-6px;top:-6px;width:14px;height:14px;border-radius:50%;background:var(--red)}
+#notebook #notebookStage #nbBook .t1{background:#f2d74e}
+#notebook #notebookStage #nbBook .t2{background:#f4a9a0}
+#notebook #notebookStage #nbBook .t3{background:#9fd0a8}
+#notebook #notebookStage #nbBook .t4{background:#8fc3ea}
+#notebook #notebookStage #nbBook .t5{background:#d9c7a4}
+#notebook #notebookStage #nbBook .t6{background:#c9c9c9}
+#notebook #notebookStage #nbBook .ttl{position:absolute;font:900 44px/1 var(--serif);letter-spacing:.06em}
+#notebook #notebookStage #nbBook .ttl small{font:700 20px var(--sans);color:#555;margin-left:16px;letter-spacing:.04em}
+#notebook #notebookStage #nbBook .uline{position:absolute;height:10px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 10' preserveAspectRatio='none'%3E%3Cpath d='M2 6 C60 3 120 8 180 5 S260 4 298 6' fill='none' stroke='%2324407a' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E") 0 0/100% 100%}
+#notebook #notebookStage #nbBook .text{position:absolute;font:400 24px/36px var(--sans)}
+#notebook #notebookStage #nbBook .pen{color:var(--pen)}
+#notebook #notebookStage #nbBook .redpen{color:var(--red)}
+#notebook #notebookStage #nbBook .note{position:absolute;font:500 18px/1.5 var(--sans);color:#666}
+#notebook #notebookStage #nbBook .newmark{display:inline-block;margin-left:10px;padding:0 8px;border:2px solid var(--red);border-radius:12px;color:var(--red);font:900 15px/22px var(--sans);transform:rotate(-4deg)}
+#notebook #notebookStage .close{position:absolute;right:34px;top:20px;width:210px;height:64px;transform:rotate(4deg)}
+#notebook #notebookStage .close img{width:100%;height:100%;filter:hue-rotate(0deg)}
+#notebook #notebookStage .keys{position:absolute;left:150px;bottom:16px;color:#ddd;font:500 20px var(--sans);letter-spacing:.06em}
+#notebook #notebookStage .keys b{display:inline-block;min-width:30px;padding:2px 8px;margin:0 6px 0 22px;border:1px solid #bbb;border-radius:5px;font-weight:700;text-align:center}
+#notebook #notebookStage .keys b:first-child{margin-left:0}
+#notebook #notebookStage #nbBook .view{display:none}
+#notebookStage[data-v=memo] .v-memo,#notebookStage[data-v=items] .v-items,#notebookStage[data-v=chart] .v-chart,#notebookStage[data-v=chart17] .v-chart17,#notebookStage[data-v=phs] .v-phs,#notebookStage[data-v=save] .v-save{display:block}
+#notebook #notebookStage #nbBook .memo{position:absolute;left:60px;width:700px}
+#notebook #notebookStage #nbBook .memo b{font:900 26px/36px var(--sans)}
+#notebook #notebookStage #nbBook .memo p{margin:0;font:400 24px/36px var(--sans)}
+#notebook #notebookStage #nbBook .next{position:absolute;left:880px;top:290px;right:auto;bottom:auto;visibility:visible;opacity:1;animation:none;color:var(--ink);font:700 24px/36px var(--sans)}
+#notebook #notebookStage #nbBook .q{position:absolute;left:880px;top:170px;width:680px;padding:6px 18px;border:3px solid var(--red);font:900 28px/36px var(--serif);color:var(--red);transform:rotate(-.6deg)}
+#notebook #notebookStage #nbBook .next{position:absolute;left:880px;top:290px;font:700 24px/36px var(--sans)}
+#notebook #notebookStage #nbBook .btn{display:inline-block;padding:6px 18px;background:#1d1d22;color:#fff;font:900 22px/1.4 var(--sans);box-shadow:3px 3px 0 #0003}
+#notebook #notebookStage #nbBook .item{position:absolute;width:300px;background:#fff;padding:14px 14px 10px;box-shadow:3px 4px 0 #0002;transform:rotate(var(--r))}
+#notebook #notebookStage #nbBook .item .ph{height:190px;background:#eee center/contain no-repeat;border:1px solid #ddd}
+#notebook #notebookStage #nbBook .item .cap{font:900 22px/1.4 var(--sans);margin-top:8px}
+#notebook #notebookStage #nbBook .item .sub{font:400 17px/1.4 var(--sans);color:#555}
+#notebook #notebookStage #nbBook .tape{position:absolute;top:-14px;left:50%;width:110px;height:30px;margin-left:-55px;background:#e9e3c9cc;transform:rotate(-3deg)}
+#notebook #notebookStage #nbBook .chart{position:absolute;left:0;top:0;width:1640px;height:944px}
+#notebook #notebookStage #nbBook .chart svg{position:absolute;inset:0;width:1640px;height:944px}
+#notebook #notebookStage #nbBook .grp{position:absolute;border:3px solid var(--pen);border-radius:18px;padding-top:8px}
+#notebook #notebookStage #nbBook .grp > i{position:absolute;left:18px;top:-17px;background:var(--paper);padding:0 10px;font:900 24px/32px var(--sans);font-style:normal;color:var(--pen)}
+#notebook #notebookStage #nbBook .person{position:absolute;width:150px;text-align:center}
+#notebook #notebookStage #nbBook .person .face{position:relative;width:150px;height:162px;margin:0 auto;background:no-repeat 50% 100%/contain}
+#notebook #notebookStage #nbBook .person .face img{display:none}
+#notebook #notebookStage #nbBook .person .face .ph{position:absolute;left:0;right:0;top:20%;text-align:center;font:900 44px var(--serif);color:#9aa}
+#notebook #notebookStage #nbBook .person .face:has(.ph){background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20260%20280%22%3E%3Cg%20fill%3D%22%23ffffff80%22%20stroke%3D%22%239aa%22%20stroke-width%3D%225%22%20stroke-dasharray%3D%2214%2010%22%20stroke-linecap%3D%22round%22%3E%3Cpath%20d%3D%22M30%20276%20C34%20214%2074%20196%20130%20196%20C186%20196%20226%20214%20230%20276%22/%3E%3Cellipse%20cx%3D%22130%22%20cy%3D%22106%22%20rx%3D%2278%22%20ry%3D%2286%22/%3E%3C/g%3E%3C/svg%3E")}
+#notebook #notebookStage #nbBook .person .nm{font:900 26px/1.15 var(--sans);margin-top:2px;background:var(--paper);display:inline-block;padding:0 6px}
+#notebook #notebookStage #nbBook .person .rn{font:400 16px/1.3 var(--sans);color:#555}
+#notebook #notebookStage #nbBook .person .rn.unk{color:var(--red)}
+#notebook #notebookStage #nbBook .person.dead .face img,#notebook #notebookStage #nbBook .person.dead .face .ph{filter:grayscale(1) opacity(.55)}
+#notebook #notebookStage #nbBook .person .new{position:absolute;right:-4px;top:-6px;padding:0 8px;background:var(--red);color:#fff;font:900 15px/24px var(--sans);transform:rotate(6deg)}
+#notebook #notebookStage #nbBook .rel{position:absolute;background:var(--paper);padding:0 8px;font:700 19px/28px var(--sans);color:var(--red);white-space:nowrap;transform:translate(-50%,-50%) rotate(var(--r,0deg))}
+#notebook #notebookStage #nbBook .legend{position:absolute;left:60px;bottom:22px;font:500 17px var(--sans);color:#555}
+#notebook #notebookStage #nbBook .mini .person{width:112px;display:flex;flex-direction:column;align-items:center}
+#notebook #notebookStage #nbBook .mini .person .face{width:104px;height:112px}
+#notebook #notebookStage #nbBook .mini .person .face .ph{font-size:32px}
+#notebook #notebookStage #nbBook .mini .person .nm{font-size:21px;white-space:nowrap}
+#notebook #notebookStage #nbBook .mini .person .rn{font-size:14px}
+#notebook #notebookStage #nbBook .lcd{position:absolute;left:58px;top:132px;width:706px;height:744px;background:linear-gradient(160deg,#dcebd2,#c6dbbb);border:16px solid #e6e9ec;border-radius:34px;
+  outline:6px solid #c3c9cf;box-shadow:0 0 0 9px #9aa2ab,0 0 0 11px #7f8790,5px 8px 3px 11px #0003,18px 26px 22px 6px #2a1e0a44,inset 3px 5px 14px #0002;font-family:'Dot',monospace;color:#33402d;padding:16px 22px;transform:rotate(-.8deg)}
+#notebook #notebookStage #nbBook .lcd .bar{display:flex;justify-content:space-between;font-size:24px;border-bottom:2px solid #33402d88;padding-bottom:6px}
+#notebook #notebookStage #nbBook .lcd .list{margin-top:10px}
+#notebook #notebookStage #nbBook .lcd .row{display:grid;grid-template-columns:34px 1fr auto;gap:10px;align-items:center;height:56px;padding:0 12px;font-size:28px}
+#notebook #notebookStage #nbBook .lcd .row.sel{background:#33402d;color:#dcebd2;border-radius:8px}
+#notebook #notebookStage #nbBook .lcd .row .u{font-size:22px}
+#notebook #notebookStage #nbBook .lcd .body{position:absolute;left:22px;right:22px;top:330px;bottom:86px;border-top:2px dashed #33402d88;padding-top:16px}
+#notebook #notebookStage #nbBook .lcd .from{font-size:28px}
+#notebook #notebookStage #nbBook .lcd .msg{font-size:48px;line-height:1.35;margin-top:14px;word-break:break-all}
+#notebook #notebookStage #nbBook .lcd .cnt{position:absolute;right:0;bottom:6px;font-size:20px}
+#notebook #notebookStage #nbBook .lcd .soft{position:absolute;left:20px;right:20px;bottom:14px;display:flex;justify-content:space-between;font-size:26px}
+#notebook #notebookStage #nbBook .lcd .soft span{padding:4px 16px;background:linear-gradient(#fff,#e1e5e9);border:2px solid #9aa2ab;border-radius:18px;color:#4a525c}
+#notebook #notebookStage #nbBook .phone{position:absolute;left:1190px;top:118px;width:240px;height:611px;transform:rotate(9deg)}
+#notebook #notebookStage #nbBook .phone .body{position:relative;width:240px;z-index:1;filter:drop-shadow(2px 3px 1.5px rgba(30,25,15,.45)) drop-shadow(14px 22px 16px rgba(40,30,10,.33))}
+#notebook #notebookStage #nbBook .phone .strap{position:absolute;left:0;top:0;width:414.5px;z-index:2;filter:drop-shadow(1.5px 2px 1px rgba(30,25,15,.4))}
+#notebook #notebookStage #nbBook .phone .scr{position:absolute;z-index:3;left:23.5%;top:22.6%;width:53%;height:20.6%;font:24px/1.35 'Dot',monospace;color:#33402d;padding:10px 12px}
+#notebook #notebookStage #nbBook .keyhint{position:absolute;left:880px;top:720px;width:700px;font:500 20px/1.6 var(--sans);color:#444}
+#notebook #notebookStage #nbBook .keyhint b{color:var(--pen)}
+#notebook #notebookStage #nbBook .reply{white-space:pre-line;position:absolute;left:890px;top:300px;width:300px;font:700 22px/36px var(--sans);color:var(--pen);transform:rotate(-2deg)}
+#notebook #notebookStage #nbBook .slot{position:absolute;left:60px;width:700px;height:108px;border:3px solid #1d1d22;background:#fff;padding:14px 20px;box-shadow:4px 4px 0 #0002}
+#notebook #notebookStage #nbBook .slot b{font:900 26px var(--sans)}
+#notebook #notebookStage #nbBook .slot span{display:block;font:400 19px/1.6 var(--sans);color:#555}
+#notebook #notebookStage #nbBook .set{position:absolute;left:880px;width:690px;font:700 24px/36px var(--sans)}
+#notebook #notebookStage #nbBook .seg{display:inline-flex;margin-left:16px;border:2px solid #1d1d22;vertical-align:middle}
+#notebook #notebookStage #nbBook .seg i{font:700 20px/34px var(--sans);font-style:normal;padding:0 14px;border-left:2px solid #1d1d22}
+#notebook #notebookStage #nbBook .seg i:first-child{border-left:0}
+#notebook #notebookStage #nbBook .seg i.on{background:#1d1d22;color:#fff}
+/* Runtime containers are transparent; the author sheet supplies all decoration. */
+#notebook #notebookStage #nbBook{padding:0}
+#notebook #notebookStage #nbBook .tabs{right:auto;width:max-content}
+#notebook #notebookStage #nbBook .tab{font-size:24px!important;min-width:0;min-height:0}
+#notebook #notebookStage #nbContent{position:absolute;inset:0;pointer-events:none}
+#notebook #notebookStage #panel{position:absolute!important;inset:0!important;width:1640px!important;height:944px!important;max-width:none!important;max-height:none!important;min-height:0;padding:0!important;margin:0;border:0!important;background:none!important;background-image:none!important;box-shadow:none!important;clip-path:none;transform:none!important;overflow:visible;animation:none!important;pointer-events:none;color:var(--ink);font-family:var(--sans);z-index:2}
+#notebook #notebookStage #panel.hidden{display:none!important}
+#notebook #notebookStage #panel>.close,#notebook #notebookStage #panelTitle{display:none}
+#notebook #notebookStage #panelBody{position:absolute;inset:0;width:1640px;height:944px;margin:0;padding:0;display:block;pointer-events:none;overflow:visible}
+#notebook #notebookStage #panelBody .view{position:absolute;inset:0;display:block}
+#notebook #notebookStage #panelBody button{pointer-events:auto}
+#notebook #notebookStage #nbBook .memo{white-space:normal}
+#notebook #notebookStage #nbBook .memo b{display:inline-block}
+#notebook #notebookStage #nbBook .memo .newmark{vertical-align:2px}
+#notebook #notebookStage #nbBook .memo p{font:400 24px/36px var(--sans);margin:0}
+#notebook #notebookStage #nbBook .note,#notebook #notebookStage #nbBook .keyhint,#notebook #notebookStage #nbBook .scr,#notebook #notebookStage #nbBook .text{white-space:pre-line}
+#notebook #notebookStage #nbBook .btn{min-height:0;min-width:0;margin:0;text-align:center}
+#notebook #notebookStage #nbBook .btn.secondary{background:#fff;color:var(--ink);border:2px solid var(--ink)}
+#notebook #notebookStage #nbBook .slot{min-height:0;min-width:0;margin:0;cursor:pointer;text-align:left}
+#notebook #notebookStage #nbBook .slot.empty{border-style:dashed;box-shadow:none;background:#fff8;color:#888}
+#notebook #notebookStage #nbBook .slot[aria-pressed=true]{outline:2px solid var(--pen);outline-offset:5px}
+#notebook #notebookStage #nbBook .seg button{display:inline-block;font:700 20px/34px var(--sans);padding:0 14px;border-left:2px solid var(--ink);min-height:34px!important;margin:0}
+#notebook #notebookStage #nbBook .seg button:first-child{border-left:0}
+#notebook #notebookStage #nbBook .seg button.on{background:var(--ink);color:#fff}
+#notebook #notebookStage #nbBook .nb-help-link{position:absolute;color:var(--pen);font:700 22px var(--sans);text-decoration:underline}
+#notebook #notebookStage #nbBook .chart{overflow:hidden;pointer-events:none}
+#notebook #notebookStage #nbBook .person .face img{display:block;position:static;left:auto;top:auto;width:100%;height:100%;max-width:100%;object-fit:contain;border:0;border-radius:0;background:none}
+#notebook #notebookStage #nbBook .person .face{border:0;border-radius:0;overflow:visible;background-color:transparent;box-shadow:none}
+#notebook #notebookStage #nbBook .person.dead .face{filter:grayscale(1) opacity(.55)}
+#notebook #notebookStage #nbBook .person .rn{white-space:normal}
+#notebook #notebookStage #nbBook .chart svg{pointer-events:none}
+#notebook #notebookStage #nbBook .lcd .row{height:56px;min-height:0;margin:0;display:grid;width:100%;text-align:left;box-shadow:none;border:0;cursor:pointer}
+#notebook #notebookStage #nbBook .lcd .list{max-height:270px;overflow:auto}
+#notebook #notebookStage #nbBook .lcd .body .msg{white-space:pre-wrap}
+#notebook #notebookStage #nbBook .lcd .soft .soft-label{padding:4px 16px;background:linear-gradient(#fff,#e1e5e9);border:2px solid #9aa2ab;border-radius:18px;color:#4a525c;font:26px 'Dot',monospace;min-height:0;box-shadow:none;margin:0}
+#notebook #notebookStage #nbDoodles,#notebook #notebookStage #nbDoodles *{pointer-events:none!important}
+#notebook #notebookStage #nbDoodles{position:absolute;inset:0;z-index:4}
+#notebook #notebookStage .nb-doodle-layer{position:absolute;inset:0;pointer-events:none}
+#notebook #notebookStage .hw,#notebook #notebookStage .hwt{font-family:var(--hw-font)!important;font-weight:var(--hw-weight)}
+#notebook #notebookStage .hw,#notebook #notebookStage .hw *{filter:none!important}
+#notebook #notebookStage #nbBook .tabs{z-index:10}
+#notebook #notebookStage button:focus-visible{outline:3px dashed var(--red);outline-offset:4px}
+#notebook #notebookStage #panel.nb-modal{z-index:6;inset:auto!important;left:60px!important;top:220px!important;width:700px!important;height:auto!important;padding:24px!important;border:2px solid var(--ink)!important;background:var(--paper)!important;pointer-events:auto}
+#notebook #notebookStage #panel.nb-modal #panelTitle{display:block;position:static;font:900 32px/1.4 var(--serif);margin:0 0 20px;padding:0;border:0}
+#notebook #notebookStage #panel.nb-modal #panelBody{position:static;width:auto;height:auto;pointer-events:auto}
+#notebook #notebookStage #panel.nb-modal #panelBody button{display:block;width:100%;margin:12px 0;padding:12px 20px;min-height:50px;font:700 24px var(--sans);background:var(--ink);color:#fff;box-shadow:none;text-align:center}
+#notebook #notebookStage #panel.nb-modal #panelBody p{font:400 24px/36px var(--sans);white-space:pre-line}
+#notebook.nb-mail-dialogue{z-index:5;pointer-events:none}
+#notebook.nb-mail-dialogue #notebookStage{opacity:.65}
+#game #mailToast{position:absolute;left:auto;right:22px;top:auto;bottom:18px;z-index:35;padding:10px 18px;border:1px solid #b8ae96;border-radius:2px;background:#f4eccf;color:#24407a;box-shadow:3px 4px #0002;transform:rotate(-3deg);font:700 20px var(--font-body);cursor:pointer}
+#game #mailToast strong,#game #mailToast small{display:block;font:inherit}
+#game #mailToast small{font-size:13px;margin-top:4px}
+#mangaStage #menu.has-mail::after{display:none}
+@media(prefers-reduced-motion:reduce){#notebook,#notebook *{animation:none!important;transition:none!important}}
+
+/* Transparent hit areas grow on scaled screens; the reference ink and borders do not move. */
+#notebook #notebookStage #nbBook .nb-control{display:inline-flex;align-items:flex-start;justify-content:center;min-height:calc(37px / var(--nb-scale));min-width:calc(37px / var(--nb-scale));margin:0;padding:0;border:0;background:none;box-shadow:none}
+#notebook #notebookStage #nbBook .soft .nb-control{align-items:flex-end}
+#notebook #notebookStage #nbBook .seg i{position:relative}
+#notebook #notebookStage #nbBook .seg .seg-hit{position:absolute;left:0;top:50%;transform:translateY(-50%);width:100%;height:max(100%,calc(37px / var(--nb-scale)));min-height:0!important;margin:0;padding:0;border:0;background:none;box-shadow:none;font:inherit}
+/* Smaller screens keep the same artwork. The reference spread is unchanged at 1280×720 and above. */
+#notebook #notebookStage #nbBook .nb-help-link{min-height:calc(37px / var(--nb-scale));min-width:calc(37px / var(--nb-scale))}
+@media(max-width:1279px),(max-height:650px){
+ #notebook #notebookStage #nbBook .memo p{font-size:max(24px,calc(12.5px / var(--nb-scale)));line-height:1.5}
+ #notebook #notebookStage #nbBook .memo b{font-size:max(26px,calc(12.5px / var(--nb-scale)));line-height:1.4}
+ #notebook #notebookStage #nbBook .nb-memo-list{position:absolute;left:60px;top:224px;width:700px;height:620px;overflow:auto;pointer-events:auto}
+ #notebook #notebookStage #nbBook .nb-memo-list .memo{position:static!important;width:100%;margin:0 0 32px;min-height:calc(37px / var(--nb-scale));display:block;text-align:left}
+ #notebook #notebookStage #nbBook .nb-fact-diagram{display:none}
+ #notebook #notebookStage #nbBook .ttl{font-size:max(44px,calc(17px / var(--nb-scale)))}
+ #notebook #notebookStage #nbBook .ttl small{font-size:max(20px,calc(12.5px / var(--nb-scale)))}
+ #notebook #notebookStage #nbBook .note,#notebook #notebookStage #nbBook .item .sub{font-size:max(18px,calc(12.5px / var(--nb-scale)))}
+ #notebook #notebookStage #nbBook .btn,#notebook #notebookStage #nbBook .item .cap{font-size:max(22px,calc(12.5px / var(--nb-scale)))}
+ #notebook #notebookStage #nbBook .person .nm{font-size:max(26px,calc(12.5px / var(--nb-scale)))}
+ #notebook #notebookStage #nbBook .person .rn{font-size:max(16px,calc(12.5px / var(--nb-scale)))}
+ #notebook #notebookStage #nbBook .mini .person .face{width:84px;height:92px}
+ #notebook #notebookStage #nbBook .mini .person .nm{font-size:max(21px,calc(12.5px / var(--nb-scale)));white-space:normal}
+ #notebook #notebookStage #nbBook .mini .person .rn{display:none}
+ #notebook #notebookStage #nbBook .lcd .row{font-size:max(28px,calc(12.5px / var(--nb-scale)));height:max(56px,calc(37px / var(--nb-scale)))}
+ #notebook #notebookStage #nbBook .seg i{font-size:max(20px,calc(12.5px / var(--nb-scale)))}
+ #notebook #notebookStage #nbBook .q{font-size:max(28px,calc(12.5px / var(--nb-scale)))}
+ #notebook #notebookStage #nbDoodles{display:none}
+}
+@media(orientation:portrait) and (max-width:700px){
+ #notebookStage{width:900px;height:1950px;overflow:hidden}
+ #notebook #notebookStage #nbBook.book{left:25px;top:80px;width:720px;height:1740px;transform:none}
+ #notebook #notebookStage #nbBook .page.l{width:720px;height:1740px;border-radius:6px}
+ #notebook #notebookStage #nbBook .page.r,#notebook #notebookStage #nbBook .gutter,#notebook #notebookStage #nbBook .stitch{display:none}
+ #notebook #notebookStage #nbBook .dirt{width:720px;height:1740px}
+ #notebook #notebookStage #nbBook .head{font-size:calc(12.5px / var(--nb-scale));gap:18px}
+ #notebook #notebookStage #nbBook .head b{font-size:inherit!important}
+ #notebook #notebookStage #nbBook .tabs{left:710px;top:180px;gap:20px}
+ #notebook #notebookStage #nbBook .tab{width:140px;height:230px;font-size:max(32px,calc(12.5px / var(--nb-scale)))!important}
+ #notebook #notebookStage #nbBook .tab.on{width:160px}
+ #notebook #notebookStage #nbBook .tab .badge{min-width:44px;height:44px;font-size:32px;line-height:44px}
+ #notebook #notebookStage #nbBook .tab .dot{width:20px;height:20px}
+ #notebook #notebookStage #nbContent,#notebook #notebookStage #panel,#notebook #notebookStage #panelBody{width:720px!important;height:1740px!important}
+ #notebook #notebookStage .close{right:24px;top:12px;width:250px;height:112px}
+ #notebook #notebookStage .close img{object-fit:contain}
+ #notebook #notebookStage .keys{left:40px;bottom:10px;width:820px;font-size:calc(12.5px / var(--nb-scale));line-height:1.5}
+ #notebook #notebookStage .keys b{margin:0 6px;padding:2px 6px}
+ #notebook #notebookStage #nbBook .ttl{left:40px!important;font-size:48px;max-width:640px}
+ #notebook #notebookStage #nbBook .ttl small{display:block;position:absolute;left:0;top:65px;width:640px;margin:0;font-size:calc(12.5px / var(--nb-scale));white-space:normal}
+ #notebook #notebookStage #nbBook .uline{left:40px!important;max-width:640px}
+ #notebook #notebookStage #nbBook .q{left:40px!important;top:240px!important;width:640px;font-size:calc(12.5px / var(--nb-scale));line-height:1.4}
+ #notebook #notebookStage #nbBook .next{left:40px!important;top:405px!important;width:640px;font-size:calc(12.5px / var(--nb-scale));line-height:1.4}
+ #notebook #notebookStage #nbBook .nb-memo-list{left:40px;top:550px;width:640px;height:900px}
+ #notebook #notebookStage #nbBook .nb-memo-list .memo{margin-bottom:38px}
+ #notebook #notebookStage #nbBook .v-memo>.nb-control{left:40px!important;top:1550px!important}
+ #notebook #notebookStage #nbBook .v-items{padding:260px 40px 230px;display:flex;flex-direction:column;gap:70px;overflow:auto;pointer-events:auto}
+ #notebook #notebookStage #nbBook .v-items .item{position:relative!important;left:auto!important;top:auto!important;width:560px;flex:none}
+ #notebook #notebookStage #nbBook .v-items .item .ph{height:280px}
+ #notebook #notebookStage #nbBook .v-items>.note{left:40px!important;top:1500px!important;width:640px!important}
+ #notebook #notebookStage #nbBook .chart{width:720px;height:1740px}
+ #notebook #notebookStage #nbBook .chart svg{width:100%;height:100%}
+ #notebook #notebookStage #nbBook .grp>i{font-size:calc(12.5px / var(--nb-scale));line-height:1.2;max-width:640px}
+ #notebook #notebookStage #nbBook .person,#notebook #notebookStage #nbBook .mini .person{width:200px;display:block}
+ #notebook #notebookStage #nbBook .person .nm,#notebook #notebookStage #nbBook .person .rn{font-size:calc(12.5px / var(--nb-scale));white-space:normal}
+ #notebook #notebookStage #nbBook .mini .person .rn{display:none}
+ #notebook #notebookStage #nbBook .rel{font-size:calc(12.5px / var(--nb-scale));line-height:1.2}
+ #notebook #notebookStage #nbBook .legend{left:40px!important;width:640px;font-size:calc(12.5px / var(--nb-scale));line-height:1.4}
+ #notebook #notebookStage #nbBook .slot{left:40px!important;width:640px;height:190px}
+ #notebook #notebookStage #nbBook .slot[data-slot="1"]{top:260px!important}
+ #notebook #notebookStage #nbBook .slot[data-slot="2"]{top:475px!important}
+ #notebook #notebookStage #nbBook .slot[data-slot="3"]{top:690px!important}
+ #notebook #notebookStage #nbBook .slot b{font-size:calc(12.5px / var(--nb-scale))}
+ #notebook #notebookStage #nbBook .slot span{font-size:calc(12.5px / var(--nb-scale));line-height:1.35}
+ #notebook #notebookStage #nbBook .v-save>.nb-control{left:40px!important;top:930px!important}
+ #notebook #notebookStage #nbBook .v-save>.nb-control:has(.secondary){left:370px!important}
+ #notebook #notebookStage #nbBook .settings-title{top:1080px!important}
+ #notebook #notebookStage #nbBook .settings-underline{top:1140px!important}
+ #notebook #notebookStage #nbBook .set{left:40px!important;width:640px;font-size:calc(12.5px / var(--nb-scale));line-height:1.4}
+ #notebook #notebookStage #nbBook .set[aria-label="文字の速さ"]{top:1180px!important}
+ #notebook #notebookStage #nbBook .set[aria-label="文字の音"]{top:1300px!important}
+ #notebook #notebookStage #nbBook .set[aria-label="効果音"]{top:1420px!important}
+ #notebook #notebookStage #nbBook .set[aria-label="自動送り"]{top:1540px!important}
+ #notebook #notebookStage #nbBook .seg{display:flex;width:max-content;margin:8px 0 0}
+ #notebook #notebookStage #nbBook .seg i{line-height:1.1;padding:0 10px;font-size:calc(12.5px / var(--nb-scale))}
+ #notebook #notebookStage #nbBook .v-save>.note{display:none}
+ #notebook #notebookStage #nbBook .nb-help-link{left:40px!important;top:1680px!important;font-size:calc(12.5px / var(--nb-scale))}
+ #notebook #notebookStage #nbBook .lcd{left:30px!important;top:240px!important;width:660px;height:1040px}
+ #notebook #notebookStage #nbBook .lcd .bar,#notebook #notebookStage #nbBook .lcd .row,#notebook #notebookStage #nbBook .lcd .from,#notebook #notebookStage #nbBook .lcd .cnt{font-size:calc(12.5px / var(--nb-scale))}
+ #notebook #notebookStage #nbBook .lcd .row{height:110px}
+ #notebook #notebookStage #nbBook .lcd .body{top:360px;bottom:140px}
+ #notebook #notebookStage #nbBook .lcd .msg{font-size:54px}
+ #notebook #notebookStage #nbBook .lcd .soft .soft-label{font-size:calc(12.5px / var(--nb-scale));padding:4px 12px}
+ #notebook #notebookStage #nbBook .phone{left:430px!important;top:1330px!important;width:130px;height:330px}
+ #notebook #notebookStage #nbBook .phone .body{width:130px}
+ #notebook #notebookStage #nbBook .phone .strap{width:224.5px}
+ #notebook #notebookStage #nbBook .phone .scr{font-size:20px;padding:5px}
+ #notebook #notebookStage #nbBook .reply{left:40px!important;top:1390px!important;width:350px;font-size:calc(12.5px / var(--nb-scale))}
+ #notebook #notebookStage #nbBook .keyhint{display:none}
+ #notebook #notebookStage #panel.nb-modal{left:40px!important;top:240px!important;width:640px!important;height:auto!important}
+ #notebook #notebookStage #panel.nb-modal #panelTitle{font-size:calc(15px / var(--nb-scale))}
+ #notebook #notebookStage #panel.nb-modal #panelBody{height:auto!important;width:auto!important}
+ #notebook #notebookStage #panel.nb-modal #panelBody p,#notebook #notebookStage #panel.nb-modal #panelBody button{font-size:calc(12.5px / var(--nb-scale));min-height:calc(37px / var(--nb-scale))}
+}

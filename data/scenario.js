@@ -1574,7 +1574,12 @@ window.SAIKACHI_SCENARIO = {
         "when": {},
         "realNameWhen": {},
         "x": 50,
-        "y": 46
+        "y": 46,
+        "pos": [
+          300,
+          240
+        ],
+        "chibi": "art_sources/rough/chibi/haruki.png"
       },
       {
         "id": "saiji",
@@ -1585,7 +1590,12 @@ window.SAIKACHI_SCENARIO = {
         "when": {},
         "realNameWhen": {},
         "x": 24,
-        "y": 72
+        "y": 72,
+        "pos": [
+          300,
+          600
+        ],
+        "chibi": "art_sources/rough/chibi/saiji.png"
       },
       {
         "id": "nakako",
@@ -1595,7 +1605,13 @@ window.SAIKACHI_SCENARIO = {
         "when": {},
         "realNameWhen": {},
         "x": 24,
-        "y": 23
+        "y": 23,
+        "pos": [
+          1010,
+          600
+        ],
+        "group": "kuroken",
+        "chibi": "art_sources/rough/chibi/nakako.png"
       },
       {
         "id": "okabo",
@@ -1605,7 +1621,12 @@ window.SAIKACHI_SCENARIO = {
           "dutyChecked": true
         },
         "x": 77,
-        "y": 23
+        "y": 23,
+        "pos": [
+          1380,
+          600
+        ],
+        "group": "kuroken"
       },
       {
         "id": "bunji",
@@ -1615,7 +1636,12 @@ window.SAIKACHI_SCENARIO = {
           "layoutChecked": true
         },
         "x": 77,
-        "y": 72
+        "y": 72,
+        "pos": [
+          1010,
+          270
+        ],
+        "group": "kuroken"
       }
     ],
     "edges": [
@@ -1667,6 +1693,18 @@ window.SAIKACHI_SCENARIO = {
         },
         "labelX": 67,
         "labelY": 61
+      }
+    ],
+    "groups": [
+      {
+        "id": "kuroken",
+        "label": "クロ研（クロッキー研究会）",
+        "rect": [
+          930,
+          240,
+          650,
+          620
+        ]
       }
     ]
   }

@@ -1,0 +1,402 @@
+{
+  "1920-chart": {
+    "scrollHeight": 944,
+    "clientHeight": 944,
+    "scrollWidth": 1640,
+    "clientWidth": 1640,
+    "mini": false,
+    "people": [
+      {
+        "x": 415.2044677734375,
+        "y": 308.53759765625,
+        "right": 567.8296508789062,
+        "bottom": 526.1509399414062,
+        "radius": "0px",
+        "imageRadius": "0px",
+        "path": "art_sources/rough/chibi/haruki.png"
+      },
+      {
+        "x": 419.6025695800781,
+        "y": 668.5107421875,
+        "right": 572.227783203125,
+        "bottom": 886.1240844726562,
+        "radius": "0px",
+        "imageRadius": "0px",
+        "path": "art_sources/rough/chibi/saiji.png"
+      },
+      {
+        "x": 1129.549560546875,
+        "y": 659.836669921875,
+        "right": 1282.1748046875,
+        "bottom": 877.4500122070312,
+        "radius": "0px",
+        "imageRadius": "0px",
+        "path": "art_sources/rough/chibi/nakako.png"
+      },
+      {
+        "x": 1499.52197265625,
+        "y": 655.31640625,
+        "right": 1652.147216796875,
+        "bottom": 872.9296875,
+        "radius": "0px",
+        "imageRadius": null
+      },
+      {
+        "x": 1125.5179443359375,
+        "y": 329.8612976074219,
+        "right": 1278.1431884765625,
+        "bottom": 547.474609375,
+        "radius": "0px",
+        "imageRadius": null
+      }
+    ]
+  },
+  "1920-chart17": {
+    "scrollHeight": 944,
+    "clientHeight": 944,
+    "scrollWidth": 1640,
+    "clientWidth": 1640,
+    "mini": true,
+    "people": [
+      {
+        "x": 185.3437957763672,
+        "y": 321.8110046386719,
+        "right": 299.24530029296875,
+        "bottom": 479.49578857421875,
+        "radius": "0px",
+        "imageRadius": "0px",
+        "path": "art_sources/rough/chibi/haruki.png"
+      },
+      {
+        "x": 305.3348388671875,
+        "y": 320.344970703125,
+        "right": 419.2363586425781,
+        "bottom": 478.02972412109375,
+        "radius": "0px",
+        "imageRadius": "0px",
+        "path": "art_sources/rough/chibi/saiji.png"
+      },
+      {
+        "x": 425.3258972167969,
+        "y": 318.8789367675781,
+        "right": 539.2274169921875,
+        "bottom": 476.5636901855469,
+        "radius": "0px",
+        "imageRadius": "0px",
+        "path": "art_sources/rough/chibi/nakako.png"
+      },
+      {
+        "x": 545.3169555664062,
+        "y": 317.41290283203125,
+        "right": 659.2184448242188,
+        "bottom": 475.09765625,
+        "radius": "0px",
+        "imageRadius": null
+      },
+      {
+        "x": 247.66055297851562,
+        "y": 511.0638122558594,
+        "right": 361.5620422363281,
+        "bottom": 668.7485961914062,
+        "radius": "0px",
+        "imageRadius": null
+      },
+      {
+        "x": 397.64935302734375,
+        "y": 509.23126220703125,
+        "right": 511.5508728027344,
+        "bottom": 666.916015625,
+        "radius": "0px",
+        "imageRadius": null
+      },
+      {
+        "x": 825.2960205078125,
+        "y": 313.99212646484375,
+        "right": 939.197509765625,
+        "bottom": 471.6769104003906,
+        "radius": "0px",
+        "imageRadius": null
+      },
+      {
+        "x": 965.2855834960938,
+        "y": 312.2817687988281,
+        "right": 1079.1871337890625,
+        "bottom": 469.9665222167969,
+        "radius": "0px",
+        "imageRadius": null
+      },
+      {
+        "x": 1207.9554443359375,
+        "y": 529.333251953125,
+        "right": 1321.85693359375,
+        "bottom": 687.0180053710938,
+        "radius": "0px",
+        "imageRadius": null
+      },
+      {
+        "x": 1205.2677001953125,
+        "y": 309.34967041015625,
+        "right": 1319.169189453125,
+        "bottom": 467.034423828125,
+        "radius": "0px",
+        "imageRadius": null
+      },
+      {
+        "x": 1330.25830078125,
+        "y": 307.8225402832031,
+        "right": 1444.1597900390625,
+        "bottom": 465.50732421875,
+        "radius": "0px",
+        "imageRadius": null
+      },
+      {
+        "x": 1455.2490234375,
+        "y": 306.29541015625,
+        "right": 1569.1505126953125,
+        "bottom": 463.9801940917969,
+        "radius": "0px",
+        "imageRadius": null
+      },
+      {
+        "x": 1580.23974609375,
+        "y": 304.768310546875,
+        "right": 1694.1412353515625,
+        "bottom": 462.45306396484375,
+        "radius": "0px",
+        "imageRadius": null
+      },
+      {
+        "x": 1457.936767578125,
+        "y": 526.2789916992188,
+        "right": 1571.8382568359375,
+        "bottom": 683.9637451171875,
+        "radius": "0px",
+        "imageRadius": null
+      },
+      {
+        "x": 240.8988037109375,
+        "y": 776.1661987304688,
+        "right": 354.80029296875,
+        "bottom": 933.8509521484375,
+        "radius": "0px",
+        "imageRadius": null
+      },
+      {
+        "x": 420.8853759765625,
+        "y": 773.9671630859375,
+        "right": 534.786865234375,
+        "bottom": 931.6519165039062,
+        "radius": "0px",
+        "imageRadius": null
+      },
+      {
+        "x": 600.8719482421875,
+        "y": 771.76806640625,
+        "right": 714.7734375,
+        "bottom": 929.4528198242188,
+        "radius": "0px",
+        "imageRadius": null
+      }
+    ]
+  },
+  "1280-chart": {
+    "scrollHeight": 944,
+    "clientHeight": 944,
+    "scrollWidth": 1640,
+    "clientWidth": 1640,
+    "mini": false,
+    "people": [
+      {
+        "x": 276.802978515625,
+        "y": 205.69174194335938,
+        "right": 378.5531005859375,
+        "bottom": 350.7673034667969,
+        "radius": "0px",
+        "imageRadius": "0px",
+        "path": "art_sources/rough/chibi/haruki.png"
+      },
+      {
+        "x": 279.73504638671875,
+        "y": 445.673828125,
+        "right": 381.4851989746094,
+        "bottom": 590.7493896484375,
+        "radius": "0px",
+        "imageRadius": "0px",
+        "path": "art_sources/rough/chibi/saiji.png"
+      },
+      {
+        "x": 753.0330810546875,
+        "y": 439.89111328125,
+        "right": 854.783203125,
+        "bottom": 584.9666748046875,
+        "radius": "0px",
+        "imageRadius": "0px",
+        "path": "art_sources/rough/chibi/nakako.png"
+      },
+      {
+        "x": 999.6813354492188,
+        "y": 436.87762451171875,
+        "right": 1101.4315185546875,
+        "bottom": 581.953125,
+        "radius": "0px",
+        "imageRadius": null
+      },
+      {
+        "x": 750.3453369140625,
+        "y": 219.90753173828125,
+        "right": 852.095458984375,
+        "bottom": 364.98309326171875,
+        "radius": "0px",
+        "imageRadius": null
+      }
+    ]
+  },
+  "1280-chart17": {
+    "scrollHeight": 944,
+    "clientHeight": 944,
+    "scrollWidth": 1640,
+    "clientWidth": 1640,
+    "mini": true,
+    "people": [
+      {
+        "x": 123.56253051757812,
+        "y": 214.54067993164062,
+        "right": 199.4968719482422,
+        "bottom": 319.66387939453125,
+        "radius": "0px",
+        "imageRadius": "0px",
+        "path": "art_sources/rough/chibi/haruki.png"
+      },
+      {
+        "x": 203.5565643310547,
+        "y": 213.56332397460938,
+        "right": 279.49090576171875,
+        "bottom": 318.6864929199219,
+        "radius": "0px",
+        "imageRadius": "0px",
+        "path": "art_sources/rough/chibi/saiji.png"
+      },
+      {
+        "x": 283.55059814453125,
+        "y": 212.58596801757812,
+        "right": 359.4849548339844,
+        "bottom": 317.7091369628906,
+        "radius": "0px",
+        "imageRadius": "0px",
+        "path": "art_sources/rough/chibi/nakako.png"
+      },
+      {
+        "x": 363.5446472167969,
+        "y": 211.60861206054688,
+        "right": 439.4789733886719,
+        "bottom": 316.7317810058594,
+        "radius": "0px",
+        "imageRadius": null
+      },
+      {
+        "x": 165.10704040527344,
+        "y": 340.709228515625,
+        "right": 241.04136657714844,
+        "bottom": 445.8323974609375,
+        "radius": "0px",
+        "imageRadius": null
+      },
+      {
+        "x": 265.0995788574219,
+        "y": 339.4875183105469,
+        "right": 341.033935546875,
+        "bottom": 444.6106872558594,
+        "radius": "0px",
+        "imageRadius": null
+      },
+      {
+        "x": 550.1973876953125,
+        "y": 209.32809448242188,
+        "right": 626.1317138671875,
+        "bottom": 314.4512939453125,
+        "radius": "0px",
+        "imageRadius": null
+      },
+      {
+        "x": 643.5237426757812,
+        "y": 208.18785095214844,
+        "right": 719.4581298828125,
+        "bottom": 313.31103515625,
+        "radius": "0px",
+        "imageRadius": null
+      },
+      {
+        "x": 805.3036499023438,
+        "y": 352.88885498046875,
+        "right": 881.2379760742188,
+        "bottom": 458.01202392578125,
+        "radius": "0px",
+        "imageRadius": null
+      },
+      {
+        "x": 803.5118408203125,
+        "y": 206.23312377929688,
+        "right": 879.4461669921875,
+        "bottom": 311.3562927246094,
+        "radius": "0px",
+        "imageRadius": null
+      },
+      {
+        "x": 886.8388671875,
+        "y": 205.21502685546875,
+        "right": 962.773193359375,
+        "bottom": 310.3382263183594,
+        "radius": "0px",
+        "imageRadius": null
+      },
+      {
+        "x": 970.166015625,
+        "y": 204.1969451904297,
+        "right": 1046.100341796875,
+        "bottom": 309.32012939453125,
+        "radius": "0px",
+        "imageRadius": null
+      },
+      {
+        "x": 1053.4931640625,
+        "y": 203.1788787841797,
+        "right": 1129.427490234375,
+        "bottom": 308.30206298828125,
+        "radius": "0px",
+        "imageRadius": null
+      },
+      {
+        "x": 971.9578857421875,
+        "y": 350.8526611328125,
+        "right": 1047.8922119140625,
+        "bottom": 455.975830078125,
+        "radius": "0px",
+        "imageRadius": null
+      },
+      {
+        "x": 160.59921264648438,
+        "y": 517.4441528320312,
+        "right": 236.53353881835938,
+        "bottom": 622.5673217773438,
+        "radius": "0px",
+        "imageRadius": null
+      },
+      {
+        "x": 280.59027099609375,
+        "y": 515.9781494140625,
+        "right": 356.52459716796875,
+        "bottom": 621.101318359375,
+        "radius": "0px",
+        "imageRadius": null
+      },
+      {
+        "x": 400.581298828125,
+        "y": 514.5120849609375,
+        "right": 476.515625,
+        "bottom": 619.63525390625,
+        "radius": "0px",
+        "imageRadius": null
+      }
+    ]
+  }
+}

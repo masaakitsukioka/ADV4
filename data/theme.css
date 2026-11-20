@@ -194,7 +194,7 @@ body,button,input,select,.line,.panel,.nb-book,#notebook button{font-family:var(
 .enlarged .nb-mail-from{font-size:calc(16 * var(--ui))}
 .enlarged .nb-mail-body{font-size:calc(22 * var(--ui));line-height:1.5}
 .enlarged .nb-soft button{font-size:14px!important;min-height:36px;min-width:44px}
-.enlarged .nb-mail-row{min-height:44px;font-size:16px!important}
+.enlarged .nb-mail-row{min-height:44px}
 .nb-mail-caption{font-size:calc(12 * var(--ui))}
 .nb-phone .lcd-signal,.nb-phone .lcd-battery{width:12px;height:5px;gap:1px}
 .nb-phone .lcd-signal i{width:3px}.nb-phone .lcd-signal i:nth-child(1){height:1px}.nb-phone .lcd-signal i:nth-child(2){height:3px}.nb-phone .lcd-signal i:nth-child(3){height:5px}

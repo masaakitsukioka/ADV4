@@ -1,0 +1,9 @@
+PASS 1920x1080: all dialogue pages, q5, five notebook tabs, relation labels, populated title saves
+PASS 1280x720: all dialogue pages, q5, five notebook tabs, relation labels, populated title saves
+PASS 1024x768: all dialogue pages, q5, five notebook tabs, relation labels, populated title saves
+PASS 768x1024: all dialogue pages, q5, five notebook tabs, relation labels, populated title saves
+PASS 844x390: all dialogue pages, q5, five notebook tabs, relation labels, populated title saves
+PASS 667x375: all dialogue pages, q5, five notebook tabs, relation labels, populated title saves
+PASS 390x844: all dialogue pages, q5, five notebook tabs, relation labels, populated title saves
+PASS 375x667: all dialogue pages, q5, five notebook tabs, relation labels, populated title saves
+PASS 360x640: all dialogue pages, q5, five notebook tabs, relation labels, populated title saves
