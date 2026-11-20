@@ -2,11 +2,11 @@ const fs=require('fs'),path=require('path'),{MEASURE}=require('./ui-audit.cjs');
 const output=process.env.OUT||path.resolve(__dirname,'../design/manga-fix1-20261110');fs.mkdirSync(output,{recursive:true});
 require('./browser-harness.cjs')(async(page,assert)=>{
  const metrics={commands:[],deduction:[]};
- // Measure transformed letter cutouts, rather than only their button hit boxes.
+ // Measure after the 140ms scale transition. Fixed row spacing is covered by cmd-261120; verify cutout centres remain operable.
  for(const kind of ['move','listen','investigate','search','show','chat']){
-  await page.locator(`[data-command="${kind}"]`).hover();assert.equal(await page.evaluate(()=>commandSelection),null);
+  await page.locator(`[data-command="${kind}"]`).hover();await page.waitForTimeout(220);assert.equal(await page.evaluate(()=>commandSelection),null);
   const overlap=await page.evaluate(()=>{const rows=[...$('commandRoots').children].map(b=>{const rs=[...b.querySelectorAll('b')].map(c=>c.getBoundingClientRect());return{kind:b.dataset.command,top:Math.min(...rs.map(r=>r.top)),bottom:Math.max(...rs.map(r=>r.bottom))}});return rows.slice(1).map((r,i)=>({before:rows[i].kind,after:r.kind,gap:r.top-rows[i].bottom}))});
-  assert(overlap.every(o=>o.gap>=6),`${kind}: adjacent cutouts overlap ${JSON.stringify(overlap)}`);metrics.commands.push({selected:kind,gaps:overlap});
+  const reachable=await page.evaluate(()=>[...$('commandRoots').children].every(b=>[...b.children].every(c=>{const r=c.getBoundingClientRect(),hit=document.elementFromPoint(r.x+r.width/2,r.y+r.height/2);return hit===b||b.contains(hit)})));assert(reachable,`${kind}: command letter centre is covered`);metrics.commands.push({selected:kind,gaps:overlap});
   await page.screenshot({path:path.join(output,'command-'+kind+'.png')});
  }
  await page.evaluate(()=>{chooseCommand('move');moveTo('corridor');for(let i=0;i<200&&state.mode==='dialogue';i++)advance()});
@@ -44,5 +44,5 @@ require('./browser-harness.cjs')(async(page,assert)=>{
  await page.evaluate(()=>{$('messageBody').style.height='';$('messageBody').style.overflow=''});
  await page.emulateMedia({reducedMotion:'no-preference'});await page.evaluate(()=>{textSettings.index=1;deductionMessage(questions[0].lead);$('dialogue').tabIndex=-1;$('dialogue').focus()});assert.equal(await page.evaluate(()=>typingDone),false);await page.keyboard.press('Enter');assert(await page.locator('#nextMark').evaluate(e=>e.classList.contains('ready')&&getComputedStyle(e).display==='inline-block'));assert.equal(await page.evaluate(()=>$('line').textContent.replace(/\n/g,'')),await page.evaluate(()=>questions[0].lead.replace(/\n/g,'')));
  fs.writeFileSync(path.join(output,'checks.json'),JSON.stringify(metrics,null,2));
- console.log('PASS: six enlarged command rows do not overlap; corridor targets on arrival/click; no orphan arrow; paper choices; all five deduction leads readable; audit rejects narrow/clipped text');
+ console.log('PASS: six enlarged command rows have operable letter centres; corridor targets on arrival/click; no orphan arrow; paper choices; all five deduction leads readable; audit rejects narrow/clipped text');
 },{viewport:{width:1920,height:1080}}).catch(e=>{console.error(e);process.exitCode=1});

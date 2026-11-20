@@ -1,0 +1,34 @@
+/* ===== 立ち絵を 90% に（下端の位置はそのまま。外側の端を基準に縮める） ===== */
+#game #mangaStage .character-card{width:472px!important;height:531px!important;top:599px!important;left:-12px!important}
+#game #mangaStage #saijiCard{left:1475px!important;top:592px!important}
+
+/* ===== 捜査コマンド：行の高さを固定し、選ばれた時は拡大（周りが動かない） ===== */
+#mangaStage .command-window h2{font-size:24px!important;color:#3e6ea8!important;letter-spacing:.14em}
+#mangaStage #commandRoots{display:block!important;position:relative;height:460px!important;padding:0!important;gap:0!important}
+#game #mangaStage #commandRoots button{position:absolute!important;height:62px!important;min-height:62px!important;align-items:center;
+  transform-origin:0% 50%;transition:transform .14s cubic-bezier(.3,1.6,.5,1),opacity .14s}
+#game #mangaStage #commandRoots button:nth-child(1){left:24px!important;top:4px!important}
+#game #mangaStage #commandRoots button:nth-child(2){left:36px!important;top:78px!important}
+#game #mangaStage #commandRoots button:nth-child(3){left:18px!important;top:152px!important}
+#game #mangaStage #commandRoots button:nth-child(4){left:34px!important;top:226px!important}
+#game #mangaStage #commandRoots button:nth-child(5){left:26px!important;top:300px!important}
+#game #mangaStage #commandRoots button:nth-child(6){left:42px!important;top:374px!important}
+/* 1文字目（漢字）がいちばん大きく見えるように、黒地の明朝を少し大きく */
+#mangaStage #commandRoots .s4{font-size:42px!important}
+#mangaStage #commandRoots .s2{font-size:30px!important}
+/* 選択中：文字の大きさを変えず、ボタンごと 1.28 倍（行の高さが変わらないので下の行がずれない） */
+#mangaStage #commandRoots .on .s1{font-size:46px!important;padding:5px 7px!important}
+#mangaStage #commandRoots .on .s3{font-size:31px!important;padding:4px 5px!important}
+#mangaStage #commandRoots .on .s2{font-size:30px!important}
+#mangaStage #commandRoots .on .s4{font-size:42px!important;padding:5px!important}
+#game #mangaStage #commandRoots button.on{transform:scale(1.28);z-index:2}
+/* 一覧を開いている間は、選ばれていないコマンドを薄く */
+#mangaStage:has(#commandDetail:not(.hidden)) #commandRoots button:not(.on){opacity:.4}
+
+/* ===== 調べる先：文字を大きく、一覧を右へ寄せてコマンドとぶつからないように ===== */
+#mangaStage #commandDetail{left:1722px!important;top:136px!important;width:180px!important}
+#mangaStage #commandChildren{gap:10px!important;margin-top:16px!important}
+#game #mangaStage #commandChildren button{font:900 28px/1.25 var(--font-body)!important;min-height:54px!important;padding:8px 16px!important;max-width:190px!important}
+/* もどる：紙片にせず、矢印つきの小さな文字。一覧の項目と見分けられるように少し離す */
+#game #mangaStage #commandChildren .command-back{font:700 22px/1 var(--font-body)!important;color:#3e6ea8!important;min-height:36px!important;padding:6px 4px!important;margin-top:8px!important;box-shadow:none!important;background:none!important}
+#game #mangaStage #commandChildren .command-back::before{content:'← ';display:inline!important;position:static!important;background:none!important}
