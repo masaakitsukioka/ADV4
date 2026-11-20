@@ -41,15 +41,42 @@ async function displayPortraitFrame(id,paths,frame,valid){
  canvas.width=width;canvas.height=height;const ctx=canvas.getContext('2d');if(!ctx?.drawImage)return;
  drawTalkingPortrait(ctx,base,id,frame,null,replacement);canvas.dataset.frame=String(frame);canvas.classList.remove('hidden');$(id+'Card').classList.add('animating');
 }
+// Reserve the whole blink train plus 400 ms, including the optional second blink.
+// Other portraits defer at the instant they would start; timers remain random.
+const blinkReservations=new Map(),portraitBounceFrames=new Map();
 function scheduleBlink(id){
- clearBlink(id);if(presentationReduced())return;const token=portraitTokens.get(id);
+ clearBlink(id);const token=portraitTokens.get(id);
  const valid=()=>portraitTokens.get(id)===token;
- const start=()=>{if(!valid())return;if($('characterStage').classList.contains('hidden')){scheduleBlink(id);return}
+ const start=()=>{if(!valid())return;
+  const card=$(id+'Card'),style=getComputedStyle(card);
+  if($('characterStage').classList.contains('hidden')||style.visibility==='hidden'||style.display==='none'){scheduleBlink(id);return}
+  const now=performance.now(),other=id==='haruki'?'saiji':'haruki',until=blinkReservations.get(other)||0;
+  if(now<until){blinkTimers.set(id,setTimeout(start,until-now+1));return}
+  const twice=Math.random()<.15;
+  blinkReservations.set(id,now+210+(twice?180+210:0)+400);
   const key=characterExpression(id,$(id+'Emotion').textContent),frames=ASSETS.blinkFrames?.[id]?.[key];let i=0;
-  function tick(){if(!valid())return;const frame=[1,2,1,0][i++];canvasState(frame);if(i<4)blinkTimers.set(id,setTimeout(tick,70));else{hidePortraitFrame(id);scheduleBlink(id)}}
-  function canvasState(frame){$(id+'Talk').dataset.animation='blink';displayPortraitFrame(id,frames,frame,valid)}tick();
+  function tick(){if(!valid())return;const frame=[1,2,1,0][i++];
+   $(id+'Talk').dataset.animation='blink';displayPortraitFrame(id,frames,frame,valid);
+   if(i<4)blinkTimers.set(id,setTimeout(tick,70));
+   else{hidePortraitFrame(id);if(twice&&i===4){i=0;blinkTimers.set(id,setTimeout(second,180))}else scheduleBlink(id)}
+  }
+  function second(){if(!valid())return;let step=0;
+   function next(){if(!valid())return;$(id+'Talk').dataset.animation='blink';displayPortraitFrame(id,frames,[1,2,1,0][step++],valid);
+    if(step<4)blinkTimers.set(id,setTimeout(next,70));else{hidePortraitFrame(id);scheduleBlink(id)}}next();
+  }
+  tick();
  };
- blinkTimers.set(id,setTimeout(start,2000+Math.random()*4000));
+ blinkTimers.set(id,setTimeout(start,2500+Math.random()*2500));
+}
+// Individual translate composes with the body's CSS breathing transform.
+function bounceCharacter(id){
+ const body=$(id+'Card').querySelector?.('.character-body');if(!body)return;
+ cancelAnimationFrame(portraitBounceFrames.get(id));body.style.removeProperty('translate');
+ if(presentationReduced())return;const start=performance.now();
+ function tick(now){if(presentationReduced()){body.style.removeProperty('translate');portraitBounceFrames.delete(id);return}
+  const progress=Math.min(1,(now-start)/240);body.style.translate='0 '+(-12*Math.sin(Math.PI*progress))+'px';
+  if(progress<1)portraitBounceFrames.set(id,requestAnimationFrame(tick));else{body.style.removeProperty('translate');portraitBounceFrames.delete(id)}
+ }portraitBounceFrames.set(id,requestAnimationFrame(tick));
 }
 function finishTalking(){
  talkGeneration++;clearTimeout(talkTimer);talkTimer=null;
@@ -58,7 +85,7 @@ function finishTalking(){
 function startTalking(name,emotion,text){
  stopTalking();const speaker=({'ハルキ':'haruki','サイジ':'saiji'})[name];
  for(const id of ['haruki','saiji'])if(id!==speaker)scheduleBlink(id);
- if(!speaker||typingDone||presentationReduced()){if(speaker)scheduleBlink(speaker);return}
+ if(!speaker||typingDone){if(speaker)scheduleBlink(speaker);return}
  const key=characterExpression(speaker,emotion),frames=ASSETS.mouthFrames?.[speaker]?.[key],generation=talkGeneration;let step=0;
  function tick(){if(generation!==talkGeneration)return;if(typingDone){finishTalking();return}
   $(speaker+'Talk').dataset.animation='talk';displayPortraitFrame(speaker,frames,[0,1,2,1][step++%4],()=>generation===talkGeneration);

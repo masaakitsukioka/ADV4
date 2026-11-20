@@ -35,7 +35,12 @@ body,#game{background:#f7f5ee;color:#141414}
 #game #mangaStage #characterStage{position:absolute;inset:0!important;width:1920px!important;height:1080px!important;z-index:12;display:block;pointer-events:none;transform:none;overflow:visible}
 #game #mangaStage .character-card{position:absolute!important;width:524px!important;height:590px!important;top:540px!important;left:-12px!important;right:auto!important;bottom:auto!important;padding:0;border:0;background:none;box-shadow:none;clip-path:none;transform:none!important;opacity:1!important;filter:drop-shadow(3px 0 0 #fff) drop-shadow(-3px 0 0 #fff) drop-shadow(0 3px 0 #fff) drop-shadow(0 -3px 0 #fff);overflow:visible;visibility:visible}
 #game #mangaStage #saijiCard{left:1423px!important;top:533px!important}
-#game #mangaStage .character-art{position:absolute;inset:0!important;width:524px!important;height:590px!important;max-width:none!important;max-height:none!important;transform:none!important;object-fit:contain;object-position:center}
+#game #mangaStage .character-art{position:absolute;inset:0!important;width:100%!important;height:100%!important;max-width:none!important;max-height:none!important;transform:none!important;object-fit:contain;object-position:center}
+/* One moving body keeps the base portrait and replacement canvas aligned. */
+#mangaStage .character-body{position:absolute;inset:0;width:100%;height:100%;transform-origin:50% 100%;animation:portraitBreathe 3.6s ease-in-out infinite}
+#mangaStage #saijiCard .character-body{animation-duration:4.3s;animation-delay:-1.2s}
+@keyframes portraitBreathe{0%,100%{transform:translateY(2.2px) scaleY(.996)}50%{transform:translateY(-2.2px) scaleY(1.004)}}
+@media(prefers-reduced-motion:reduce){#mangaStage .character-body{animation:none;translate:none!important}}
 #mangaStage .character-name,#mangaStage .emotion{display:none!important}
 .character-card.animating img.character-art{visibility:hidden}
 #mangaStage .asset-fallback{position:absolute;inset:0;background:#808080;color:#fff;font:31px var(--font-body)}

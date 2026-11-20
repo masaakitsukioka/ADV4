@@ -16,6 +16,8 @@ run(fs.readFileSync(root+'/data/presentation.js','utf8'));
 run(fs.readFileSync(root+'/data/commands.js','utf8'));
 run(fs.readFileSync(root+'/data/story-ui.js','utf8'));
 assert.deepEqual(JSON.parse(JSON.stringify(sandbox.window.SAIKACHI_SCENARIO)),JSON.parse(fs.readFileSync(root+'/data/scenario.json')));
+// Dialogue contents are tested synchronously; real typing and reduced-motion mouth playback are covered in idle.cjs.
+run('textSettings.index=3');
 const end=()=>run('for(let i=0;i<100&&state.mode==="dialogue"&&!choicesPending;i++)advance()');
 const allButtons=()=>{const out=[];const walk=e=>{for(const child of e?.children||[]){out.push(child);walk(child)}};for(const id of ['panelBody','commandRoots','commandChildren','openingActions'])walk(elements[id]);return out};
 const click=label=>{const b=allButtons().find(b=>typeof b.onclick==='function'&&(b.textContent===label||b.children?.some(c=>c.textContent===label))); assert(b,'missing button '+label);assert(!b.disabled,'disabled '+label);b.onclick({stopPropagation(){}})};

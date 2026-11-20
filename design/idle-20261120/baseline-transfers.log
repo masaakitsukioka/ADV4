@@ -1,0 +1,15 @@
+evalmachine.<anonymous>:114
+function say(lines,after=null){if(state.mode==='dialogue-out'&&typeof presentationGeneration!=='undefined'){presentationGeneration++;$('dialogue').classList.remove('leaving');$('characterStage').classList.remove('leaving')}if(typeof hideItemGraphic==='function')hideItemGraphic();state.itemPresentation=null;cancelTextTimers();state.mode='dialogue';state.dialogue=lines;if(typeof learnCommandNames==='function')for(const v of lines)learnCommandNames(String(v[1]));state.lineIndex=0;state.afterDialogue=after;state.selected=null;if(!(typeof deductionActive!=='undefined'&&deductionActive))showWindow('panel',false);$('actions').classList.add('hidden');$('dialogue').classList.remove('hidden');$('portraitRail').classList.remove('hidden');$('characterStage').classList.remove('hidden');$('textControls').classList.remove('hidden');const generation=++dialogueGeneration;requestAnimationFrame(()=>{if(generation===dialogueGeneration&&state.mode==='dialogue'){$('dialogue').classList.add('open');$('characterStage').classList.add('open')}});$('dialogue').classList.toggle('narration',!lines[0]?.[0]);state.dialogue=paginateDialogue(lines);displayLine();render();$('dialogue').tabIndex=-1;$('dialogue').focus?.({preventScroll:true})}
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            ^
+
+ReferenceError: showWindow is not defined
+    at say (evalmachine.<anonymous>:114:589)
+    at runEvent (evalmachine.<anonymous>:139:25)
+    at examine (evalmachine.<anonymous>:146:279)
+    at evalmachine.<anonymous>:1:1
+    at Script.runInContext (node:vm:149:12)
+    at Object.runInContext (node:vm:301:6)
+    at run (/private/tmp/adv4-idle-baseline/tests/transfers.cjs:18:17)
+    at /private/tmp/adv4-idle-baseline/tests/transfers.cjs:32:2
+    at Object.<anonymous> (/private/tmp/adv4-idle-baseline/tests/transfers.cjs:86:3)
+    at Module._compile (node:internal/modules/cjs/loader:1929:14)
