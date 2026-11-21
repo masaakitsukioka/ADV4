@@ -1,5 +1,4 @@
 /* The paper extends behind the unchanged 1920×1080 stage. */
-#game{background-color:#f7f5ee!important;background-image:repeating-linear-gradient(to right,transparent 0 5px,#82aad6 5px 6px),repeating-linear-gradient(to right,transparent 0 5px,#82aad6 5px 6px)!important;background-repeat:repeat-x!important;background-size:6px 4px,6px 4px!important;background-position:center calc(50% - 460px * var(--paper-scale,1)),center calc(50% + 460px * var(--paper-scale,1))!important}
 #rotateNotice{display:none;position:fixed;inset:0;z-index:2147483647;align-items:center;justify-content:center;flex-direction:column;gap:12px;padding:24px;color:#283c50;background:#f7f5ee;font:700 clamp(20px,5vw,30px)/1.5 var(--font-head,serif);text-align:center}
 #rotateNotice::before{content:'';position:absolute;inset:24px 18px;border:1px solid #82aad6;pointer-events:none}
 #rotateNotice svg{width:120px;height:110px;color:#5087c4}

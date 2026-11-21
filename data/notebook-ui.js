@@ -13,14 +13,14 @@ function nbAt(e,left,top,parent=$('nbView')){e.style.position='absolute';if(left
 function calendar(){return {...{day:1,date:'1996-07-19',weekday:'金',label:'放課後',time:'夕'},...SCENARIO.meta.calendar}}
 function dayLabel(){const d=calendar().day;return '第'+(['','一','二','三','四','五','六','七','八','九','十'][d]||d)+'日'}
 function notebookPortrait(){return innerWidth<=700&&innerHeight>innerWidth}
-function fitNotebook(){if($('notebookStage')){$('notebookStage').style.setProperty('--nb-scale',notebookPortrait()?Math.min(innerWidth/900,innerHeight/1950):Math.min(innerWidth/1920,innerHeight/1080));if(notebookOpen&&notebookSection==='relations'&&!$('panel').classList.contains('nb-modal'))showNotebookRelations()}}
+function fitNotebook(){if($('notebookStage')){const v=window.visualViewport,w=v?.width||innerWidth,h=v?.height||innerHeight,x=v?.offsetLeft||0,y=v?.offsetTop||0,s=typeof mangaSafeArea!=='undefined'?getComputedStyle(mangaSafeArea):null,ins=k=>parseFloat(s?.getPropertyValue('padding-'+k))||0,left=Math.max(0,ins('left')-x,ins('right')-(innerWidth-x-w)),top=Math.max(0,ins('top')-y),bottom=Math.max(0,ins('bottom')-(innerHeight-y-h)),sw=Math.max(1,w-2*left),sh=Math.max(1,h-top-bottom),stage=$('notebookStage');stage.style.left=(x+w/2)+'px';stage.style.top=(y+top+sh/2)+'px';stage.style.setProperty('--nb-scale',Math.min(sw/1920,sh/1080));if(notebookOpen&&notebookSection==='relations'&&!$('panel').classList.contains('nb-modal'))showNotebookRelations()}}
 function initNotebook(){
  const overlay=nbElement('section',undefined,'hidden');overlay.id='notebook';overlay.setAttribute('role','dialog');overlay.setAttribute('aria-modal','true');overlay.setAttribute('aria-label','サイジのノート');
  overlay.innerHTML=NOTEBOOK_SHELL;
  $('game').appendChild(overlay);$('nbClose').onclick=closeNotebook;
  notebookSections.forEach(([key,label],i)=>{const b=nbButton(label,()=>{selectNotebook(key);if(key==='mail'&&mailCurrent)chooseNotebookMail(mailCurrent)},'tab t'+(i+1));b.dataset.section=key;$('nbTabs').appendChild(b)});
  const toast=nbButton('',()=>openPHS(),'hidden');toast.id='mailToast';toast.setAttribute('aria-label','PHS 着信。未読メールを読む');toast.innerHTML='<strong id="mailToastText">PHS 着信</strong><small>P で読む</small>';$('game').appendChild(toast);
- fitNotebook();window.addEventListener('resize',fitNotebook);
+ fitNotebook();window.addEventListener('resize',fitNotebook);window.visualViewport?.addEventListener('resize',fitNotebook);window.visualViewport?.addEventListener('scroll',fitNotebook);window.addEventListener('orientationchange',fitNotebook);
 }
 function syncNotebook(){
  const added=Notebook.sync(SCENARIO,state,Events);for(const id of added)if(!mailQueue.includes(id))mailQueue.push(id);

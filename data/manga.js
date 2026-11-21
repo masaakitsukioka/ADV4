@@ -12,14 +12,32 @@ document.addEventListener('error',e=>{if(e.target.tagName==='IMG')e.target.class
 // Measure safe-area insets without drawing a visible element. Keep the landscape stage
 // centred in the visual viewport and use symmetric margins for an asymmetric notch.
 const mangaSafeArea=document.createElement('div');mangaSafeArea.id='mangaSafeArea';mangaSafeArea.setAttribute('aria-hidden','true');mangaSafeArea.style.cssText='position:fixed;left:0;top:0;width:0;height:0;visibility:hidden;pointer-events:none;padding:env(safe-area-inset-top, 0px) env(safe-area-inset-right, 0px) env(safe-area-inset-bottom, 0px) env(safe-area-inset-left, 0px)';document.body.appendChild(mangaSafeArea);
-function fitManga(){
- const vv=window.visualViewport,w=vv?.width||innerWidth,h=vv?.height||innerHeight,x=vv?.offsetLeft||0,y=vv?.offsetTop||0,s=getComputedStyle(mangaSafeArea);
- const inset=side=>parseFloat(s.getPropertyValue('padding-'+side))||0;
- const horizontal=Math.max(0,inset('left')-x,inset('right')-(innerWidth-x-w));
- const vertical=Math.max(0,inset('top')-y,inset('bottom')-(innerHeight-y-h));
- const safeWidth=Math.max(0,w-2*horizontal),safeHeight=Math.max(0,h-2*vertical);
- const scale=Math.min(safeWidth/1920,safeHeight/1080);$('game').style.setProperty('--paper-scale',scale);mangaStage.style.left=(x+w/2)+'px';mangaStage.style.top=(y+h/2)+'px';mangaStage.style.setProperty('--manga-scale',scale);renderManga();fitCrowdedCommands();
+// One responsive manuscript, including the physical safe-area margins.
+const paperGrid=document.createElementNS('http://www.w3.org/2000/svg','svg');paperGrid.id='paperGrid';paperGrid.setAttribute('aria-hidden','true');mangaStage.prepend(paperGrid);
+function drawPaperGrid(width,height,left,top,scale){
+ const W=width/scale,H=height/scale,L=-left/scale,T=-top/scale,R=L+W,B=T+H,cx=(L+R)/2,cy=(T+B)/2;
+ paperGrid.style.cssText=`position:absolute;left:${L}px;top:${T}px;width:${W}px;height:${H}px;pointer-events:none;z-index:0`;paperGrid.setAttribute('viewBox',`${L} ${T} ${W} ${H}`);
+ const a=[`<rect x="${L}" y="${T}" width="${W}" height="${H}" fill="#f7f5ee"/>`,`<rect x="${L+52}" y="${T+88}" width="${W-104}" height="${H-128}" fill="none" stroke="#96b9de" stroke-width="1"/>`,`<rect x="${L+52}" y="${T+8}" width="${W-104}" height="36" fill="none" stroke="#82aad6" stroke-width="1"/>`,`<path d="M${L+40} ${T+80}H${R-40} M${L+40} ${T+80}V${B-40} M${R-40} ${T+80}V${B-40} M${L+40} ${B-40}H${R-40}" stroke="#5087c4" fill="none"/>`];
+ for(let n=Math.ceil((L+44-cx)/6);cx+n*6<R-44;n++){const px=cx+n*6,len=n%10===0?12:n%5===0?8:5;a.push(`<path d="M${px} ${T+80}v-${len}" stroke="#5087c4"/>`);if(n%10===0)a.push(`<text x="${px}" y="${T+63}" text-anchor="middle" font-size="15" fill="#5087c4">${Math.abs(n/10)}</text>`)}
+ for(let n=Math.ceil((T+82-cy)/6);cy+n*6<B-40;n++){const py=cy+n*6,len=n%10===0?14:n%5===0?9:5;a.push(`<path d="M${L+40} ${py}h-${len} M${R-40} ${py}h${len}" stroke="#5087c4"/>`);if(n%10===0)a.push(`<text x="${L+13}" y="${py+5}" font-size="15" fill="#5087c4">${Math.abs(n/10)}</text><text x="${R-20}" y="${py+5}" font-size="15" fill="#5087c4">${Math.abs(n/10)}</text>`)}
+ const usable=width/scale-2*left/scale;
+ for(const xx of [usable/2-240,usable/2+50,usable-620,usable-260])a.push(`<path d="M${xx} ${T+8}v36" stroke="#82aad6" fill="none"/>`);
+ for(const [label,px] of [['タイトル',62],['日付',width/(2*scale)-left/scale-230],['場所',width/(2*scale)-left/scale+60],['時間',width/scale-2*left/scale-610]])a.push(`<text x="${px}" y="${T+26}" font-size="13" fill="#5087c4">${label}</text>`);
+ for(const [label,dx] of [['朝',-522],['昼',-450],['放課後',-378],['夜',-306]])a.push(`<text x="${width/scale-2*left/scale+dx}" y="${T+34}" font-size="19" fill="#8caacd">${label}</text>`);
+ paperGrid.innerHTML=a.join('');
 }
+function fitManga(){
+ const vv=window.visualViewport,w=vv?.width||innerWidth,h=vv?.height||innerHeight,x=vv?.offsetLeft||0,y=vv?.offsetTop||0,style=getComputedStyle(mangaSafeArea);
+ const inset=side=>parseFloat(style.getPropertyValue('padding-'+side))||0;
+ const horizontal=Math.max(0,inset('left')-x,inset('right')-(innerWidth-x-w));
+ const top=Math.max(0,inset('top')-y),bottom=Math.max(0,inset('bottom')-(innerHeight-y-h));
+ const safeWidth=Math.max(1,w-2*horizontal),safeHeight=Math.max(1,h-top-bottom),scale=Math.min(safeWidth/1920,safeHeight/1080),W=safeWidth/scale,H=safeHeight/scale,ex=Math.max(0,W-1920),ey=Math.max(0,H-1080);
+ const width=1398+Math.min(ex,2.15*718-1398),height=718+Math.min(ey,Math.max(0,width/1.7-718)),sceneTop=73+(ey-(height-718))/2;
+ for(const [name,value] of Object.entries({'--manga-scale':scale,'--layout-width':W+'px','--layout-height':H+'px','--extra-x':ex+'px','--extra-y':ey+'px','--half-extra-x':(ex/2)+'px','--half-grow':(Math.min(ex,180)/2)+'px','--scene-width':width+'px','--scene-height':height+'px','--scene-top':sceneTop+'px','--message-grow':Math.min(ex,180)+'px'}))mangaStage.style.setProperty(name,value);
+ mangaStage.style.width=W+'px';mangaStage.style.height=H+'px';mangaStage.style.left=(x+horizontal+safeWidth/2)+'px';mangaStage.style.top=(y+top+safeHeight/2)+'px';arrow.setAttribute('viewBox',`0 0 ${W} ${H}`);drawPaperGrid(w,h,horizontal,top,scale);
+ renderManga();fitCrowdedCommands();if(typeof positionDeductionPanel==='function')positionDeductionPanel();if(typeof scheduleDeduceMarks==='function')scheduleDeduceMarks();
+}
+
 function renderManga(){
  const deducing=typeof deductionActive!=='undefined'&&deductionActive;
  const mailDialogue=typeof notebookOpen!=='undefined'&&notebookOpen&&state.mode==='dialogue';
@@ -31,7 +49,7 @@ function renderManga(){
  const c=typeof calendar==='function'?calendar():{label:'放課後'},label=c.label;
  const key=({'朝':'asa','昼':'hiru','放課後':'houkago','夕':'houkago','夜':'yoru'})[label]||'hiru';
  $('timeCircle').src='assets/ui/manga/time-circle-'+key+'.png';$('timeCircle').alt=label;
- $('timeCircle').style.left=({asa:1348,hiru:1420,houkago:1492,yoru:1564})[key]+'px';
+ $('timeCircle').style.left=`calc(${({asa:1348,hiru:1420,houkago:1492,yoru:1564})[key]}px + var(--extra-x))`;
  $('placeStamp').src='assets/ui/manga/stamp-place-'+state.room+'.png';$('placeStamp').alt=room().name;
  mangaStage.classList.toggle('commands-disabled',state.mode!=='exploration');
  if(state.mode==='exploration'){$('characterStage').classList.remove('hidden');if(!document.querySelector('#characterStage .active'))$('harukiCard').classList.add('active');for(const id of ['haruki','saiji'])if(!blinkTimers.has(id))scheduleBlink(id)}
@@ -68,12 +86,15 @@ function decorateMangaChoices(){
 function fitCrowdedCommands(){
  const box=$('commandChildren'),detail=$('commandDetail');if(!box||!detail)return;
  box.classList.remove('fit-crowded','fit-compact');box.style.removeProperty('--many-row-max');
- for(const b of box.children)b.classList.remove('fit-wide','fit-wider');
- if(!box.classList.contains('many-targets')||!matchMedia('(orientation: landscape)').matches||detail.classList.contains('hidden'))return;
+ for(const b of box.children){b.classList.remove('fit-wide','fit-wider');b.style.removeProperty('translate')}
+ const fitRight=()=>{const edge=mangaStage.getBoundingClientRect().right,scale=parseFloat(mangaStage.style.getPropertyValue('--manga-scale'))||1;for(const b of box.children){const excess=b.getBoundingClientRect().right-edge;if(excess>0)b.style.translate=(-(excess+1)/scale)+'px 0'}updateCommandArrow()};
+ if(!matchMedia('(orientation: landscape)').matches||detail.classList.contains('hidden'))return;
+ if(!box.classList.contains('many-targets')){fitRight();return}
  const bottom=()=>detail.offsetTop+box.offsetTop+box.offsetHeight-(box.classList.contains('fit-crowded')?8:0);
- if(bottom()<=1078)return;
+ if(bottom()<=1078+parseFloat(mangaStage.style.getPropertyValue('--extra-y'))){fitRight();return}
  box.classList.add('fit-crowded');for(const b of box.children){if(b.classList.contains('command-back'))continue;const length=Array.from(b.dataset.itemLabel||b.textContent).length;if(length>=11)b.classList.add('fit-wider');else if(length>=8)b.classList.add('fit-wide')}
- if(bottom()>1078){box.classList.add('fit-compact');for(let height=140;height>=45;height-=2){box.style.setProperty('--many-row-max',height+'px');if(bottom()<=1078)break}}
+ if(bottom()>1078+parseFloat(mangaStage.style.getPropertyValue('--extra-y'))){box.classList.add('fit-compact');for(let height=140;height>=45;height-=2){box.style.setProperty('--many-row-max',height+'px');if(bottom()<=1078+parseFloat(mangaStage.style.getPropertyValue('--extra-y')))break}}
+ fitRight();
 }
 function decorateMangaCommands(enter=false){
  $('commandTitle').textContent='捜査';$('commandHeading').textContent=commandSelection==='investigate'?'調べる先':({move:'移動先',listen:'聞く相手',search:'探す人',show:'見せるもの',showRecipient:'見せる相手'})[commandSelection]||'';

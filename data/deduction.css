@@ -1,6 +1,6 @@
 /* The manuscript is filtered as a unit; red annotations are siblings outside the filter. */
 #mangaStage{background:none!important}
-#monoLayer{position:absolute;inset:0;background:#f7f5ee url('../assets/ui/manga/paper.svg') 0 0/1920px 1080px no-repeat;isolation:isolate}
+#monoLayer{position:absolute;inset:0;background:none;isolation:isolate}
 #redLayer{position:absolute;inset:0;z-index:60;pointer-events:none}
 #redLayer>div:not(#deduceStartStamp):not(#deductionResult){position:absolute;inset:0;pointer-events:none}
 #deduceRedMarks img{position:absolute;object-fit:fill}

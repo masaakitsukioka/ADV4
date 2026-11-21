@@ -1,0 +1,28 @@
+/* The scalable stage spans the usable viewport; the paper extends behind its safe margins. */
+#game{background:#f7f5ee!important}
+#mangaStage{overflow:visible!important;background:none!important}
+#monoLayer{background:none!important;overflow:visible}
+#mangaStage #mangaHeader{inset:auto;left:0;top:0;width:var(--layout-width);height:100px}
+#mangaStage .date-stamp{left:calc(790px + var(--half-extra-x))}
+#mangaStage .place-stamp{left:calc(1080px + var(--half-extra-x))}
+#mangaStage #scene{top:var(--scene-top);width:var(--scene-width);height:var(--scene-height)}
+#mangaStage #menu{left:calc(1598px + var(--extra-x));top:18px}
+#game #mangaStage #characterStage{width:var(--layout-width)!important;height:var(--layout-height)!important}
+#game #mangaStage .character-card{top:calc(599px + var(--extra-y))!important}
+#game #mangaStage #saijiCard{left:calc(1475px + var(--extra-x))!important;top:calc(592px + var(--extra-y))!important}
+#mangaStage .manga-sheet.back{width:calc(1760px + var(--extra-x));top:calc(812px + var(--extra-y))}
+#mangaStage .manga-sheet.front{width:calc(1770px + var(--extra-x));top:calc(847px + var(--extra-y))}
+#mangaStage .dialogue,#mangaStage .dialogue.open,#mangaStage .dialogue.narration{width:var(--layout-width);height:var(--layout-height)}
+#mangaStage .speaker{left:calc(405px + var(--half-extra-x) - var(--half-grow));top:calc(852px + var(--extra-y))}
+#mangaStage #messageBody{left:calc(616px + var(--half-extra-x) - var(--half-grow));top:calc(869px + var(--extra-y));width:calc(900px + var(--message-grow))}
+#mangaStage #dialogueChoices{left:calc(616px + var(--half-extra-x) - var(--half-grow));width:calc(900px + var(--message-grow));max-width:none}
+#mangaStage #commandMain{left:calc(1462px + var(--extra-x))}
+#mangaStage #commandDetail{left:calc(1722px + var(--extra-x))}
+#mangaStage #mangaArrow{width:var(--layout-width);height:var(--layout-height)}
+#deduceSide{left:calc(1490px + var(--extra-x))}
+#deduceLines,#deduceLinesMore{background-size:cover}
+@media (orientation:landscape) and (max-height:460px){
+ #mangaStage #messageBody{top:calc(1060px + var(--extra-y) - 5.25 * max(31px,calc(15px / var(--manga-scale))))}
+}
+/* The dialogue container receives programmatic focus; controls retain their own focus indicators. */
+#mangaStage .dialogue:focus{outline:none}
