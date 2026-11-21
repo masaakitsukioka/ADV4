@@ -84,7 +84,17 @@
    const k=key(slot),value=JSON.stringify(validate(data));
    try{storageProvider().setItem(k,value)}catch(e){throw new Error('保存できませんでした。保存領域の制限や空き容量を確認してください。以前のセーブは削除していません。')}
   }
-  return {snapshot,validate,raw,read,write,decode};
+  // Recovery has its own key and never overwrites any of the three manual slots.
+  const autoKey=PREFIX+scenario.meta.id+'.auto';
+  function writeAuto(data,id){
+   if(typeof id!=='string'||!id)fail();const value=JSON.stringify({id,save:validate(data)});
+   try{storageProvider().setItem(autoKey,value)}catch(e){throw new Error('自動記録を保存できませんでした。')}
+  }
+  function readAuto(){
+   let value;try{value=storageProvider().getItem(autoKey)}catch(e){throw new Error('自動記録を読み込めませんでした。')}
+   if(value===null)return null;try{const data=JSON.parse(value);if(typeof data.id!=='string'||!data.id)fail();return{id:data.id,save:validate(data.save)}}catch(e){fail()}
+  }
+  return {snapshot,validate,raw,read,write,decode,writeAuto,readAuto};
  }
  global.SaikachiSaves={create};
 })(window);

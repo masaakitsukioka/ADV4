@@ -3,6 +3,24 @@
 const questions=SCENARIO.questions;
 let openingIndex=0,openingComplete=false,openingGeneration=0;
 let deductionTransitionGeneration=0;
+const deductionRecoveryKey='saikachi.adv.deduction-transition.'+SCENARIO.meta.id;
+let deductionRecoveryId=null;
+function recordDeductionTransition(){
+ const id=globalThis.crypto?.randomUUID?.()||Date.now().toString(36)+'-'+Math.random().toString(36).slice(2);
+ let saved=false;try{syncNotebook();Saves.writeAuto(Saves.snapshot({...state,mode:'exploration'},textSettings),id);saved=true}catch(e){}
+ const marker={id,time:Date.now(),room:state.room,question:1,saved};
+ try{sessionStorage.setItem(deductionRecoveryKey,JSON.stringify(marker));deductionRecoveryId=id}catch(e){deductionRecoveryId=null}
+}
+function clearDeductionTransition(){
+ try{const raw=sessionStorage.getItem(deductionRecoveryKey),marker=raw&&JSON.parse(raw);if(marker&&marker.id===deductionRecoveryId)sessionStorage.removeItem(deductionRecoveryKey)}catch(e){}deductionRecoveryId=null;
+}
+function startupFromDeductionRecovery(){
+ let marker;try{const raw=sessionStorage.getItem(deductionRecoveryKey);if(!raw)return false;sessionStorage.removeItem(deductionRecoveryKey);marker=JSON.parse(raw)}catch(e){return false}
+ console.warn('前回、推理開始中にページが読み込み直されました。',marker);
+ let recovered=false;try{const saved=Saves.readAuto();if(marker?.saved&&saved?.id===marker.id){restoreSave(saved.save);recovered=true}}catch(e){}
+ const notice=document.createElement('div');notice.id='recoveryNotice';notice.setAttribute('role','status');notice.textContent=recovered?'読み込み直しから再開しました':'読み込み直しを検出しました（自動記録を利用できません）';$('game').appendChild(notice);
+ return recovered;
+}
 function note(text,cls='evidence-note'){
  const p=document.createElement('p');p.className=cls;p.textContent=text;$('panelBody').appendChild(p);return p;
 }
@@ -78,6 +96,8 @@ function memo(){
 }
 function startDeduction(){
  if(!state.flags.okaboChecked||deductionActive)return;
+ recordDeductionTransition();
+ if(typeof releaseLighting==='function')releaseLighting();
  cancelTextTimers();hideItemGraphic();deductionActive=true;state.deductionStep=0;state.errors=0;state.mode='deduction-transition';
  showWindow('panel',false);$('textControls').classList.add('hidden');$('characterStage').classList.remove('hidden');$('characterStage').classList.add('open');
  $('dialogue').classList.remove('hidden');$('dialogue').classList.add('open');render();
@@ -146,7 +166,8 @@ function showEnding(){
  $('game').classList.add('ending-screen');deductionActive=false;state.mode='ending-out';
  moveOutDialogue(()=>{$('deductionStage').classList.add('hidden');panel('消えたスケッチ — 終わり',[['タイトルへ',showTitle]]);note('試作版をプレイしていただき、ありがとうございました。');if(typeof presentMangaEnding==='function')presentMangaEnding()});
 }
+function finishStartup(){const start=()=>{if(!startupFromDeductionRecovery())showTitle();$('opening').style.visibility='';$('loadingNotice').hidden=true};if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start()}
 if(typeof document.fonts?.load==='function'){
  $('opening').style.visibility='hidden';
- let fontTimeout;const fonts=Promise.all([document.fonts.load('16px "ADV Gothic"'),document.fonts.load('700 16px "ADV Gothic"'),document.fonts.load('700 24px "ADV Mincho"')]).catch(()=>{});Promise.race([fonts,new Promise(resolve=>{fontTimeout=setTimeout(resolve,8000)})]).finally(()=>{clearTimeout(fontTimeout);$('opening').style.visibility='';showTitle();$('loadingNotice').hidden=true});
-}else{showTitle();$('loadingNotice').hidden=true}
+ let fontTimeout;const fonts=Promise.all([document.fonts.load('16px "ADV Gothic"'),document.fonts.load('700 16px "ADV Gothic"'),document.fonts.load('700 24px "ADV Mincho"')]).catch(()=>{});Promise.race([fonts,new Promise(resolve=>{fontTimeout=setTimeout(resolve,8000)})]).finally(()=>{clearTimeout(fontTimeout);finishStartup()});
+}else{finishStartup()}

@@ -29,16 +29,18 @@ function stopTalking(){
 }
 // Each replacement is a complete aligned portrait. Draw exactly one image.
 function drawTalkingPortrait(ctx,base,id,frame,strip,replacement){
- const {width,height}=ASSETS.characterResolution;ctx.imageSmoothingEnabled=true;ctx.clearRect(0,0,width,height);
- const image=frame&&replacement?.width===width&&replacement?.height===height?replacement:base;
+ const source=ASSETS.characterResolution,width=ctx.canvas?.width||source.width,height=ctx.canvas?.height||source.height;ctx.imageSmoothingEnabled=true;ctx.clearRect(0,0,width,height);
+ const image=frame&&replacement?.width===source.width&&replacement?.height===source.height?replacement:base;
  if(image)ctx.drawImage(image,0,0,width,height);
 }
 async function displayPortraitFrame(id,paths,frame,valid){
  const expression=characterExpression(id,$(id+'Emotion').textContent);
  const [base,replacement]=await Promise.all([loadImage(ASSETS.characters[id][expression]),loadImage(paths?.[frame])]);
  if(!valid()||!base)return;
- const canvas=$(id+'Talk'),{width,height}=ASSETS.characterResolution;
- canvas.width=width;canvas.height=height;const ctx=canvas.getContext('2d');if(!ctx?.drawImage)return;
+ const canvas=$(id+'Talk'),source=ASSETS.characterResolution,rect=$(id+'Card').getBoundingClientRect(),dpr=window.devicePixelRatio||1;
+ const scale=Math.min(1,Math.max(rect.width*dpr/source.width,rect.height*dpr/source.height));
+ const width=Math.max(1,Math.ceil(source.width*scale)),height=Math.max(1,Math.ceil(source.height*scale));
+ if(canvas.width!==width)canvas.width=width;if(canvas.height!==height)canvas.height=height;const ctx=canvas.getContext('2d');if(!ctx?.drawImage)return;
  drawTalkingPortrait(ctx,base,id,frame,null,replacement);canvas.dataset.frame=String(frame);canvas.classList.remove('hidden');$(id+'Card').classList.add('animating');
 }
 // Reserve the whole blink train plus 400 ms, including the optional second blink.
