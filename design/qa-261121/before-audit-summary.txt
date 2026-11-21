@@ -1,0 +1,175 @@
+■ 会話本文の細い列・描画範囲・切れ：0件
+■ 画面外にはみ出す文字：0件
+■ 枠で切れる文字：0件
+■ 12px未満の文字：95件
+  span.badge 「2」 11.3px  …1280x720
+  text 9.4px  …844x390
+  button.tab.t1 「もちもの」 8.7px  …844x390
+  button.tab.t2 「メモ」 8.7px  …844x390
+  button.tab.t3 「相関図」 8.7px  …844x390
+  button.tab.t4 「ＰＨＳ 2」 8.7px  …844x390
+  span.badge 「2」 6.1px  …844x390
+  button.tab.t5 「記録」 8.7px  …844x390
+  div.keys 「←→シールを選ぶ↑↓項目を選ぶPPHSEsc閉じ」 7.2px  …844x390
+  b 「←→」 7.2px  …844x390
+  b 「↑↓」 7.2px  …844x390
+  b 「P」 7.2px  …844x390
+  b 「Esc」 7.2px  …844x390
+  text 9.0px  …667x375
+  button.tab.t1 「もちもの」 8.3px  …667x375
+  button.tab.t2 「メモ」 8.3px  …667x375
+  button.tab.t3 「相関図」 8.3px  …667x375
+  button.tab.t4 「ＰＨＳ 2」 8.3px  …667x375
+  span.badge 「2」 5.9px  …667x375
+  button.tab.t5 「記録」 8.3px  …667x375
+  div.keys 「←→シールを選ぶ↑↓項目を選ぶPPHSEsc閉じ」 6.9px  …667x375
+  b 「←→」 6.9px  …667x375
+  b 「↑↓」 6.9px  …667x375
+  b 「P」 6.9px  …667x375
+  b 「Esc」 6.9px  …667x375
+  i 「クロ研（クロッキー研究会）」 8.7px  …844x390
+  div.rel.nb-edge-label 「相棒」 6.9px  …844x390
+  div.rel.nb-edge-label 「同級生」 6.9px  …844x390
+  div.rel.nb-edge-label 「クロ研の当番」 6.9px  …844x390
+  div.rel.nb-edge-label 「配置図を記した顧問」 6.9px  …844x390
+  span 「▂▄▆ 受信BOX」 8.7px  …844x390
+  span 「1/2 ▮▮▮」 8.7px  …844x390
+  span.u 「7/19 16:08」 7.9px  …844x390
+  span.u 「7/19 16:12」 7.9px  …844x390
+  div.from.nb-mail-from 「ﾌﾛﾑ: ﾅｶｺ 7/19 16:08」 10.1px  …844x390
+  div.cnt.nb-mail-count 「18/20ﾓｼﾞ」 7.2px  …844x390
+  span.soft-label 「◀ ﾏｴ」 9.4px  …844x390
+  span.soft-label 「ﾄｼﾞﾙ」 9.4px  …844x390
+  span.soft-label 「ﾂｷﾞ ▶」 9.4px  …844x390
+  div.reply 「差出人：ﾅｶｺ 7/19 16:08」 7.9px  …844x390
+  div.keyhint 「↑↓ でメールを選ぶと、その場で下に本文が出る（」 7.2px  …844x390
+  b 「記録 2 空き」 9.4px  …844x390
+  b 「記録 3 空き」 9.4px  …844x390
+  button.nb-help-link 「操作方法」 7.9px  …844x390
+  div.set 「文字の速さ おそい ふつう はやい 一瞬」 8.7px  …844x390
+  div.set 「文字の音 OFF ON」 8.7px  …844x390
+  div.set 「効果音 OFF ON」 8.7px  …844x390
+  div.set 「自動送り OFF ON」 8.7px  …844x390
+  i 「クロ研（クロッキー研究会）」 8.3px  …667x375
+  div.rel.nb-edge-label 「相棒」 6.6px  …667x375
+  div.rel.nb-edge-label 「同級生」 6.6px  …667x375
+  div.rel.nb-edge-label 「クロ研の当番」 6.6px  …667x375
+  div.rel.nb-edge-label 「配置図を記した顧問」 6.6px  …667x375
+  span 「▂▄▆ 受信BOX」 8.3px  …667x375
+  span 「1/2 ▮▮▮」 8.3px  …667x375
+  span.u 「7/19 16:08」 7.6px  …667x375
+  span.u 「7/19 16:12」 7.6px  …667x375
+  div.from.nb-mail-from 「ﾌﾛﾑ: ﾅｶｺ 7/19 16:08」 9.7px  …667x375
+  div.cnt.nb-mail-count 「18/20ﾓｼﾞ」 6.9px  …667x375
+  span.soft-label 「◀ ﾏｴ」 9.0px  …667x375
+  span.soft-label 「ﾄｼﾞﾙ」 9.0px  …667x375
+  span.soft-label 「ﾂｷﾞ ▶」 9.0px  …667x375
+  div.reply 「差出人：ﾅｶｺ 7/19 16:08」 7.6px  …667x375
+  div.keyhint 「↑↓ でメールを選ぶと、その場で下に本文が出る（」 6.9px  …667x375
+  b 「記録 2 空き」 9.0px  …667x375
+  b 「記録 3 空き」 9.0px  …667x375
+  button.nb-help-link 「操作方法」 7.6px  …667x375
+  div.set 「文字の速さ おそい ふつう はやい 一瞬」 8.3px  …667x375
+  div.set 「文字の音 OFF ON」 8.3px  …667x375
+  div.set 「効果音 OFF ON」 8.3px  …667x375
+  div.set 「自動送り OFF ON」 8.3px  …667x375
+  div.sub 「1ページが破かれている」 11.3px  …1280x720
+  div.sub 「作品棚にあった」 11.3px  …1280x720
+  div.next 「→ 次：準備室の作品棚と手に入れた持ち物を調べよ」 8.7px  …844x390
+  b 「記録 1 空き」 9.4px  …844x390
+  h2#panelTitle 「セーブ・途中から」 11.6px  …844x390
+  button 「もどる」 8.7px  …844x390
+  p 「記録1に保存しました。」 8.7px  …844x390
+  h2#panelTitle 「記録1を上書きしますか？」 11.6px  …844x390
+  button 「上書きする」 8.7px  …844x390
+  button 「やめる」 8.7px  …844x390
+  b 「記録 1 第一日 放課後」 9.4px  …844x390
+  span 「美術準備室 ｜ メモ 3件・判明 5人」 6.9px  …844x390
+  div.text 「←→：シール ↑↓：項目 Enter：決定 P：」 8.7px  …844x390
+  div.next 「→ 次：準備室の作品棚と手に入れた持ち物を調べよ」 8.3px  …667x375
+  b 「記録 1 空き」 9.0px  …667x375
+  h2#panelTitle 「セーブ・途中から」 11.1px  …667x375
+  button 「もどる」 8.3px  …667x375
+  p 「記録1に保存しました。」 8.3px  …667x375
+  h2#panelTitle 「記録1を上書きしますか？」 11.1px  …667x375
+  button 「上書きする」 8.3px  …667x375
+  button 「やめる」 8.3px  …667x375
+  b 「記録 1 第一日 放課後」 9.0px  …667x375
+  span 「美術準備室 ｜ メモ 3件・判明 5人」 6.6px  …667x375
+  div.text 「←→：シール ↑↓：項目 Enter：決定 P：」 8.3px  …667x375
+■ 36px未満のボタン：31件
+  button#nbClose 「メニューを閉じる」 77x28  …844x390
+  button#nbClose 「メニューを閉じる」 74x27  …667x375
+  button.tab.t2 「メモ」 27x53  …844x390
+  button.tab.t1 「もちもの」 27x53  …844x390
+  button.tab.t2 「メモ」 26x51  …667x375
+  button.tab.t1 「もちもの」 26x51  …667x375
+  button.tab.t3 「相関図」 27x53  …844x390
+  button.tab.t4 「ＰＨＳ 2」 27x53  …844x390
+  button.tab.t3 「相関図」 26x51  …667x375
+  button.tab.t4 「ＰＨＳ 2」 26x51  …667x375
+  button.tab.t5 「記録」 27x53  …844x390
+  button.tab.t5 「記録」 26x51  …667x375
+  button.tab.t5 「記録」 35x53  …844x390
+  button.tab.t5 「記録」 33x51  …667x375
+  button.seg-hit 「一瞬」 35x37  …844x390, 667x375
+  button.seg-hit 「OFF」 34x37  …844x390, 667x375
+  button.seg-hit 「ON」 29x37  …844x390, 667x375
+  button.tab.t3 「相関図」 35x53  …844x390
+  button.tab.t4 「ＰＨＳ 2」 35x53  …844x390
+  button.tab.t3 「相関図」 33x51  …667x375
+  button.tab.t4 「ＰＨＳ 2」 33x51  …667x375
+  button.tab.t1 「もちもの」 35x53  …844x390
+  button.tab.t2 「メモ」 35x53  …844x390
+  button 「もどる」 234x24  …844x390
+  button 「上書きする」 234x24  …844x390
+  button 「やめる」 234x24  …844x390
+  button.tab.t1 「もちもの」 33x51  …667x375
+  button.tab.t2 「メモ」 33x51  …667x375
+  button 「もどる」 225x23  …667x375
+  button 「上書きする」 225x23  …667x375
+  button 「やめる」 225x23  …667x375
+■ 他の要素に隠れるボタン：0件
+■ コントラスト不足：0件
+■ 同梱外の書体で描画：3件
+  Menlo  …1280x720, 844x390, 667x375
+  Hiragino Sans  …1280x720, 844x390, 667x375
+  Lucida Grande  …1280x720, 844x390, 667x375
+■ 作者見本の副次情報・装飾（記録のみ）：37件
+  見本指定の淡い装飾 span 「No. 1」 2.52  …1280x720, 844x390, 667x375
+  見本指定の淡い装飾 span#nbHeaderDate 「Date 1996 . 7 . 19」 2.52  …1280x720, 844x390, 667x375
+  見本指定の淡い装飾 span 「サイジ」 2.52  …1280x720, 844x390, 667x375
+  見本指定の淡い装飾 span 「No. 2」 2.52  …1280x720, 844x390, 667x375
+  見本指定の淡い装飾 span 「Date . .」 2.52  …1280x720, 844x390, 667x375
+  見本指定の副次情報 span 「No. 1」 10.0px  …1280x720
+  見本指定の副次情報 span#nbHeaderDate 「Date 1996 . 7 . 19」 10.0px  …1280x720
+  見本指定の副次情報 span 「サイジ」 10.0px  …1280x720
+  見本指定の副次情報 span 「No. 2」 10.0px  …1280x720
+  見本指定の副次情報 span 「Date . .」 10.0px  …1280x720
+  見本指定の副次情報 span 「No. 1」 5.4px  …844x390
+  見本指定の副次情報 b 「1」 7.2px  …844x390
+  見本指定の副次情報 span#nbHeaderDate 「Date 1996 . 7 . 19」 5.4px  …844x390
+  見本指定の副次情報 span 「サイジ」 5.4px  …844x390
+  見本指定の副次情報 span 「No. 2」 5.4px  …844x390
+  見本指定の副次情報 b 「2」 7.2px  …844x390
+  見本指定の副次情報 span 「Date . .」 5.4px  …844x390
+  見本指定の副次情報 span 「No. 1」 5.2px  …667x375
+  見本指定の副次情報 b 「1」 6.9px  …667x375
+  見本指定の副次情報 span#nbHeaderDate 「Date 1996 . 7 . 19」 5.2px  …667x375
+  見本指定の副次情報 span 「サイジ」 5.2px  …667x375
+  見本指定の副次情報 span 「No. 2」 5.2px  …667x375
+  見本指定の副次情報 b 「2」 6.9px  …667x375
+  見本指定の副次情報 span 「Date . .」 5.2px  …667x375
+  見本指定の淡い装飾 b 「記録 2 空き」 3.47  …1280x720, 844x390, 667x375
+  見本指定の淡い装飾 b 「記録 3 空き」 3.47  …1280x720, 844x390, 667x375
+  見本指定の淡い装飾 b 「記録 1 空き」 3.47  …1280x720, 844x390, 667x375
+  見本指定の副次情報 div.rn 「前野春樹」 10.7px  …1280x720
+  見本指定の副次情報 span.new 「NEW」 10.0px  …1280x720
+  見本指定の副次情報 div.rn 「佐藤齊治」 10.7px  …1280x720
+  見本指定の副次情報 div.rn 「廣村奈加子」 10.7px  …1280x720
+  見本指定の副次情報 div.rn.unk 「本名 ？？？」 10.7px  …1280x720
+  見本指定の副次情報 div.legend 「━ 判明した関係 ┅ 不確かな関係 ┈ 印象的な」 11.3px  …1280x720
+  見本指定の副次情報 span.new 「NEW」 5.4px  …844x390
+  見本指定の副次情報 div.legend 「━ 判明した関係 ┅ 不確かな関係 ┈ 印象的な」 6.1px  …844x390
+  見本指定の副次情報 span.new 「NEW」 5.2px  …667x375
+  見本指定の副次情報 div.legend 「━ 判明した関係 ┅ 不確かな関係 ┈ 印象的な」 5.9px  …667x375

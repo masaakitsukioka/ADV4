@@ -148,5 +148,5 @@ function showEnding(){
 }
 if(typeof document.fonts?.load==='function'){
  $('opening').style.visibility='hidden';
- Promise.all([document.fonts.load('16px "ADV Gothic"'),document.fonts.load('700 16px "ADV Gothic"'),document.fonts.load('700 24px "ADV Mincho"')]).finally(()=>{$('opening').style.visibility='';showTitle()});
-}else showTitle();
+ let fontTimeout;const fonts=Promise.all([document.fonts.load('16px "ADV Gothic"'),document.fonts.load('700 16px "ADV Gothic"'),document.fonts.load('700 24px "ADV Mincho"')]).catch(()=>{});Promise.race([fonts,new Promise(resolve=>{fontTimeout=setTimeout(resolve,8000)})]).finally(()=>{clearTimeout(fontTimeout);$('opening').style.visibility='';showTitle();$('loadingNotice').hidden=true});
+}else{showTitle();$('loadingNotice').hidden=true}

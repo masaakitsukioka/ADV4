@@ -177,3 +177,8 @@ body,#game{background:#f7f5ee;color:#141414}
  #game #mangaStage #commandChildren.fit-crowded.fit-compact button{min-height:min(max(54px,calc(37px / var(--manga-scale))),var(--many-row-max))!important}
  #game #mangaStage #commandChildren.fit-crowded.fit-compact .command-back{min-height:min(max(36px,calc(37px / var(--manga-scale))),var(--many-row-max))!important}
 }
+/* On compact screens, enlarged selected artwork stays behind neighbouring hit targets. */
+@media (orientation:landscape) and (max-height:460px){
+ #game #mangaStage #commandRoots button.on{z-index:0}
+ #game #mangaStage #commandRoots button:not(.on){z-index:1}
+}

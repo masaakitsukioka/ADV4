@@ -34,7 +34,7 @@ function fitManga(){
  const safeWidth=Math.max(1,w-2*horizontal),safeHeight=Math.max(1,h-top-bottom),scale=Math.min(safeWidth/1920,safeHeight/1080),W=safeWidth/scale,H=safeHeight/scale,ex=Math.max(0,W-1920),ey=Math.max(0,H-1080);
  const width=1398+Math.min(ex,2.15*718-1398),height=718+Math.min(ey,Math.max(0,width/1.7-718)),sceneTop=73+(ey-(height-718))/2;
  for(const [name,value] of Object.entries({'--manga-scale':scale,'--layout-width':W+'px','--layout-height':H+'px','--extra-x':ex+'px','--extra-y':ey+'px','--half-extra-x':(ex/2)+'px','--half-grow':(Math.min(ex,180)/2)+'px','--scene-width':width+'px','--scene-height':height+'px','--scene-top':sceneTop+'px','--message-grow':Math.min(ex,180)+'px'}))mangaStage.style.setProperty(name,value);
- mangaStage.style.width=W+'px';mangaStage.style.height=H+'px';mangaStage.style.left=(x+horizontal+safeWidth/2)+'px';mangaStage.style.top=(y+top+safeHeight/2)+'px';arrow.setAttribute('viewBox',`0 0 ${W} ${H}`);drawPaperGrid(w,h,horizontal,top,scale);
+ $('game').style.setProperty('--toast-x',(x+w/2)+'px');$('game').style.setProperty('--toast-bottom',(Math.max(0,innerHeight-y-h)+bottom+8)+'px');mangaStage.style.width=W+'px';mangaStage.style.height=H+'px';mangaStage.style.left=(x+horizontal+safeWidth/2)+'px';mangaStage.style.top=(y+top+safeHeight/2)+'px';arrow.setAttribute('viewBox',`0 0 ${W} ${H}`);drawPaperGrid(w,h,horizontal,top,scale);
  renderManga();fitCrowdedCommands();if(typeof positionDeductionPanel==='function')positionDeductionPanel();if(typeof scheduleDeduceMarks==='function')scheduleDeduceMarks();
 }
 

@@ -1,0 +1,301 @@
+{
+  "titleMs": 151,
+  "explorationMs": 2408,
+  "responses": 43,
+  "contentLengthTotal": 24514113,
+  "large": [
+    {
+      "url": "location-banner.png",
+      "bytes": 1229591
+    },
+    {
+      "url": "NotoSerifJP-Light.subset.woff",
+      "bytes": 2320548
+    },
+    {
+      "url": "NotoSansJP-Regular.subset.woff",
+      "bytes": 3391860
+    },
+    {
+      "url": "classroom.png?v=0.16.0",
+      "bytes": 4284251
+    },
+    {
+      "url": "NotoSerifJP-Bold.subset.woff",
+      "bytes": 2146308
+    },
+    {
+      "url": "NotoSansJP-Bold.subset.woff",
+      "bytes": 3517652
+    },
+    {
+      "url": "name-haruki.png",
+      "bytes": 2319904
+    },
+    {
+      "url": "name-saiji.png",
+      "bytes": 2604820
+    }
+  ],
+  "resourceTimings": [
+    {
+      "url": "NotoSansJP-Regular.subset.woff",
+      "duration": 20,
+      "transfer": 3392160,
+      "decoded": 3391860
+    },
+    {
+      "url": "theme.css",
+      "duration": 5,
+      "transfer": 22662,
+      "decoded": 22362
+    },
+    {
+      "url": "manga.css",
+      "duration": 6,
+      "transfer": 20762,
+      "decoded": 20462
+    },
+    {
+      "url": "NotoSerifJP-Light.subset.woff",
+      "duration": 19,
+      "transfer": 2320848,
+      "decoded": 2320548
+    },
+    {
+      "url": "deduction.css",
+      "duration": 4,
+      "transfer": 19820,
+      "decoded": 19520
+    },
+    {
+      "url": "landscape-only.css",
+      "duration": 6,
+      "transfer": 1282,
+      "decoded": 982
+    },
+    {
+      "url": "notebook.css",
+      "duration": 6,
+      "transfer": 30340,
+      "decoded": 30040
+    },
+    {
+      "url": "apple-layout.css",
+      "duration": 7,
+      "transfer": 2599,
+      "decoded": 2299
+    },
+    {
+      "url": "landscape-only.js",
+      "duration": 9,
+      "transfer": 3498,
+      "decoded": 3198
+    },
+    {
+      "url": "stamp-title.png",
+      "duration": 11,
+      "transfer": 34697,
+      "decoded": 34397
+    },
+    {
+      "url": "stamp-date-0719.png",
+      "duration": 13,
+      "transfer": 12805,
+      "decoded": 12505
+    },
+    {
+      "url": "menu-note.png",
+      "duration": 19,
+      "transfer": 21330,
+      "decoded": 21030
+    },
+    {
+      "url": "events.js",
+      "duration": 19,
+      "transfer": 2282,
+      "decoded": 1982
+    },
+    {
+      "url": "notebook-model.js",
+      "duration": 20,
+      "transfer": 3291,
+      "decoded": 2991
+    },
+    {
+      "url": "scenario.js",
+      "duration": 20,
+      "transfer": 46447,
+      "decoded": 46147
+    },
+    {
+      "url": "presentation.js",
+      "duration": 22,
+      "transfer": 10393,
+      "decoded": 10093
+    },
+    {
+      "url": "lighting.js",
+      "duration": 23,
+      "transfer": 2863,
+      "decoded": 2563
+    },
+    {
+      "url": "saves.js",
+      "duration": 23,
+      "transfer": 7240,
+      "decoded": 6940
+    },
+    {
+      "url": "story-ui.js",
+      "duration": 26,
+      "transfer": 13128,
+      "decoded": 12828
+    },
+    {
+      "url": "commands.js",
+      "duration": 30,
+      "transfer": 9526,
+      "decoded": 9226
+    },
+    {
+      "url": "notebook-ui.js",
+      "duration": 26,
+      "transfer": 43686,
+      "decoded": 43386
+    },
+    {
+      "url": "notebook-doodles.js",
+      "duration": 26,
+      "transfer": 25561,
+      "decoded": 25261
+    },
+    {
+      "url": "manga.js",
+      "duration": 27,
+      "transfer": 15026,
+      "decoded": 14726
+    },
+    {
+      "url": "theme.js",
+      "duration": 29,
+      "transfer": 1705,
+      "decoded": 1405
+    },
+    {
+      "url": "deduction.js",
+      "duration": 30,
+      "transfer": 11242,
+      "decoded": 10942
+    },
+    {
+      "url": "location-banner.png",
+      "duration": 21,
+      "transfer": 1229891,
+      "decoded": 1229591
+    },
+    {
+      "url": "paper.svg",
+      "duration": 20,
+      "transfer": 86292,
+      "decoded": 85992
+    },
+    {
+      "url": "NotoSerifJP-Bold.subset.woff",
+      "duration": 64,
+      "transfer": 2146608,
+      "decoded": 2146308
+    },
+    {
+      "url": "NotoSansJP-Bold.subset.woff",
+      "duration": 65,
+      "transfer": 3517952,
+      "decoded": 3517652
+    },
+    {
+      "url": "classroom.png?v=0.16.0",
+      "duration": 13,
+      "transfer": 4284551,
+      "decoded": 4284251
+    },
+    {
+      "url": "haruki_normal.png",
+      "duration": 5,
+      "transfer": 639246,
+      "decoded": 638946
+    },
+    {
+      "url": "saiji_normal.png",
+      "duration": 6,
+      "transfer": 618374,
+      "decoded": 618074
+    },
+    {
+      "url": "time-circle-houkago.png",
+      "duration": 6,
+      "transfer": 13551,
+      "decoded": 13251
+    },
+    {
+      "url": "stamp-place-classroom.png",
+      "duration": 6,
+      "transfer": 16609,
+      "decoded": 16309
+    },
+    {
+      "url": "burst.svg",
+      "duration": 6,
+      "transfer": 8626,
+      "decoded": 8326
+    },
+    {
+      "url": "lines_burst.png",
+      "duration": 6,
+      "transfer": 252984,
+      "decoded": 252684
+    },
+    {
+      "url": "lines_flash.png",
+      "duration": 7,
+      "transfer": 597784,
+      "decoded": 597484
+    },
+    {
+      "url": "timeofday-params.json",
+      "duration": 1,
+      "transfer": 1341,
+      "decoded": 1041
+    },
+    {
+      "url": "classroom-window.png?v=0.16.0",
+      "duration": 2,
+      "transfer": 28907,
+      "decoded": 28607
+    },
+    {
+      "url": "lighting-worker.js",
+      "duration": -18,
+      "transfer": 3196,
+      "decoded": 2896
+    },
+    {
+      "url": "name-haruki.png",
+      "duration": 6,
+      "transfer": 2320204,
+      "decoded": 2319904
+    },
+    {
+      "url": "name-saiji.png",
+      "duration": 6,
+      "transfer": 2605120,
+      "decoded": 2604820
+    }
+  ],
+  "navigation": [
+    {
+      "duration": 126.09999999962747,
+      "transfer": 80584,
+      "decoded": 80284
+    }
+  ]
+}

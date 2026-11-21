@@ -151,3 +151,12 @@
 #game #mangaStage #panel.ending-card button{display:block;min-height:max(60px,calc(37px / var(--manga-scale)));margin:18px auto;padding:12px 24px;font:700 max(26px,calc(13px / var(--manga-scale))) var(--font-body);color:#fff;background:#141414}
 #game #mangaStage #panel.ending-card p{font-size:max(24px,calc(12.5px / var(--manga-scale)))}
 
+/* The question controls must remain above the dialogue hit area on very short screens. */
+#game.deduction-layout #mangaStage.deduce-active #panel:not(.ending-card){z-index:13;pointer-events:none}
+#game.deduction-layout #mangaStage.deduce-active #panel:not(.ending-card) button{pointer-events:auto}
+
+#game.deduction-layout #mangaStage.deduce-active #panel.avoid-dialogue .answer-confirm{align-self:flex-start;width:max-content;min-width:calc(37px / var(--manga-scale));margin-left:var(--confirm-indent,0px)!important}
+#game.deduction-layout #mangaStage.deduce-active #panel.avoid-actor-only .answer-confirm{align-self:flex-end;margin-left:0!important}
+
+#game.deduction-layout #mangaStage.deduce-active #panel .answer-pool{padding-left:var(--pool-inset,0px)!important;padding-right:var(--pool-inset,0px)!important}
+#mangaStage .deduce-side-row .question-cutout{font-size:max(var(--cut-size),calc(12.5px / var(--manga-scale)))}

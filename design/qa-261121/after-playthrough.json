@@ -1,0 +1,170 @@
+[
+  {
+    "engine": "chromium",
+    "name": "iphone-se",
+    "width": 667,
+    "height": 375,
+    "status": "PASS",
+    "warnings": []
+  },
+  {
+    "engine": "chromium",
+    "name": "iphone-mini",
+    "width": 812,
+    "height": 375,
+    "status": "PASS",
+    "warnings": []
+  },
+  {
+    "engine": "chromium",
+    "name": "iphone-16",
+    "width": 852,
+    "height": 393,
+    "status": "PASS",
+    "warnings": []
+  },
+  {
+    "engine": "chromium",
+    "name": "iphone-17",
+    "width": 874,
+    "height": 402,
+    "status": "PASS",
+    "warnings": []
+  },
+  {
+    "engine": "chromium",
+    "name": "iphone-air",
+    "width": 912,
+    "height": 420,
+    "status": "PASS",
+    "warnings": []
+  },
+  {
+    "engine": "chromium",
+    "name": "iphone-plus",
+    "width": 932,
+    "height": 430,
+    "status": "PASS",
+    "warnings": []
+  },
+  {
+    "engine": "chromium",
+    "name": "iphone-max",
+    "width": 956,
+    "height": 440,
+    "status": "PASS",
+    "warnings": []
+  },
+  {
+    "engine": "chromium",
+    "name": "ipad-mini",
+    "width": 1133,
+    "height": 744,
+    "status": "PASS",
+    "warnings": []
+  },
+  {
+    "engine": "chromium",
+    "name": "ipad-11",
+    "width": 1180,
+    "height": 820,
+    "status": "PASS",
+    "warnings": []
+  },
+  {
+    "engine": "chromium",
+    "name": "ipad-pro-11",
+    "width": 1210,
+    "height": 834,
+    "status": "PASS",
+    "warnings": []
+  },
+  {
+    "engine": "chromium",
+    "name": "ipad-air-13",
+    "width": 1366,
+    "height": 1024,
+    "status": "PASS",
+    "warnings": []
+  },
+  {
+    "engine": "chromium",
+    "name": "ipad-13",
+    "width": 1376,
+    "height": 1032,
+    "status": "PASS",
+    "warnings": []
+  },
+  {
+    "engine": "chromium",
+    "name": "mac-air",
+    "width": 1470,
+    "height": 830,
+    "status": "PASS",
+    "warnings": []
+  },
+  {
+    "engine": "chromium",
+    "name": "macbook",
+    "width": 1512,
+    "height": 860,
+    "status": "PASS",
+    "warnings": []
+  },
+  {
+    "engine": "chromium",
+    "name": "fhd",
+    "width": 1920,
+    "height": 1080,
+    "status": "PASS",
+    "warnings": []
+  },
+  {
+    "engine": "chromium",
+    "name": "monitor",
+    "width": 2560,
+    "height": 1305,
+    "status": "PASS",
+    "warnings": []
+  },
+  {
+    "engine": "chromium",
+    "name": "air-safari",
+    "width": 912,
+    "height": 356,
+    "status": "PASS",
+    "warnings": []
+  },
+  {
+    "engine": "chromium",
+    "name": "16-safari",
+    "width": 852,
+    "height": 340,
+    "status": "PASS",
+    "warnings": []
+  },
+  {
+    "engine": "chromium",
+    "name": "ipad-safari",
+    "width": 1180,
+    "height": 760,
+    "status": "PASS",
+    "warnings": []
+  },
+  {
+    "engine": "webkit",
+    "name": "iphone-air",
+    "width": 912,
+    "height": 420,
+    "status": "PASS",
+    "warnings": []
+  },
+  {
+    "engine": "webkit",
+    "name": "ipad-11",
+    "width": 1180,
+    "height": 820,
+    "status": "PASS",
+    "warnings": []
+  }
+]

@@ -6,7 +6,8 @@ const {chromium}=require('playwright');
 const fs=require('fs'),path=require('path');
 const OUT=process.env.OUT||path.resolve(__dirname,'../design/ui-audit');fs.mkdirSync(OUT,{recursive:true});
 const URL=process.env.ADV_URL||'http://127.0.0.1:8777/';
-const VIEWPORTS=[[1920,1080,'PC-FHD'],[1280,720,'PC-HD'],[1024,768,'PC-4:3'],[768,1024,'Tab-縦'],[844,390,'Phone-横'],[667,375,'SE-横'],[390,844,'Phone-縦'],[375,667,'SE-縦'],[360,640,'Android小-縦']].filter(([w,h])=>!process.env.SIZES||process.env.SIZES.split(',').includes(w+'x'+h));
+const extras=(process.env.QA_EXTRA_SIZES||'').split(',').filter(Boolean).map(v=>{const [w,h]=v.split('x').map(Number);return[w,h,'追加検証']});
+const VIEWPORTS=[[1920,1080,'PC-FHD'],[1280,720,'PC-HD'],[1024,768,'PC-4:3'],[768,1024,'Tab-縦'],[844,390,'Phone-横'],[667,375,'SE-横'],[390,844,'Phone-縦'],[375,667,'SE-縦'],[360,640,'Android小-縦'],...extras].filter(([w,h])=>!process.env.SIZES||process.env.SIZES.split(',').includes(w+'x'+h));
 
 const MEASURE=()=>{
  const vw=innerWidth,vh=innerHeight,out={offscreen:[],clipped:[],small:[],tap:[],obscured:[],contrast:[],dialogue:[],approved:[],texts:0};
@@ -26,7 +27,7 @@ const MEASURE=()=>{
   const ownText=[...e.childNodes].some(n=>n.nodeType===3&&n.textContent.trim());
   if(ownText)e.dataset.auditFont='1';
   if(ownText&&!(e.querySelector&&e.querySelector('img')&&parseFloat(s.fontSize)===0)){out.texts++;
-   const stage=e.closest('#mangaStage,#notebookStage'),stageScale=stage?parseFloat(stage.style.getPropertyValue(stage.id==='notebookStage'?'--nb-scale':'--manga-scale'))||1:1;const fs=parseFloat(s.fontSize)*stageScale;if(fs<12){const item=label(e)+' '+fs.toFixed(1)+'px'+(e.closest('.nb-phone')?'（PHS本体・装飾）':'');if(e.closest('#nbBook .head,#nbBook .rn,#nbBook .legend,#nbBook .new,#nbBook .newmark,#paperGrid'))out.approved.push('見本指定の副次情報 '+item);else out.small.push(item)}
+   const stage=e.closest('#mangaStage,#notebookStage'),stageScale=stage?parseFloat(stage.style.getPropertyValue(stage.id==='notebookStage'?'--nb-scale':'--manga-scale'))||1:1;const fs=parseFloat(s.fontSize)*stageScale;if(fs<12){const item=label(e)+' '+fs.toFixed(1)+'px'+(e.closest('.nb-phone')?'（PHS本体・装飾）':'');if(e.closest('#nbBook .head,#nbBook .rn,#nbBook .legend,#nbBook .new,#nbBook .newmark,#nbBook svg.dirt,#paperGrid'))out.approved.push('見本指定の副次情報 '+item);else out.small.push(item)}
    if(!deferred(e)&&(r.right>vw+1||r.left<-1||r.bottom>vh+1||r.top<-1)){if(!e.closest('[class*=nb-chart]'))out.offscreen.push(label(e)+` [${r.left|0},${r.top|0},${r.right|0},${r.bottom|0}]`)}
    const fg=parse(s.color);const bg=bgOf(e);
    if(fg&&bg.color&&!bg.image){const cr=ratio(fg,bg.color);const big=fs>=24||(fs>=18.66&&+s.fontWeight>=700);if(cr<(big?3:4.5)){const item=label(e)+' '+cr.toFixed(2)+(bg.partial?'（半透明背景）':'');if(e.closest('#nbBook .head,#nbBook svg.dirt,#nbBook .face .ph,#nbBook .slot.empty'))out.approved.push('見本指定の淡い装飾 '+item);else out.contrast.push(item)}}
@@ -64,8 +65,9 @@ if(require.main===module)(async()=>{
   const ctx=await browser.newContext({viewport:{width:w,height:h},hasTouch:mobile,isMobile:mobile&&w<h,reducedMotion:'reduce'});
   const page=await ctx.newPage();const errs=[],bad=[];
   page.on('pageerror',e=>errs.push(e.message));page.on('console',m=>{if(m.type()==='error')errs.push('console: '+m.text())});
+  page.on('requestfailed',r=>{const e=r.failure()?.errorText||'';if(!e.includes('ERR_ABORTED'))errs.push('request: '+r.url().replace(URL,'')+' '+e)});
   page.on('response',r=>{if(r.status()>=400)bad.push(r.status()+' '+r.url().replace(URL,''))});
-  await page.goto(URL);await page.evaluate(()=>document.fonts.ready);await page.waitForTimeout(400);
+  await page.goto(URL);await page.evaluate(()=>document.fonts.ready);if(process.env.QA_INSETS){const insets={'852x340':[59,21],'912x420':[62,21],'956x440':[62,21]};const [side,bottom]=insets[w+'x'+h]||[0,0];await page.evaluate(({side,bottom})=>{mangaSafeArea.style.padding=`0 ${side}px ${bottom}px ${side}px`;fitManga()},{side,bottom})}await page.waitForTimeout(400);
   const cdp=await ctx.newCDPSession(page);await cdp.send('DOM.enable');await cdp.send('CSS.enable');
   const vp=`${w}x${h}`;report[vp]={name,states:{},errors:errs,http:bad};
   // 同一の文字・書体・太さの測定結果は、このロード済みページ内で再利用する。

@@ -6,3 +6,6 @@
 @media (orientation:portrait){#rotateNotice{display:flex} #game *{animation-play-state:paused!important;transition:none!important}}
 
 @media (aspect-ratio:1/1){#rotateNotice{display:none} #game *{animation-play-state:running!important}}
+
+#loadingNotice{position:fixed;inset:0;z-index:2147483646;display:grid;place-items:center;background:#f7f5ee;color:#141414;font:700 22px/1.5 var(--font-head,serif);letter-spacing:.1em}
+#loadingNotice[hidden]{display:none}

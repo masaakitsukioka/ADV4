@@ -1,0 +1,220 @@
+[
+  {
+    "engine": "chromium",
+    "name": "iphone-se",
+    "width": 667,
+    "height": 375,
+    "status": "FAIL",
+    "step": "classroom clues",
+    "error": "TimeoutError: locator.click: Timeout 4000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('#commandChildren button').filter({ hasText: 'ナカコのスケッチブック' }).first()\u001b[22m\n\u001b[2m    - locator resolved to <button type=\"button\" class=\"fit-wider\" aria-current=\"false\" data-entry-key=\"[\"\",\"ナカコのスケッチブック\"]\">ナカコのスケッチブック</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <strong id=\"mailToastText\">PHS 着信 1</strong> from <button class=\"\" type=\"button\" id=\"mailToast\" aria-label=\"PHS 着信。未読メールを読む\">…</button> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <strong id=\"mailToastText\">PHS 着信 1</strong> from <button class=\"\" type=\"button\" id=\"mailToast\" aria-label=\"PHS 着信。未読メールを読む\">…</button> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    8 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <strong id=\"mailToastText\">PHS 着信 1</strong> from <button class=\"\" type=\"button\" id=\"mailToast\" aria-label=\"PHS 着信。未読メールを読む\">…</button> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 500ms\u001b[22m\n",
+    "errors": [],
+    "warnings": [],
+    "bad": [],
+    "file": "before-chromium-iphone-se-failure.png"
+  },
+  {
+    "engine": "chromium",
+    "name": "iphone-mini",
+    "width": 812,
+    "height": 375,
+    "status": "FAIL",
+    "step": "classroom clues",
+    "error": "TimeoutError: locator.click: Timeout 4000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('#commandChildren button').filter({ hasText: 'ナカコのスケッチブック' }).first()\u001b[22m\n\u001b[2m    - locator resolved to <button type=\"button\" class=\"fit-wider\" aria-current=\"false\" data-entry-key=\"[\"\",\"ナカコのスケッチブック\"]\">ナカコのスケッチブック</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <strong id=\"mailToastText\">PHS 着信 1</strong> from <button class=\"\" type=\"button\" id=\"mailToast\" aria-label=\"PHS 着信。未読メールを読む\">…</button> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <strong id=\"mailToastText\">PHS 着信 1</strong> from <button class=\"\" type=\"button\" id=\"mailToast\" aria-label=\"PHS 着信。未読メールを読む\">…</button> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    8 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <strong id=\"mailToastText\">PHS 着信 1</strong> from <button class=\"\" type=\"button\" id=\"mailToast\" aria-label=\"PHS 着信。未読メールを読む\">…</button> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 500ms\u001b[22m\n",
+    "errors": [],
+    "warnings": [],
+    "bad": [],
+    "file": "before-chromium-iphone-mini-failure.png"
+  },
+  {
+    "engine": "chromium",
+    "name": "iphone-16",
+    "width": 852,
+    "height": 393,
+    "status": "FAIL",
+    "step": "classroom clues",
+    "error": "TimeoutError: locator.click: Timeout 4000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('#commandChildren button').filter({ hasText: 'ナカコのスケッチブック' }).first()\u001b[22m\n\u001b[2m    - locator resolved to <button type=\"button\" class=\"fit-wider\" aria-current=\"false\" data-entry-key=\"[\"\",\"ナカコのスケッチブック\"]\">ナカコのスケッチブック</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <button class=\"\" type=\"button\" id=\"mailToast\" aria-label=\"PHS 着信。未読メールを読む\">…</button> intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <button class=\"\" type=\"button\" id=\"mailToast\" aria-label=\"PHS 着信。未読メールを読む\">…</button> intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    8 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <button class=\"\" type=\"button\" id=\"mailToast\" aria-label=\"PHS 着信。未読メールを読む\">…</button> intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 500ms\u001b[22m\n",
+    "errors": [],
+    "warnings": [],
+    "bad": [],
+    "file": "before-chromium-iphone-16-failure.png"
+  },
+  {
+    "engine": "chromium",
+    "name": "iphone-17",
+    "width": 874,
+    "height": 402,
+    "status": "FAIL",
+    "step": "start deduction",
+    "error": "TimeoutError: locator.click: Timeout 4000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('#commandChildren button').filter({ hasText: 'オカボーのスケッチブック' }).first()\u001b[22m\n\u001b[2m    - locator resolved to <button type=\"button\" class=\"fit-wider\" aria-current=\"false\" data-entry-key=\"[\"\",\"オカボーのスケッチブック\"]\">オカボーのスケッチブック</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <strong id=\"mailToastText\">PHS 着信 2</strong> from <button class=\"\" type=\"button\" id=\"mailToast\" aria-label=\"PHS 着信。未読メールを読む\">…</button> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <strong id=\"mailToastText\">PHS 着信 2</strong> from <button class=\"\" type=\"button\" id=\"mailToast\" aria-label=\"PHS 着信。未読メールを読む\">…</button> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    8 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <strong id=\"mailToastText\">PHS 着信 2</strong> from <button class=\"\" type=\"button\" id=\"mailToast\" aria-label=\"PHS 着信。未読メールを読む\">…</button> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 500ms\u001b[22m\n",
+    "errors": [],
+    "warnings": [],
+    "bad": [],
+    "file": "before-chromium-iphone-17-failure.png"
+  },
+  {
+    "engine": "chromium",
+    "name": "iphone-air",
+    "width": 912,
+    "height": 420,
+    "status": "FAIL",
+    "step": "start deduction",
+    "error": "TimeoutError: locator.click: Timeout 4000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('#commandChildren button').filter({ hasText: 'オカボーのスケッチブック' }).first()\u001b[22m\n\u001b[2m    - locator resolved to <button type=\"button\" class=\"fit-wider\" aria-current=\"false\" data-entry-key=\"[\"\",\"オカボーのスケッチブック\"]\">オカボーのスケッチブック</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <strong id=\"mailToastText\">PHS 着信 2</strong> from <button class=\"\" type=\"button\" id=\"mailToast\" aria-label=\"PHS 着信。未読メールを読む\">…</button> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <strong id=\"mailToastText\">PHS 着信 2</strong> from <button class=\"\" type=\"button\" id=\"mailToast\" aria-label=\"PHS 着信。未読メールを読む\">…</button> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    8 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <strong id=\"mailToastText\">PHS 着信 2</strong> from <button class=\"\" type=\"button\" id=\"mailToast\" aria-label=\"PHS 着信。未読メールを読む\">…</button> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 500ms\u001b[22m\n",
+    "errors": [],
+    "warnings": [],
+    "bad": [],
+    "file": "before-chromium-iphone-air-failure.png"
+  },
+  {
+    "engine": "chromium",
+    "name": "iphone-plus",
+    "width": 932,
+    "height": 430,
+    "status": "FAIL",
+    "step": "start deduction",
+    "error": "TimeoutError: locator.click: Timeout 4000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('#commandChildren button').filter({ hasText: 'オカボーのスケッチブック' }).first()\u001b[22m\n\u001b[2m    - locator resolved to <button type=\"button\" class=\"fit-wider\" aria-current=\"false\" data-entry-key=\"[\"\",\"オカボーのスケッチブック\"]\">オカボーのスケッチブック</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <button class=\"\" type=\"button\" id=\"mailToast\" aria-label=\"PHS 着信。未読メールを読む\">…</button> intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <button class=\"\" type=\"button\" id=\"mailToast\" aria-label=\"PHS 着信。未読メールを読む\">…</button> intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    8 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <button class=\"\" type=\"button\" id=\"mailToast\" aria-label=\"PHS 着信。未読メールを読む\">…</button> intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 500ms\u001b[22m\n",
+    "errors": [],
+    "warnings": [],
+    "bad": [],
+    "file": "before-chromium-iphone-plus-failure.png"
+  },
+  {
+    "engine": "chromium",
+    "name": "iphone-max",
+    "width": 956,
+    "height": 440,
+    "status": "FAIL",
+    "step": "start deduction",
+    "error": "TimeoutError: locator.click: Timeout 4000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('#commandChildren button').filter({ hasText: 'オカボーのスケッチブック' }).first()\u001b[22m\n\u001b[2m    - locator resolved to <button type=\"button\" class=\"fit-wider\" aria-current=\"false\" data-entry-key=\"[\"\",\"オカボーのスケッチブック\"]\">オカボーのスケッチブック</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <button class=\"\" type=\"button\" id=\"mailToast\" aria-label=\"PHS 着信。未読メールを読む\">…</button> intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <button class=\"\" type=\"button\" id=\"mailToast\" aria-label=\"PHS 着信。未読メールを読む\">…</button> intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    7 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <button class=\"\" type=\"button\" id=\"mailToast\" aria-label=\"PHS 着信。未読メールを読む\">…</button> intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 500ms\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n",
+    "errors": [],
+    "warnings": [],
+    "bad": [],
+    "file": "before-chromium-iphone-max-failure.png"
+  },
+  {
+    "engine": "chromium",
+    "name": "ipad-mini",
+    "width": 1133,
+    "height": 744,
+    "status": "PASS",
+    "warnings": []
+  },
+  {
+    "engine": "chromium",
+    "name": "ipad-11",
+    "width": 1180,
+    "height": 820,
+    "status": "PASS",
+    "warnings": []
+  },
+  {
+    "engine": "chromium",
+    "name": "ipad-pro-11",
+    "width": 1210,
+    "height": 834,
+    "status": "PASS",
+    "warnings": []
+  },
+  {
+    "engine": "chromium",
+    "name": "ipad-air-13",
+    "width": 1366,
+    "height": 1024,
+    "status": "PASS",
+    "warnings": []
+  },
+  {
+    "engine": "chromium",
+    "name": "ipad-13",
+    "width": 1376,
+    "height": 1032,
+    "status": "PASS",
+    "warnings": []
+  },
+  {
+    "engine": "chromium",
+    "name": "mac-air",
+    "width": 1470,
+    "height": 830,
+    "status": "PASS",
+    "warnings": []
+  },
+  {
+    "engine": "chromium",
+    "name": "macbook",
+    "width": 1512,
+    "height": 860,
+    "status": "PASS",
+    "warnings": []
+  },
+  {
+    "engine": "chromium",
+    "name": "fhd",
+    "width": 1920,
+    "height": 1080,
+    "status": "PASS",
+    "warnings": []
+  },
+  {
+    "engine": "chromium",
+    "name": "monitor",
+    "width": 2560,
+    "height": 1305,
+    "status": "PASS",
+    "warnings": []
+  },
+  {
+    "engine": "chromium",
+    "name": "air-safari",
+    "width": 912,
+    "height": 356,
+    "status": "FAIL",
+    "step": "classroom clues",
+    "error": "TimeoutError: locator.click: Timeout 4000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('#commandChildren button').filter({ hasText: 'ナカコのスケッチブック' }).first()\u001b[22m\n\u001b[2m    - locator resolved to <button type=\"button\" class=\"fit-wider\" aria-current=\"false\" data-entry-key=\"[\"\",\"ナカコのスケッチブック\"]\">ナカコのスケッチブック</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <strong id=\"mailToastText\">PHS 着信 1</strong> from <button class=\"\" type=\"button\" id=\"mailToast\" aria-label=\"PHS 着信。未読メールを読む\">…</button> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <strong id=\"mailToastText\">PHS 着信 1</strong> from <button class=\"\" type=\"button\" id=\"mailToast\" aria-label=\"PHS 着信。未読メールを読む\">…</button> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    8 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <strong id=\"mailToastText\">PHS 着信 1</strong> from <button class=\"\" type=\"button\" id=\"mailToast\" aria-label=\"PHS 着信。未読メールを読む\">…</button> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 500ms\u001b[22m\n",
+    "errors": [],
+    "warnings": [],
+    "bad": [],
+    "file": "before-chromium-air-safari-failure.png"
+  },
+  {
+    "engine": "chromium",
+    "name": "16-safari",
+    "width": 852,
+    "height": 340,
+    "status": "FAIL",
+    "step": "classroom clues",
+    "error": "TimeoutError: locator.click: Timeout 4000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('#commandChildren button').filter({ hasText: 'ナカコのスケッチブック' }).first()\u001b[22m\n\u001b[2m    - locator resolved to <button type=\"button\" class=\"fit-wider\" aria-current=\"false\" data-entry-key=\"[\"\",\"ナカコのスケッチブック\"]\">ナカコのスケッチブック</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <strong id=\"mailToastText\">PHS 着信 1</strong> from <button class=\"\" type=\"button\" id=\"mailToast\" aria-label=\"PHS 着信。未読メールを読む\">…</button> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <strong id=\"mailToastText\">PHS 着信 1</strong> from <button class=\"\" type=\"button\" id=\"mailToast\" aria-label=\"PHS 着信。未読メールを読む\">…</button> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    8 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <strong id=\"mailToastText\">PHS 着信 1</strong> from <button class=\"\" type=\"button\" id=\"mailToast\" aria-label=\"PHS 着信。未読メールを読む\">…</button> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 500ms\u001b[22m\n",
+    "errors": [],
+    "warnings": [],
+    "bad": [],
+    "file": "before-chromium-16-safari-failure.png"
+  },
+  {
+    "engine": "chromium",
+    "name": "ipad-safari",
+    "width": 1180,
+    "height": 760,
+    "status": "PASS",
+    "warnings": []
+  },
+  {
+    "engine": "webkit",
+    "name": "iphone-air",
+    "width": 912,
+    "height": 420,
+    "status": "FAIL",
+    "step": "start deduction",
+    "error": "TimeoutError: locator.click: Timeout 4000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('#commandChildren button').filter({ hasText: 'オカボーのスケッチブック' }).first()\u001b[22m\n\u001b[2m    - locator resolved to <button type=\"button\" class=\"fit-wider\" aria-current=\"false\" data-entry-key=\"[\"\",\"オカボーのスケッチブック\"]\">オカボーのスケッチブック</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <strong id=\"mailToastText\">PHS 着信 2</strong> from <button class=\"\" type=\"button\" id=\"mailToast\" aria-label=\"PHS 着信。未読メールを読む\">…</button> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <strong id=\"mailToastText\">PHS 着信 2</strong> from <button class=\"\" type=\"button\" id=\"mailToast\" aria-label=\"PHS 着信。未読メールを読む\">…</button> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    7 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <strong id=\"mailToastText\">PHS 着信 2</strong> from <button class=\"\" type=\"button\" id=\"mailToast\" aria-label=\"PHS 着信。未読メールを読む\">…</button> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 500ms\u001b[22m\n",
+    "errors": [],
+    "warnings": [],
+    "bad": [],
+    "file": "before-webkit-iphone-air-failure.png"
+  },
+  {
+    "engine": "webkit",
+    "name": "ipad-11",
+    "width": 1180,
+    "height": 820,
+    "status": "PASS",
+    "warnings": []
+  }
+]

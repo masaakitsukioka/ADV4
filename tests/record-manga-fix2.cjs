@@ -18,8 +18,9 @@ const reference=process.env.ADV_DEMO_VIDEO||'/Volumes/Extreme SSD/サイカチAD
  await page.mouse.move(1300,150);await page.evaluate(()=>{commandSelection=null;renderCommands()});
  await page.locator('[data-command="investigate"]').click();mark('list-open');await page.waitForTimeout(110);await shot('game-list-appear');await page.waitForTimeout(650);
  await page.locator('[data-target="window"]').click();mark('window-dialogue');await finishConversation();await page.waitForTimeout(450);await shot('game-window-checked');
- await page.locator('[data-target="shelf"]').click();mark('shelf-dialogue');await finishConversation();await page.waitForTimeout(600);await page.waitForFunction(()=>$('mailToast').classList.contains('hidden'));await shot('game-shelf-checked');
- assert.equal(await page.evaluate(()=>commandSelection),'investigate');assert.equal(await page.locator('[data-target="shelf"]').first().getAttribute('data-examined'),'true');mark('finished');
+ await page.locator('[data-target="shelf"]').click();mark('shelf-dialogue');await finishConversation();await page.waitForTimeout(600);await page.waitForFunction(()=>!$('mailToast').classList.contains('hidden'));await shot('game-shelf-checked');
+ // The shelf offers a new line after the first visit, so only the already-seen window is checked.
+ assert.equal(await page.evaluate(()=>commandSelection),'investigate');assert.equal(await page.locator('[data-target="window"]').first().getAttribute('data-examined'),'true');assert.equal(await page.locator('[data-target="shelf"]').first().getAttribute('data-examined'),null);mark('finished');
  await context.close();await video.saveAs(path.join(output,'prototype-demo.webm'));await fs.promises.rm(path.join(output,'recording'),{recursive:true,force:true});assert.deepEqual(errors,[]);
  // Read frames from the actual MP4, without copying it or modifying any game artwork.
  require('child_process').execFileSync('swift',['-module-cache-path',process.env.ADV_SWIFT_CACHE||'/private/tmp/adv4-swift-cache',path.join(__dirname,'extract-demo-frames.swift'),reference,output],{stdio:['ignore','pipe','pipe']});

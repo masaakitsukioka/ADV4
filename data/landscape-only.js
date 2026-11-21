@@ -18,7 +18,7 @@
   else{for(const [id,entry] of timers)if(entry.native===null)arm(id,entry);for(const [id,entry] of frames)if(entry.native===null)armFrame(id,entry)}
  }
  game.inert=paused;window.addEventListener('resize',update);window.addEventListener('orientationchange',update);
- for(const type of ['keydown','keyup','keypress','pointerdown','pointerup','click','touchstart','touchend'])document.addEventListener(type,e=>{if(paused){e.preventDefault();e.stopImmediatePropagation()}},true);
+ for(const type of ['keydown','keyup','keypress','pointerdown','pointerup','click','touchstart','touchend'])document.addEventListener(type,e=>{if(paused||!document.getElementById('loadingNotice').hidden){e.preventDefault();e.stopImmediatePropagation()}},true);
  // Fullscreen and orientation lock are optional; iOS Safari continues without them.
  let attempted=false;document.addEventListener('click',e=>{const button=e.target.closest('#openingActions button');if(attempted||!button||!['最初から','途中から'].includes(button.textContent.trim())||!navigator.maxTouchPoints||!screen.orientation?.lock)return;attempted=true;try{const request=document.documentElement.requestFullscreen?.();Promise.resolve(request).then(()=>screen.orientation.lock('landscape')).catch(()=>{})}catch(_){}},true);
 })();

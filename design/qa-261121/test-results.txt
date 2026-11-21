@@ -1,0 +1,175 @@
+
+tests/apple-layout-261121.cjs
+PASS iphone-se 667 375
+PASS iphone-mini 812 375
+PASS iphone-16 852 393
+PASS iphone-17 874 402
+PASS iphone-air 912 420
+PASS iphone-plus 932 430
+PASS iphone-max 956 440
+PASS ipad-mini 1133 744
+PASS ipad-11 1180 820
+PASS ipad-pro-11 1210 834
+PASS ipad-air-13 1366 1024
+PASS ipad-13 1376 1032
+PASS mac-air 1470 830
+PASS macbook 1512 860
+PASS fhd 1920 1080
+PASS monitor 2560 1305
+PASS air-safari 912 356
+PASS 16-safari 852 340
+PASS ipad-safari 1180 760
+PASS asymmetric left-only safe area and bottom-only home bar
+
+tests/assets.cjs
+PASS: 72 PNG dimensions (70 portraits + 2 backgrounds), masks and aligned frame registrations, asset definitions, target coordinate transforms at 3 sizes, image success/failure and stale image callbacks
+
+tests/browser-harness.cjs
+
+tests/cmd-261120.cjs
+PASS: nine viewports, fixed neighbouring command positions/fonts, 1.28 scale bounds, .4 opacity/reset, eight targets without scrolling/clipping/obscuring, translucent return backing/padding/radius/no shadow, 472x531 parent/body/img/canvas frame
+
+tests/conditions.cjs
+PASS: condition/effect/once/visit unit tests; scenario JS/JSON equality
+
+tests/debug-261118.cjs
+PASS 1920x1080
+PASS 1280x720
+PASS 390x844: rotation notice
+
+tests/debug-dialogue.cjs
+PASS 1920x1080: 180 dialogue entries
+PASS 1280x720: 180 dialogue entries
+PASS 390x844: rotation notice
+
+tests/deduce-261118.cjs
+PASS 1920x1080
+PASS 1280x720
+PASS 390x844: rotation notice
+
+tests/deduce-polish.cjs
+PASS: five centred questions at nine sizes, q3/q4 no overlap, varied sidebar/no duplicate number, balanced ink stamp, 140% solved with 1.8s reveal/1s hold/.5s fade, live ending scene and reset
+
+tests/expr-a.cjs
+PASS: six expression images, full-image blink/mouth frames, character-specific mappings and missing-tag fallbacks
+
+tests/idle.cjs
+PASS: real 15s exploration/10s dialogue waits, 70ms blink frames, 400ms separation, 180ms double blink, choices/deduction, reduced-motion blink/mouth, shared breathing and expression hop
+
+tests/landscape-only-261121.cjs
+PASS 1920 1080
+PASS 1280 720
+PASS 912 356
+PASS 912 420
+PASS 844 390
+PASS 667 375
+PASS 915 412
+PASS 1180 820
+PASS portrait pause/resume, manifest and 50px safe areas
+
+tests/logic.cjs
+PASS: room-local commands, once-only acquisition, current movement and visits
+
+tests/manga-fix1.cjs
+PASS: six enlarged command rows have operable letter centres; corridor targets on arrival/click; no orphan arrow; paper choices; all five deduction leads readable; audit rejects narrow/clipped text
+
+tests/manga-fix2.cjs
+PASS: permanent paper/actors; retained expressions; normal 26ms typing; stale command focus Enter/Space; 80ms stagger; same list and selection after dialogue; listener completion/save/legacy/validation; room/new-game reset
+
+tests/manga-rebuild.cjs
+PASS: examination mark, speaker/name/body/inline advance, choices, notebook, movement, rotated cover coordinates, 8 time/place renders, light cache and screenshots
+
+tests/menu-note-261120.cjs
+PASS: five tabs/keyboard, P from every page, persistent arrival/read/reaction, inline PHS selection, 3-slot save/load/settings/legacy, 5/17-person unscrolled charts/no overlap/no round frames, labels within 80px/short leaders/unchanged five-person layout, ArmedLemon swap, empty doodles, deduction lock, 1920/1280 screenshots
+
+tests/menu-phs-browser.cjs
+PASS: persistent/deferred arrival, five-tab navigation, inline PHS/reactions/read state, actual 3-slot save/load/title/legacy, unscrolled relation chart at three sizes, memo full text, focus trap, touch, deduction lock
+
+tests/menu-phs.cjs
+PASS: conditional one-time receipt, unread/read, undiscovered nodes, conditional real names, hinted/deceased records, relation update tokens, save roundtrip, old saves, invalid notebook rejection, scenario equality.
+
+tests/mobile-landscape-261120.cjs
+PASS 1280x720: stage positions, both characters, dialogue and deduction
+  8 entries: smallest hit area 36.9px
+PASS 912x356: stage positions, both characters, dialogue and deduction
+  8 entries: smallest hit area 37.0px
+PASS 912x420: stage positions, both characters, dialogue and deduction
+  8 entries: smallest hit area 37.0px
+PASS 844x390: stage positions, both characters, dialogue and deduction
+  8 entries: smallest hit area 37.0px
+PASS 667x375: stage positions, both characters, dialogue and deduction
+PASS: visual viewport resize/scroll, offsets and asymmetric safe-area protection
+
+tests/portrait-animation.cjs
+PASS: closed/half/open mouth cycle, immediate close after reveal, idle half/closed/open blink and no simultaneous speaking blink
+
+tests/presentation-resolution.cjs
+PASS: aligned full-portrait replacement, closed base, missing/invalid fallback, no stacked image
+
+tests/qa-deduction-hit-261121.cjs
+PASS chromium 852x340: deduction text tap and confirmation
+PASS chromium 912x356: deduction text tap and confirmation
+PASS chromium 667x375: deduction text tap and confirmation
+PASS webkit 852x340: deduction text tap and confirmation
+PASS webkit 912x356: deduction text tap and confirmation
+PASS webkit 667x375: deduction text tap and confirmation
+
+tests/qa-lifetime-261121.cjs
+[{"virtualMinutes":0,"cycles":0,"heapBytes":1741940,"heapTotalBytes":2424832,"nodes":3513,"documents":3,"listeners":97},{"virtualMinutes":10,"cycles":20,"heapBytes":1851176,"heapTotalBytes":2162688,"nodes":3531,"documents":3,"listeners":123},{"virtualMinutes":20,"cycles":40,"heapBytes":1867716,"heapTotalBytes":2424832,"nodes":3545,"documents":3,"listeners":141},{"virtualMinutes":30,"cycles":60,"heapBytes":1875316,"heapTotalBytes":2424832,"nodes":3535,"documents":3,"listeners":123}]
+
+tests/qa-loading-261121.cjs
+PASS chromium: slow font shows loading and falls back after 8s
+PASS webkit: slow font shows loading and falls back after 8s
+
+tests/qa-notebook-layout-261121.cjs
+PASS 844x390: relation labels and PHS instructions
+PASS 667x375: relation labels and PHS instructions
+PASS 912x420: relation labels and PHS instructions
+PASS 956x440: relation labels and PHS instructions
+PASS 852x340: relation labels and PHS instructions
+
+tests/qa-settings-261121.cjs
+PASS chromium: four settings, three slots, overwrite and reload restored
+PASS webkit: four settings, three slots, overwrite and reload restored
+
+tests/qa-webkit-261121.cjs
+PASS WebKit 912x420: tap, keyboard, menu, rotation pause/resume
+PASS WebKit 1180x820: tap, keyboard, menu, rotation pause/resume
+PASS WebKit: denied storage on load and save shows an error without crashing
+
+tests/qa-worker-261121.cjs
+PASS chromium worker: [{"label":"朝","ms":665,"frames":40,"bitmap":{"width":1920,"height":1080}},{"label":"昼","ms":0,"frames":0,"bitmap":null},{"label":"放課後","ms":344,"frames":20,"bitmap":{"width":1920,"height":1080}},{"label":"夜","ms":372,"frames":23,"bitmap":{"width":1920,"height":1080}}]
+PASS webkit worker: [{"label":"朝","ms":1201,"frames":37,"bitmap":{"width":1920,"height":1080}},{"label":"昼","ms":0,"frames":0,"bitmap":null},{"label":"放課後","ms":1326,"frames":40,"bitmap":{"width":1920,"height":1080}},{"label":"夜","ms":1943,"frames":58,"bitmap":{"width":1920,"height":1080}}]
+
+tests/saves.cjs
+PASS: examination save/restore, old-save migration, rejection of malformed keys, new-game reset and retained slot
+
+tests/scene-transfers.cjs
+PASS: place stamp/background transition, shared manuscript dialogue and exit guard, restart restores manga stage
+
+tests/se-261118.cjs
+PASS: real movement and item acquisition timing, no repeat/show/load sounds, multiple items, separate OFF setting and legacy saves
+
+tests/stability.cjs
+PASS: reveal/advance, IME and repeated-key guards, native button activation, choice cancels automatic advance, stale dialogue stays closed
+
+tests/story.cjs
+PASS: command-only story, room-local discovery, random chat, transition ordering, no deduction exit, persistent problem window, ABC replacement/swapping, three saves, restart, legacy saves, three-line message pagination.
+PASS: no-repeat incident priority then ten daily chats per scene, saveable chat history, show excludes Saiji, item discovery/inspection/show variants, narration portraits, instant writing dismissal with persistent actors, success/reveal choreography.
+
+tests/transfers.cjs
+PASS: retired file-transfer UI absent; three current save slots and denied/quota storage handled
+
+tests/ui-layout.cjs
+PASS 1920x1080: all dialogue pages, q5, five notebook tabs, relation labels, populated title saves
+PASS 1280x720: all dialogue pages, q5, five notebook tabs, relation labels, populated title saves
+PASS 1024x768: all dialogue pages, q5, five notebook tabs, relation labels, populated title saves
+PASS 768x1024: rotation notice and input disabled
+PASS 844x390: all dialogue pages, q5, five notebook tabs, relation labels, populated title saves
+PASS 667x375: all dialogue pages, q5, five notebook tabs, relation labels, populated title saves
+PASS 390x844: rotation notice and input disabled
+PASS 375x667: rotation notice and input disabled
+PASS 360x640: rotation notice and input disabled
+PASS: real scenario recorded with normal typing, listen/investigate lists and completed checks; actual author MP4 frames compared
+
+通しプレイと UI 監査は各 JSON・監査サマリーを参照。
