@@ -224,7 +224,7 @@
 #notebook #nbBook .nb-next .soft-label::after{border-right:0;border-left-color:currentColor;margin-left:.25em}
 /* Keep handwriting and cut-paper styling while restoring readable text and tap targets on small screens. */
 @media (max-width:1279px),(max-height:650px){
- #notebook #notebookStage .close{height:max(64px,calc(37px / var(--nb-scale)));display:flex;align-items:center;justify-content:center}
+ #notebook #notebookStage .close{right:210px;height:max(64px,calc(37px / var(--nb-scale)));display:flex;align-items:center;justify-content:center}
  #notebook #notebookStage .close img{height:64px;object-fit:contain}
  #notebook #notebookStage #nbBook .tab{width:max(74px,calc(37px / var(--nb-scale)));font-size:max(24px,calc(12.5px / var(--nb-scale)))!important}
  #notebook #notebookStage #nbBook .seg i{min-width:calc(37px / var(--nb-scale));box-sizing:border-box;text-align:center}
@@ -265,4 +265,6 @@
 @media (max-width:1279px),(max-height:650px){
  #notebook #notebookStage #nbBook .slot{min-height:calc(37px / var(--nb-scale))!important}
  #notebook #notebookStage #nbBook .keyhint{font-size:max(22px,calc(12.5px / var(--nb-scale)))}
+ #notebook #notebookStage #nbBook .tabs{top:55px;gap:0}
+ #notebook #notebookStage #nbBook .tab{height:max(148px,calc(52px / var(--nb-scale)));letter-spacing:0;white-space:nowrap}
 }

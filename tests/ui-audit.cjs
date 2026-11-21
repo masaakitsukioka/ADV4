@@ -25,6 +25,11 @@ const MEASURE=()=>{
  for(const e of all){
   const r=e.getBoundingClientRect(),s=getComputedStyle(e);
   const ownText=[...e.childNodes].some(n=>n.nodeType===3&&n.textContent.trim());
+  if(e.matches('#nbTabs .tab')&&ownText){
+   const node=[...e.childNodes].find(n=>n.nodeType===3&&n.textContent.trim()),range=document.createRange(),centres=[];
+   for(let i=0;i<node.length;i++){if(!node.textContent[i].trim())continue;range.setStart(node,i);range.setEnd(node,i+1);const c=range.getBoundingClientRect();centres.push(c.left+c.width/2)}
+   if(centres.length>1&&Math.max(...centres)-Math.min(...centres)>2)out.clipped.push(label(e)+' 縦書きが複数列に折り返し');
+  }
   if(ownText)e.dataset.auditFont='1';
   if(ownText&&!(e.querySelector&&e.querySelector('img')&&parseFloat(s.fontSize)===0)){out.texts++;
    const stage=e.closest('#mangaStage,#notebookStage'),stageScale=stage?parseFloat(stage.style.getPropertyValue(stage.id==='notebookStage'?'--nb-scale':'--manga-scale'))||1:1;const fs=parseFloat(s.fontSize)*stageScale;if(fs<12){const item=label(e)+' '+fs.toFixed(1)+'px'+(e.closest('.nb-phone')?'（PHS本体・装飾）':'');if(e.closest('#nbBook .head,#nbBook .rn,#nbBook .legend,#nbBook .new,#nbBook .newmark,#nbBook svg.dirt,#paperGrid'))out.approved.push('見本指定の副次情報 '+item);else out.small.push(item)}
@@ -67,7 +72,7 @@ if(require.main===module)(async()=>{
   page.on('pageerror',e=>errs.push(e.message));page.on('console',m=>{if(m.type()==='error')errs.push('console: '+m.text())});
   page.on('requestfailed',r=>{const e=r.failure()?.errorText||'';if(!e.includes('ERR_ABORTED'))errs.push('request: '+r.url().replace(URL,'')+' '+e)});
   page.on('response',r=>{if(r.status()>=400)bad.push(r.status()+' '+r.url().replace(URL,''))});
-  await page.goto(URL);await page.evaluate(()=>document.fonts.ready);if(process.env.QA_INSETS){const insets={'852x340':[59,21],'912x420':[62,21],'956x440':[62,21]};const [side,bottom]=insets[w+'x'+h]||[0,0];await page.evaluate(({side,bottom})=>{mangaSafeArea.style.padding=`0 ${side}px ${bottom}px ${side}px`;fitManga()},{side,bottom})}await page.waitForTimeout(400);
+  await page.goto(URL);await page.evaluate(()=>document.fonts.ready);if(process.env.QA_INSETS){const insets={'852x340':[59,21],'912x356':[62,21],'912x420':[62,21],'956x440':[62,21]};const [side,bottom]=insets[w+'x'+h]||[0,0];await page.evaluate(({side,bottom})=>{mangaSafeArea.style.padding=`0 ${side}px ${bottom}px ${side}px`;fitManga()},{side,bottom})}await page.waitForTimeout(400);
   const cdp=await ctx.newCDPSession(page);await cdp.send('DOM.enable');await cdp.send('CSS.enable');
   const vp=`${w}x${h}`;report[vp]={name,states:{},errors:errs,http:bad};
   // 同一の文字・書体・太さの測定結果は、このロード済みページ内で再利用する。

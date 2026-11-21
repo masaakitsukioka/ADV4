@@ -34,6 +34,13 @@ function positionDeductionPanel(){
  const panel=$('panel');if(!deduceStage.classList.contains('deduce-active')||deduceVisualFinished)return;
  const portrait=innerWidth<=700&&innerHeight>innerWidth,scene=$('scene');
  const cx=scene.offsetLeft+scene.offsetWidth/2,cy=scene.offsetTop+scene.offsetHeight/2;
+ panel.style.removeProperty('width');
+ if(panel.classList.contains('deduce-compose')&&innerHeight<=460&&!portrait){
+  const scale=parseFloat(deduceStage.style.getPropertyValue('--manga-scale'))||1,stage=deduceStage.getBoundingClientRect(),actor=$('harukiCard').getBoundingClientRect();
+  const left=Math.max(scene.offsetLeft+30,(actor.right-stage.left+4)/scale),right=scene.offsetLeft+scene.offsetWidth-30;
+  panel.style.left=left+'px';panel.style.width=Math.max(0,right-left)+'px';panel.style.top=(scene.offsetTop+12)+'px';
+  panel.style.removeProperty('--pool-inset');panel.style.removeProperty('--confirm-indent');panel.classList.remove('avoid-dialogue','avoid-actor-only');return;
+ }
  panel.style.left=(cx-panel.offsetWidth/2)+'px';
  const minTop=portrait?210:scene.offsetTop+28;
  const maxBottom=portrait?scene.offsetTop+scene.offsetHeight-20:Math.min(scene.offsetTop+scene.offsetHeight-28,$('harukiCard').offsetTop+16);
@@ -44,7 +51,7 @@ function positionDeductionPanel(){
 }
 function presentMangaEnding(){
  deduceStage.classList.add('manga-ending','deduce-resolved');monoLayer.appendChild($('panel'));$('panel').classList.add('ending-card');
- const panel=$('panel'),scene=$('scene');panel.style.left=(scene.offsetLeft+(scene.offsetWidth-panel.offsetWidth)/2)+'px';panel.style.top=(scene.offsetTop+(scene.offsetHeight-panel.offsetHeight)/2)+'px';scheduleDeduceMarks();
+ const panel=$('panel'),scene=$('scene');panel.style.removeProperty('width');panel.style.left=(scene.offsetLeft+(scene.offsetWidth-panel.offsetWidth)/2)+'px';panel.style.top=(scene.offsetTop+(scene.offsetHeight-panel.offsetHeight)/2)+'px';scheduleDeduceMarks();
 }
 function scheduleDeduceMarks(){if(!redFrame)redFrame=requestAnimationFrame(updateDeduceMarks)}
 function updateDeduceMarks(){
@@ -56,7 +63,7 @@ function updateDeduceMarks(){
 }
 const markObserver=new MutationObserver(()=>scheduleDeduceMarks());markObserver.observe($('panel'),{attributes:true,subtree:true,childList:true,attributeFilter:['class','style']});window.addEventListener('resize',()=>{if(deduceStage.classList.contains('manga-ending'))presentMangaEnding();else positionDeductionPanel();scheduleDeduceMarks()});
 function setDeduceTone(){tone.dataset.room=state.room;tone.dataset.status='loading';tone.onload=()=>{tone.dataset.status='ready'};tone.onerror=()=>{tone.dataset.status='fallback'};tone.src='assets/backgrounds/'+state.room+'-tone.png';$('scene').dataset.lighting='deduction-off'}
-function resetMangaDeduction(){deduceVisualGeneration++;deduceVisualFinished=false;deduceStage.classList.remove('deduce-intro','deduce-active','deduce-correct','deduce-finish','deduce-question-out','deduce-question-in','deduce-new-intensity','deduce-resolved','manga-ending');$('deduceRedMarks').replaceChildren();side.replaceChildren();$('panel').classList.remove('ending-card','avoid-dialogue','avoid-actor-only');$('panel').style.removeProperty('--pool-inset');$('panel').style.removeProperty('--confirm-indent');$('panel').style.removeProperty('left');$('panel').style.removeProperty('top');$('deductionResult').classList.add('hidden');tone.removeAttribute('src');tone.dataset.status='idle'}
+function resetMangaDeduction(){deduceVisualGeneration++;deduceVisualFinished=false;deduceStage.classList.remove('deduce-intro','deduce-active','deduce-correct','deduce-finish','deduce-question-out','deduce-question-in','deduce-new-intensity','deduce-resolved','manga-ending');$('deduceRedMarks').replaceChildren();side.replaceChildren();$('panel').classList.remove('ending-card','avoid-dialogue','avoid-actor-only');$('panel').style.removeProperty('--pool-inset');$('panel').style.removeProperty('--confirm-indent');$('panel').style.removeProperty('left');$('panel').style.removeProperty('top');$('panel').style.removeProperty('width');$('deductionResult').classList.add('hidden');tone.removeAttribute('src');tone.dataset.status='idle'}
 function beginMangaDeduction(){
  const token=++deduceVisualGeneration;deduceVisualFinished=false;setDeduceTone();refreshDeduceSide();deduceStage.classList.remove('deduce-correct','deduce-finish');
  const reduced=presentationReduced();deduceStage.classList.add('deduce-intro');

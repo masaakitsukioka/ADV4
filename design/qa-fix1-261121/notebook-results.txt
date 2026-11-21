@@ -1,0 +1,16 @@
+PASS chromium 852 340 tabs, real names, toast and dialogue
+PASS chromium 912 356 tabs, real names, toast and dialogue
+PASS chromium 667 375 tabs, real names, toast and dialogue
+PASS chromium 812 375 tabs, real names, toast and dialogue
+PASS chromium 852 393 tabs, real names, toast and dialogue
+PASS chromium 912 420 tabs, real names, toast and dialogue
+PASS chromium 1180 820 tabs, real names, toast and dialogue
+PASS chromium 1920 1080 tabs, real names, toast and dialogue
+PASS webkit 852 340 tabs, real names, toast and dialogue
+PASS webkit 912 356 tabs, real names, toast and dialogue
+PASS webkit 667 375 tabs, real names, toast and dialogue
+PASS webkit 812 375 tabs, real names, toast and dialogue
+PASS webkit 852 393 tabs, real names, toast and dialogue
+PASS webkit 912 420 tabs, real names, toast and dialogue
+PASS webkit 1180 820 tabs, real names, toast and dialogue
+PASS webkit 1920 1080 tabs, real names, toast and dialogue
