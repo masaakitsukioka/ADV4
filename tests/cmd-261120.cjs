@@ -2,7 +2,7 @@ const fs=require('fs'),path=require('path');const out=process.env.OUT||path.reso
 require('./browser-harness.cjs')(async(page,assert)=>{
  const results=[];
  for(const [width,height] of [[1920,1080],[1280,720],[1024,768],[768,1024],[844,390],[667,375],[390,844],[375,667],[360,640]]){
- await page.setViewportSize({width,height});await page.evaluate(()=>{commandSelection=null;state.mode='exploration';closeDialogueLayer();render()});await page.mouse.move(1,1);await page.waitForTimeout(200);
+ await page.setViewportSize({width,height});if(height>width){await page.waitForTimeout(100);assert(await page.locator('#rotateNotice').isVisible());assert(await page.locator('#game').evaluate(e=>e.inert));await page.setViewportSize({width:844,height:390});await page.waitForTimeout(100);continue}await page.evaluate(()=>{commandSelection=null;state.mode='exploration';closeDialogueLayer();render()});await page.mouse.move(1,1);await page.waitForTimeout(200);
  const rects=()=>page.evaluate(()=>[...$('commandRoots').children].map(b=>({kind:b.dataset.command,rect:b.getBoundingClientRect().toJSON(),font:[...b.children].map(c=>getComputedStyle(c).fontSize)})));
  const before=await rects();await page.locator('[data-command="investigate"]').click();await page.waitForTimeout(800);const after=await rects();
  for(let i=0;i<6;i++)if(i!==2)for(const k of ['x','y','width','height'])assert(Math.abs(before[i].rect[k]-after[i].rect[k])<.02,`${width}: ${before[i].kind} ${k} moved`);

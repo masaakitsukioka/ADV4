@@ -13,14 +13,12 @@ document.addEventListener('error',e=>{if(e.target.tagName==='IMG')e.target.class
 // centred in the visual viewport and use symmetric margins for an asymmetric notch.
 const mangaSafeArea=document.createElement('div');mangaSafeArea.id='mangaSafeArea';mangaSafeArea.setAttribute('aria-hidden','true');mangaSafeArea.style.cssText='position:fixed;left:0;top:0;width:0;height:0;visibility:hidden;pointer-events:none;padding:env(safe-area-inset-top, 0px) env(safe-area-inset-right, 0px) env(safe-area-inset-bottom, 0px) env(safe-area-inset-left, 0px)';document.body.appendChild(mangaSafeArea);
 function fitManga(){
- const portrait=innerWidth<=700&&innerHeight>innerWidth;
- if(portrait){mangaStage.style.removeProperty('left');mangaStage.style.removeProperty('top');mangaStage.style.setProperty('--manga-scale',Math.min(innerWidth/900,innerHeight/1950));renderManga();return}
  const vv=window.visualViewport,w=vv?.width||innerWidth,h=vv?.height||innerHeight,x=vv?.offsetLeft||0,y=vv?.offsetTop||0,s=getComputedStyle(mangaSafeArea);
  const inset=side=>parseFloat(s.getPropertyValue('padding-'+side))||0;
  const horizontal=Math.max(0,inset('left')-x,inset('right')-(innerWidth-x-w));
  const vertical=Math.max(0,inset('top')-y,inset('bottom')-(innerHeight-y-h));
  const safeWidth=Math.max(0,w-2*horizontal),safeHeight=Math.max(0,h-2*vertical);
- mangaStage.style.left=(x+w/2)+'px';mangaStage.style.top=(y+h/2)+'px';mangaStage.style.setProperty('--manga-scale',Math.min(safeWidth/1920,safeHeight/1080));renderManga();fitCrowdedCommands();
+ const scale=Math.min(safeWidth/1920,safeHeight/1080);$('game').style.setProperty('--paper-scale',scale);mangaStage.style.left=(x+w/2)+'px';mangaStage.style.top=(y+h/2)+'px';mangaStage.style.setProperty('--manga-scale',scale);renderManga();fitCrowdedCommands();
 }
 function renderManga(){
  const deducing=typeof deductionActive!=='undefined'&&deductionActive;
@@ -106,5 +104,5 @@ function commandKeyNavigation(e){
 }
 let commandPointer=null;
 
-document.addEventListener('keydown',commandKeyNavigation);window.addEventListener('resize',fitManga);window.visualViewport?.addEventListener('resize',fitManga);window.visualViewport?.addEventListener('scroll',fitManga);
+document.addEventListener('keydown',commandKeyNavigation);window.addEventListener('resize',fitManga);window.addEventListener('orientationchange',fitManga);window.visualViewport?.addEventListener('resize',fitManga);window.visualViewport?.addEventListener('scroll',fitManga);
 fitManga();render();

@@ -1,0 +1,7 @@
+{
+  "name": "サイカチADV 消えたスケッチ",
+  "short_name": "サイカチADV",
+  "start_url": "./",
+  "display": "fullscreen",
+  "orientation": "landscape"
+}

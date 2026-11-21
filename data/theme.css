@@ -97,12 +97,7 @@ body,button,input,select,.line,.panel,.nb-book,#notebook button{font-family:var(
 #game .asset-fallback{background:#808080;color:var(--t-paper);width:100%;height:100%;align-content:center;text-align:center}
 
 /* ---- スマホ縦：話している1人だけを中央に出す --------------------------- */
-@media (orientation:portrait) and (max-width:700px){
- #characterStage{justify-content:center!important}
- #characterStage .character-card{position:absolute!important;left:50%!important;right:auto!important;transform:translateX(-50%)!important;transition:opacity .15s}
- #characterStage .character-card:not(.active){opacity:0!important;visibility:hidden}
- #game.deduction-layout .panel{inset:2% 4% calc(var(--message-height) + 2%)}
-}
+
 
 /* ---- 手帳：設定欄 -------------------------------------------------- */
 .nb-settings{display:grid;gap:12px;margin:0 0 18px;padding:0 0 16px;border-bottom:1px dashed var(--t-line)}
@@ -233,26 +228,7 @@ body,button,input,select,.line,.panel,.nb-book,#notebook button{font-family:var(
  #game>.panel.title-load #panelBody p{grid-column:1/-1;font-size:14px;margin:2px 0}
  #commandMain{top:76px;left:3%;width:170px;padding:8px 10px}#commandDetail{top:76px;left:calc(3% + 174px);max-height:calc(100dvh - 92px);width:calc(94vw - 174px);padding:8px 10px}
 }
-@media(orientation:portrait) and (max-width:700px){
- .dialogue,.dialogue.open{padding:12px;grid-template-columns:58px minmax(0,1fr);gap:10px}#line{font-size:17px}
- #notebook{padding:20px 43px 12px 8px}.nb-book{padding:9px}.nb-left{padding:14px 8px 8px}.nb-right{padding:12px 9px 54px}.nb-date{font-size:12px;margin-top:11px;gap:5px}.nb-day{font-size:25px}.nb-date small{font-size:12px}.nb-place{font-size:12px;margin:5px 0}
- #nbNav{display:grid;grid-template-columns:1fr 1fr;gap:1px 6px;padding:0}#nbNav .nb-entry{min-height:40px;padding:3px 2px;gap:4px;flex-wrap:wrap}.nb-entry strong{font-size:14px}.nb-entry small{font-size:12px;margin-left:18px;width:100%;line-height:1.35}.nb-number{font-size:12px;width:14px}.nb-keys{display:none}
- .nb-tabs{right:-36px;top:30px}.nb-tab{min-width:36px;min-height:57px;font-size:12px!important;padding:5px 7px}.nb-close{font-size:14px!important;right:12px;bottom:12px;min-height:36px}
- #notebook .panel h2{font-size:21px}#notebook #panelBody p{font-size:15px}#notebook #panelBody button{min-height:40px;font-size:14px}
- .nb-special{padding:12px 9px 55px}.nb-special-head h2 small{font-size:12px}.nb-special-head button{min-height:36px}
- .nb-node small{font-size:12px}.nb-node strong{font-size:17px}.nb-legend,.nb-chart-help{font-size:12px!important;line-height:1.5}
- .nb-scroll-cue{right:10px;bottom:53px}
- .nb-lcd.enlarged{min-height:205px;padding:9px;font-size:16px}.enlarged .nb-lcd-bar,.enlarged .nb-soft,.enlarged .nb-mail-count{font-size:12px}.enlarged .nb-soft{gap:2px;flex-wrap:wrap}.enlarged .nb-mail-body{font-size:20px}.enlarged .nb-mail-from{font-size:15px}.nb-mail-caption{font-size:12px}.nb-phone{height:180px;flex-basis:180px}
- #game.deduction-layout .panel{inset:2% 3% auto;max-height:calc(98dvh - var(--message-height) - 14px);padding:10px}
- #game.deduction-layout .panel h2{font-size:18px}
- #game.deduction-layout .panel .answer-pool{grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;padding:4px}
- #game.deduction-layout .panel .answer-option{font-size:14px;min-height:36px;padding:3px 1px}
- #game.deduction-layout .panel .answer-slot{font-size:15px;min-height:36px}
- #game.deduction-layout .panel .answer-confirm{font-size:15px;min-height:40px}
- #opening h1{font-size:34px}#opening #openingSynopsis{font-size:18px}
- #commandMain{top:85px;left:3%;width:160px}#commandDetail{top:85px;left:calc(3% + 164px);width:calc(94vw - 164px);max-height:calc(100dvh - 102px)}
- #commandChildren button{white-space:normal}
-}
+
 @media(max-height:460px) and (min-width:601px){
  .nb-left{padding:4px 10px 0}.nb-date{margin-top:8px;padding-bottom:2px;line-height:1.3}.nb-stamp{height:28px;flex-basis:28px}.nb-place{line-height:18px;margin:3px 0}
 }
@@ -265,13 +241,7 @@ body,button,input,select,.line,.panel,.nb-book,#notebook button{font-family:var(
  #game.deduction-layout .panel .answer-confirm{margin-top:3px}
 }
 .nb-face{width:calc(64 * var(--ui));height:calc(64 * var(--ui));font-size:calc(29 * var(--ui))}
-@media(orientation:portrait) and (min-width:701px) and (max-width:900px){
- .nb-spread{display:flex;flex-direction:column}.nb-left{flex:none;border-right:0;border-bottom:1px solid var(--t-line);padding:24px 24px 12px;box-shadow:none}.nb-right{flex:1;min-height:0;padding:20px 24px 70px}
- .nb-date{margin-top:20px}.nb-place{font-size:14px;margin:8px 0}
- #nbNav{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px 12px}
- #nbNav .nb-entry{min-height:48px;flex-wrap:wrap;gap:6px}.nb-entry strong{font-size:22px}.nb-entry small{font-size:14px}.nb-keys{display:none}
- .nb-tabs{right:-36px}.nb-special-head h2 small{font-size:14px!important}
-}
+
 @media(max-height:460px) and (min-width:601px){.nb-face{width:52px;height:52px;font-size:24px}}
 @media(prefers-reduced-motion:reduce){.dialogue,.dialogue.open{transition:none}}
 /* ト書きは名前欄を使わず本文を全幅にする（端末別の2列指定より優先）。 */
@@ -279,4 +249,4 @@ body,button,input,select,.line,.panel,.nb-book,#notebook button{font-family:var(
 /* 続きの案内は本文に重ねず、操作札と並ぶ専用の下余白へ置く。 */
 .nb-scroll-cue{left:calc(28 * var(--ui));right:auto;bottom:28px}
 @media(max-height:460px) and (min-width:601px){.nb-scroll-cue{left:14px;bottom:20px}}
-@media(orientation:portrait) and (max-width:700px){.nb-scroll-cue{left:10px;bottom:20px}}
+

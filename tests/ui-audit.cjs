@@ -10,7 +10,7 @@ const VIEWPORTS=[[1920,1080,'PC-FHD'],[1280,720,'PC-HD'],[1024,768,'PC-4:3'],[76
 
 const MEASURE=()=>{
  const vw=innerWidth,vh=innerHeight,out={offscreen:[],clipped:[],small:[],tap:[],obscured:[],contrast:[],dialogue:[],approved:[],texts:0};
- const visible=e=>{const s=getComputedStyle(e);if(s.display==='none'||s.visibility==='hidden'||+s.opacity===0)return false;const r=e.getBoundingClientRect();if(r.width<1||r.height<1)return false;let p=e;while(p){const ps=getComputedStyle(p);if(+ps.opacity===0||ps.visibility==='hidden'||ps.display==='none')return false;p=p.parentElement}return true};
+ const visible=e=>{if(e.closest('[inert]'))return false;const s=getComputedStyle(e);if(s.display==='none'||s.visibility==='hidden'||+s.opacity===0)return false;const r=e.getBoundingClientRect();if(r.width<1||r.height<1)return false;let p=e;while(p){const ps=getComputedStyle(p);if(+ps.opacity===0||ps.visibility==='hidden'||ps.display==='none')return false;p=p.parentElement}return true};
  const label=e=>{let s=e.tagName.toLowerCase();if(e.id)s+='#'+e.id;else if(e.className&&typeof e.className==='string')s+='.'+e.className.trim().split(/\s+/).slice(0,2).join('.');const t=(e.innerText||e.getAttribute('aria-label')||'').trim().replace(/\s+/g,' ').slice(0,24);return s+(t?' 「'+t+'」':'')};
  const parse=c=>{const m=c.match(/rgba?\(([^)]+)\)/);if(!m)return null;const v=m[1].split(/[ ,/]+/).filter(Boolean).map(Number);return {r:v[0],g:v[1],b:v[2],a:v.length>3?v[3]:1}};
  const lum=c=>{const f=x=>{x/=255;return x<=.03928?x/12.92:Math.pow((x+.055)/1.055,2.4)};return .2126*f(c.r)+.7152*f(c.g)+.0722*f(c.b)};
@@ -83,6 +83,7 @@ if(require.main===module)(async()=>{
    const file=`${vp}-${id}.png`;await page.screenshot({path:path.join(OUT,file)});m.file=file;report[vp].states[id]=m};
   const ev=(f,arg)=>page.evaluate(f,arg);
   const drain=()=>ev(()=>{for(let i=0;i<400&&state.mode==='dialogue'&&!choicesPending;i++)advance()});
+  if(h>w){if(!await page.locator('#rotateNotice').isVisible()||!await page.locator('#game').evaluate(e=>e.inert))throw new Error('portrait rotation notice or input lock missing');await snap('00-rotate','画面を横にしてください');await ctx.close();console.log(vp,'portrait notice verified');continue}
   await ev(()=>{textSettings.index=3});
   await snap('01-title','タイトル');
   await ev(()=>openingLoad());await snap('02-load','途中から（タイトル）');
