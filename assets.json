@@ -74,6 +74,18 @@
       "tease": "assets/characters/saiji_tease.png",
       "question": "assets/characters/saiji_question.png",
       "annoyed": "assets/characters/saiji_annoyed.png"
+    },
+    "nakako": {
+      "normal": "assets/characters/nakako_normal.png",
+      "surprised": "assets/characters/nakako_surprised.png",
+      "thinking": "assets/characters/nakako_thinking.png",
+      "confident": "assets/characters/nakako_confident.png",
+      "smile": "assets/characters/nakako_smile.png",
+      "angry": "assets/characters/nakako_angry.png",
+      "down": "assets/characters/nakako_down.png",
+      "annoyed": "assets/characters/nakako_annoyed.png",
+      "rage": "assets/characters/nakako_rage.png",
+      "teary": "assets/characters/nakako_teary.png"
     }
   },
   "emotionMap": {
@@ -230,6 +242,58 @@
         "assets/characters/talk/saiji-annoyed-mouth-1.png",
         "assets/characters/talk/saiji-annoyed-mouth-2.png"
       ]
+    },
+    "nakako": {
+      "normal": [
+        null,
+        "assets/characters/talk/nakako-normal-mouth-1.png",
+        "assets/characters/talk/nakako-normal-mouth-2.png"
+      ],
+      "surprised": [
+        null,
+        "assets/characters/talk/nakako-surprised-mouth-1.png",
+        "assets/characters/talk/nakako-surprised-mouth-2.png"
+      ],
+      "thinking": [
+        null,
+        "assets/characters/talk/nakako-thinking-mouth-1.png",
+        "assets/characters/talk/nakako-thinking-mouth-2.png"
+      ],
+      "confident": [
+        null,
+        "assets/characters/talk/nakako-confident-mouth-1.png",
+        "assets/characters/talk/nakako-confident-mouth-2.png"
+      ],
+      "smile": [
+        null,
+        "assets/characters/talk/nakako-smile-mouth-1.png",
+        "assets/characters/talk/nakako-smile-mouth-2.png"
+      ],
+      "angry": [
+        null,
+        "assets/characters/talk/nakako-angry-mouth-1.png",
+        "assets/characters/talk/nakako-angry-mouth-2.png"
+      ],
+      "down": [
+        null,
+        "assets/characters/talk/nakako-down-mouth-1.png",
+        "assets/characters/talk/nakako-down-mouth-2.png"
+      ],
+      "annoyed": [
+        null,
+        "assets/characters/talk/nakako-annoyed-mouth-1.png",
+        "assets/characters/talk/nakako-annoyed-mouth-2.png"
+      ],
+      "rage": [
+        null,
+        "assets/characters/talk/nakako-rage-mouth-1.png",
+        "assets/characters/talk/nakako-rage-mouth-2.png"
+      ],
+      "teary": [
+        null,
+        "assets/characters/talk/nakako-teary-mouth-1.png",
+        "assets/characters/talk/nakako-teary-mouth-2.png"
+      ]
     }
   },
   "blinkFrames": {
@@ -306,6 +370,58 @@
         "assets/characters/blink/saiji-annoyed-eyes-1.png",
         "assets/characters/blink/saiji-annoyed-eyes-2.png"
       ]
+    },
+    "nakako": {
+      "normal": [
+        null,
+        "assets/characters/blink/nakako-normal-eyes-1.png",
+        "assets/characters/blink/nakako-normal-eyes-2.png"
+      ],
+      "surprised": [
+        null,
+        "assets/characters/blink/nakako-surprised-eyes-1.png",
+        "assets/characters/blink/nakako-surprised-eyes-2.png"
+      ],
+      "thinking": [
+        null,
+        "assets/characters/blink/nakako-thinking-eyes-1.png",
+        "assets/characters/blink/nakako-thinking-eyes-2.png"
+      ],
+      "confident": [
+        null,
+        "assets/characters/blink/nakako-confident-eyes-1.png",
+        "assets/characters/blink/nakako-confident-eyes-2.png"
+      ],
+      "smile": [
+        null,
+        "assets/characters/blink/nakako-smile-eyes-1.png",
+        "assets/characters/blink/nakako-smile-eyes-2.png"
+      ],
+      "angry": [
+        null,
+        "assets/characters/blink/nakako-angry-eyes-1.png",
+        "assets/characters/blink/nakako-angry-eyes-2.png"
+      ],
+      "down": [
+        null,
+        "assets/characters/blink/nakako-down-eyes-1.png",
+        "assets/characters/blink/nakako-down-eyes-2.png"
+      ],
+      "annoyed": [
+        null,
+        "assets/characters/blink/nakako-annoyed-eyes-1.png",
+        "assets/characters/blink/nakako-annoyed-eyes-2.png"
+      ],
+      "rage": [
+        null,
+        "assets/characters/blink/nakako-rage-eyes-1.png",
+        "assets/characters/blink/nakako-rage-eyes-2.png"
+      ],
+      "teary": [
+        null,
+        "assets/characters/blink/nakako-teary-eyes-1.png",
+        "assets/characters/blink/nakako-teary-eyes-2.png"
+      ]
     }
   },
   "timeOfDay": "data/timeofday-params.json",
@@ -323,6 +439,23 @@
       "からかい": "tease",
       "疑問": "question",
       "呆れ": "annoyed"
+    },
+    "nakako": {
+      "通常": "normal",
+      "驚き": "surprised",
+      "思案": "thinking",
+      "困惑": "thinking",
+      "確信": "confident",
+      "納得": "confident",
+      "自信": "confident",
+      "笑顔": "smile",
+      "怒り": "angry",
+      "落ち込み": "down",
+      "悲しみ": "down",
+      "呆れ": "annoyed",
+      "激怒": "rage",
+      "泣きそう": "teary",
+      "涙": "teary"
     }
   },
   "notebook": {
@@ -335,6 +468,15 @@
       "haruki": "art_sources/rough/chibi/haruki.png",
       "saiji": "art_sources/rough/chibi/saiji.png",
       "nakako": "art_sources/rough/chibi/nakako.png"
+    }
+  },
+  "wetFrames": {
+    "nakako": {
+      "teary": [
+        null,
+        "assets/characters/blink/nakako-teary-wet-1.png",
+        "assets/characters/blink/nakako-teary-wet-2.png"
+      ]
     }
   }
 }

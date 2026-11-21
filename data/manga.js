@@ -38,6 +38,7 @@ function fitManga(){
  renderManga();fitCrowdedCommands();if(typeof positionDeductionPanel==='function')positionDeductionPanel();if(typeof scheduleDeduceMarks==='function')scheduleDeduceMarks();
 }
 
+let lastPortraitDay=null;
 function renderManga(){
  const deducing=typeof deductionActive!=='undefined'&&deductionActive;
  const mailDialogue=typeof notebookOpen!=='undefined'&&notebookOpen&&state.mode==='dialogue';
@@ -47,12 +48,13 @@ function renderManga(){
  if(deducing&&$('panel').parentElement!==content)content.appendChild($('panel'));
  else if(!deducing&&mangaStage.contains($('panel')))$('game').appendChild($('panel'));
  const c=typeof calendar==='function'?calendar():{label:'放課後'},label=c.label;
+ if(lastPortraitDay!==null&&c.day!==lastPortraitDay)resetRightCharacter();lastPortraitDay=c.day;
  const key=({'朝':'asa','昼':'hiru','放課後':'houkago','夕':'houkago','夜':'yoru'})[label]||'hiru';
  $('timeCircle').src='assets/ui/manga/time-circle-'+key+'.png';$('timeCircle').alt=label;
  $('timeCircle').style.left=`calc(${({asa:1348,hiru:1420,houkago:1492,yoru:1564})[key]}px + var(--extra-x))`;
  $('placeStamp').src='assets/ui/manga/stamp-place-'+state.room+'.png';$('placeStamp').alt=room().name;
  mangaStage.classList.toggle('commands-disabled',state.mode!=='exploration');
- if(state.mode==='exploration'){$('characterStage').classList.remove('hidden');if(!document.querySelector('#characterStage .active'))$('harukiCard').classList.add('active');for(const id of ['haruki','saiji'])if(!blinkTimers.has(id))scheduleBlink(id)}
+ if(state.mode==='exploration'){$('characterStage').classList.remove('hidden');if(!document.querySelector('#characterStage .active'))$('harukiCard').classList.add('active');for(const id of visibleCharacterIds())if(!blinkTimers.has(id)&&!(id==='nakako'&&wetTimer))scheduleBlink(id)}
  mangaStage.classList.toggle('has-dialogue',!$('dialogue').classList.contains('hidden'));
  const unread=(state.notebook?.received||[]).filter(id=>!state.notebook.read.includes(id)).length;
  $('menu').classList.toggle('has-mail',unread>0);

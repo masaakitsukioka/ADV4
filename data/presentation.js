@@ -21,11 +21,14 @@ function showItemGraphic(key,label){
 }
 function itemGraphicFor(item){return SCENARIO.items[item]?.graphic?.[state.flags.okaboChecked?'examined':'closed']||SCENARIO.items[item]?.graphic?.closed}
 const blinkTimers=new Map(),portraitTokens=new Map();
+let wetTimer=null,wetGeneration=0;
+function stopWet(){wetGeneration++;clearTimeout(wetTimer);wetTimer=null}
+function startWet(id){stopWet();if(presentationReduced())return;const generation=wetGeneration,token=portraitTokens.get(id);let frame=1;const valid=()=>generation===wetGeneration&&portraitTokens.get(id)===token&&rightActor===id;function tick(){if(!valid())return;$(id+'Talk').dataset.animation='wet';displayPortraitFrame(id,ASSETS.wetFrames[id].teary,frame,valid);frame=frame===1?2:1;wetTimer=setTimeout(tick,250)}wetTimer=setTimeout(tick,250)}
 function hidePortraitFrame(id){$(id+'Talk').classList.add('hidden');$(id+'Talk').dataset.frame='0';$(id+'Card').classList.remove('animating')}
-function clearBlink(id){clearTimeout(blinkTimers.get(id));blinkTimers.delete(id);portraitTokens.set(id,(portraitTokens.get(id)||0)+1)}
+function clearBlink(id){if(id==='nakako')stopWet();clearTimeout(blinkTimers.get(id));blinkTimers.delete(id);portraitTokens.set(id,(portraitTokens.get(id)||0)+1)}
 function stopTalking(){
  talkGeneration++;clearTimeout(talkTimer);talkTimer=null;
- for(const id of ['haruki','saiji']){clearBlink(id);hidePortraitFrame(id)}
+ for(const id of existingCharacterIds()){clearBlink(id);hidePortraitFrame(id)}
 }
 // Each replacement is a complete aligned portrait. Draw exactly one image.
 function drawTalkingPortrait(ctx,base,id,frame,strip,replacement){
@@ -47,12 +50,12 @@ async function displayPortraitFrame(id,paths,frame,valid){
 // Other portraits defer at the instant they would start; timers remain random.
 const blinkReservations=new Map(),portraitBounceFrames=new Map();
 function scheduleBlink(id){
- clearBlink(id);const token=portraitTokens.get(id);
+ clearBlink(id);if(id==='nakako'&&characterExpression(id,$(id+'Emotion').textContent)==='teary'){startWet(id);return}const token=portraitTokens.get(id);
  const valid=()=>portraitTokens.get(id)===token;
  const start=()=>{if(!valid())return;
   const card=$(id+'Card'),style=getComputedStyle(card);
   if($('characterStage').classList.contains('hidden')||style.visibility==='hidden'||style.display==='none'){scheduleBlink(id);return}
-  const now=performance.now(),other=id==='haruki'?'saiji':'haruki',until=blinkReservations.get(other)||0;
+  const now=performance.now(),other=id==='haruki'?rightActor:'haruki',until=blinkReservations.get(other)||0;
   if(now<until){blinkTimers.set(id,setTimeout(start,until-now+1));return}
   const twice=Math.random()<.15;
   blinkReservations.set(id,now+210+(twice?180+210:0)+400);
@@ -82,11 +85,11 @@ function bounceCharacter(id){
 }
 function finishTalking(){
  talkGeneration++;clearTimeout(talkTimer);talkTimer=null;
- for(const id of ['haruki','saiji']){hidePortraitFrame(id);scheduleBlink(id)}
+ for(const id of visibleCharacterIds()){hidePortraitFrame(id);scheduleBlink(id)}
 }
 function startTalking(name,emotion,text){
- stopTalking();const speaker=({'ハルキ':'haruki','サイジ':'saiji'})[name];
- for(const id of ['haruki','saiji'])if(id!==speaker)scheduleBlink(id);
+ stopTalking();const speaker=name==='ハルキ'?'haruki':RIGHT_ACTORS.find(actor=>actor.name===name)?.id;
+ for(const id of visibleCharacterIds())if(id!==speaker)scheduleBlink(id);
  if(!speaker||typingDone){if(speaker)scheduleBlink(speaker);return}
  const key=characterExpression(speaker,emotion),frames=ASSETS.mouthFrames?.[speaker]?.[key],generation=talkGeneration;let step=0;
  function tick(){if(generation!==talkGeneration)return;if(typingDone){finishTalking();return}

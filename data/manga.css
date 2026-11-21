@@ -182,3 +182,12 @@ body,#game{background:#f7f5ee;color:#141414}
  #game #mangaStage #commandRoots button.on{z-index:0}
  #game #mangaStage #commandRoots button:not(.on){z-index:1}
 }
+
+/* Right-hand cast share the same anchor and slide in and out. */
+#game #mangaStage #nakakoCard{left:calc(1475px + var(--extra-x))!important;top:calc(592px + var(--extra-y))!important}
+#game #mangaStage .character-card.right-offstage{display:none!important}
+#game #characterStage .right-enter .character-body{animation:rightActorIn .24s ease-out both!important}
+#game #characterStage .right-exit .character-body{animation:rightActorOut .24s ease-in both!important}
+@keyframes rightActorIn{from{translate:40% 0;opacity:0}to{translate:0 0;opacity:1}}
+@keyframes rightActorOut{from{translate:0 0;opacity:1}to{translate:40% 0;opacity:0}}
+@media(prefers-reduced-motion:reduce){#game #characterStage .right-enter .character-body,#game #characterStage .right-exit .character-body{animation:none!important}}

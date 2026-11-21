@@ -19,16 +19,16 @@ for(const room of ['classroom','corridor']){
  assert.equal(assets.scenes[room].background,reference.scenes[room].background);all.push([assets.scenes[room].background,[[1920,1080]]]);
  for(const [id,target] of Object.entries(assets.scenes[room].targets))assert.deepEqual([target.x,target.y],Array.isArray(reference.scenes[room].targets[id])?reference.scenes[room].targets[id]:Object.values(reference.scenes[room].targets[id]));
 }
-for(const person of ['haruki','saiji'])for(const mood of Object.keys(reference.characters[person])){
+for(const person of ['haruki','saiji','nakako'])for(const mood of Object.keys(reference.characters[person])){
  const file=assets.characters[person][mood];assert.equal(file,reference.characters[person][mood]);all.push([file,[[1280,1440]]]);
 }
 assert.deepEqual(assets.resolution,{width:1920,height:1080});assert.deepEqual(assets.resolution,reference.resolution);
 assert.deepEqual(assets.characterResolution,{width:1280,height:1440});assert.deepEqual(assets.characterResolution,reference.characterResolution);
 for(const [file,allowed] of all){const png=fs.readFileSync(path.join(base,file));assert.equal(png.toString('hex',0,8),'89504e470d0a1a0a');const w=png.readUInt32BE(16),h=png.readUInt32BE(20);assert(allowed.some(([aw,ah])=>w===aw&&h===ah),`${file}: unexpected ${w}x${h}`)}
-assert.equal(all.length,16);
+assert.equal(all.length,26);
 assert.deepEqual(assets.emotionOverrides,reference.emotionOverrides);assert.deepEqual(assets.emotionMap,reference.emotionMap);
-assert.deepEqual(assets.mouthFrames,reference.mouthFrames);assert.deepEqual(assets.blinkFrames,reference.blinkFrames);
-for(const kind of ['mouthFrames','blinkFrames'])for(const person of ['haruki','saiji'])for(const mood of Object.keys(reference.characters[person]))for(const file of assets[kind][person][mood].slice(1)){const png=fs.readFileSync(path.join(base,file));assert.equal(png.readUInt32BE(16),1280);assert.equal(png.readUInt32BE(20),1440)}
+assert.deepEqual(assets.mouthFrames,reference.mouthFrames);assert.deepEqual(assets.blinkFrames,reference.blinkFrames);assert.deepEqual(assets.wetFrames,reference.wetFrames);for(const file of assets.wetFrames.nakako.teary.slice(1)){const png=fs.readFileSync(path.join(base,file));assert.equal(png.readUInt32BE(16),1280);assert.equal(png.readUInt32BE(20),1440)}
+for(const kind of ['mouthFrames','blinkFrames'])for(const person of ['haruki','saiji','nakako'])for(const mood of Object.keys(reference.characters[person]))for(const file of assets[kind][person][mood].slice(1)){const png=fs.readFileSync(path.join(base,file));assert.equal(png.readUInt32BE(16),1280);assert.equal(png.readUInt32BE(20),1440)}
 for(const file of Object.values(reference.windowMasks)){const png=fs.readFileSync(path.join(base,file));assert.equal(png.readUInt32BE(16),1920);assert.equal(png.readUInt32BE(20),1080)}
 assert(!html.includes('.svg'));assert(!html.includes('🧑🏻'));assert(!html.includes('background:#181b28!important'));
 for(const size of [{width:1280,height:800},{width:844,height:390},{width:667,height:375}]){
@@ -51,5 +51,5 @@ for(const size of [{width:1280,height:800},{width:844,height:390},{width:667,hei
  requests.find(x=>x.path.endsWith('haruki_surprised.png')).onload();await Promise.resolve();assert(elements.harukiArt.src.endsWith('haruki_surprised.png'));
  run('setCharacterImage("saiji","思案")');requests.find(x=>x.path.endsWith('saiji_thinking.png')).onerror();await Promise.resolve();assert.equal(elements.saijiArt.style.display,'none');
  run('ASSETS.scenes.classroom.background="missing.png";state.room="classroom";setSceneBackground("classroom")');requests.find(x=>x.path==='missing.png').onerror();await Promise.resolve();assert.equal(elements.pixelScene.style.visibility,'visible');assert.equal(elements.scene.style.backgroundImage,'none');
- console.log('PASS: 72 PNG dimensions (70 portraits + 2 backgrounds), masks and aligned frame registrations, asset definitions, target coordinate transforms at 3 sizes, image success/failure and stale image callbacks');
+ console.log('PASS: 124 PNG dimensions (70 existing + 52 new portraits + 2 backgrounds), masks and aligned frame registrations, asset definitions, target coordinate transforms at 3 sizes, image success/failure and stale image callbacks');
 })().catch(e=>{console.error(e);process.exitCode=1});

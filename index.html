@@ -325,8 +325,40 @@ const ASSETS={characterResolution:{width:1280,height:1440},mouthFrames:{"haruki"
 function sceneAssetURL(path){return path.startsWith('assets/backgrounds/')?path+'?v=0.16.0':path}
 const imageCache=new Map();
 function loadImage(path){if(!path)return Promise.resolve(null);if(imageCache.has(path))return imageCache.get(path);const promise=new Promise(resolve=>{const im=new Image();im.onload=()=>resolve(im);im.onerror=()=>resolve(null);im.src=sceneAssetURL(path)});imageCache.set(path,promise);if(path.startsWith('assets/items/'))promise.then(()=>{if(imageCache.get(path)===promise)imageCache.delete(path)});return promise}
-function characterExpression(id,emotion){const key=ASSETS.emotionOverrides[id]?.[emotion]||ASSETS.emotionMap[emotion]||'normal';return ASSETS.characters[id]?.[key]?key:'normal'}
-function prunePortraitImages(id,key){const keep=new Set([ASSETS.characters[id]?.[key],...(ASSETS.mouthFrames[id]?.[key]||[]),...(ASSETS.blinkFrames[id]?.[key]||[])]);for(const path of imageCache.keys())if((path.startsWith('assets/characters/'+id+'_')||path.startsWith('assets/characters/talk/'+id+'-')||path.startsWith('assets/characters/blink/'+id+'-'))&&!keep.has(path))imageCache.delete(path)}
+// The right-hand cast is registered here so further characters can be added in one place.
+const RIGHT_ACTORS=[{id:'saiji',name:'サイジ'},{id:'nakako',name:'ナカコ'}];
+const NAKAKO_EXPRESSIONS=['normal','surprised','thinking','confident','smile','angry','down','annoyed','rage','teary'];
+ASSETS.characters.nakako=Object.fromEntries(NAKAKO_EXPRESSIONS.map(key=>[key,`assets/characters/nakako_${key}.png`]));
+ASSETS.mouthFrames.nakako=Object.fromEntries(NAKAKO_EXPRESSIONS.map(key=>[key,[null,1,2].map(n=>n?`assets/characters/talk/nakako-${key}-mouth-${n}.png`:null)]));
+ASSETS.blinkFrames.nakako=Object.fromEntries(NAKAKO_EXPRESSIONS.map(key=>[key,[null,1,2].map(n=>n?`assets/characters/blink/nakako-${key}-eyes-${n}.png`:null)]));
+ASSETS.wetFrames={nakako:{teary:[null,'assets/characters/blink/nakako-teary-wet-1.png','assets/characters/blink/nakako-teary-wet-2.png']}};
+ASSETS.emotionOverrides.nakako={'通常':'normal','驚き':'surprised','思案':'thinking','困惑':'thinking','確信':'confident','納得':'confident','自信':'confident','笑顔':'smile','怒り':'angry','落ち込み':'down','悲しみ':'down','呆れ':'annoyed','激怒':'rage','泣きそう':'teary','涙':'teary'};
+let rightActor='saiji',rightSwapTimer=null;
+function visibleCharacterIds(){return ['haruki',rightActor]}
+function existingCharacterIds(){return ['haruki',...RIGHT_ACTORS.map(actor=>actor.id)].filter(id=>!!$(id+'Card'))}
+function ensureRightActor(id){
+ if($(id+'Card'))return;
+ const actor=RIGHT_ACTORS.find(entry=>entry.id===id),card=$('saijiCard').cloneNode(true);
+ card.id=id+'Card';for(const node of card.querySelectorAll('[id]'))node.id=node.id.replace(/^saiji/,id);
+ card.className='character-card right-offstage';card.querySelector('.character-name').textContent=actor.name;
+ const art=card.querySelector('img');art.removeAttribute('src');art.alt=actor.name;art.style.display='none';delete art.dataset.shown;delete art.dataset.request;
+ const canvas=card.querySelector('canvas');canvas.width=canvas.height=1;canvas.classList.add('hidden');
+ card.querySelector('.asset-fallback').textContent=actor.name;card.querySelector('.emotion').textContent='通常';
+ $('characterStage').appendChild(card);setCharacterImage(id,'通常');
+}
+function switchRightActor(id,instant=false){
+ if(id===rightActor)return;ensureRightActor(id);clearTimeout(rightSwapTimer);
+ const old=rightActor;rightActor=id;
+ for(const actor of RIGHT_ACTORS){const card=$(actor.id+'Card');if(!card)continue;card.classList.remove('right-enter','right-exit');card.classList.toggle('right-offstage',actor.id!==old&&actor.id!==id)}
+ const before=$(old+'Card'),after=$(id+'Card');after.classList.remove('right-offstage');
+ if(typeof clearBlink==='function'){clearBlink(old);hidePortraitFrame(old)}
+ if(instant||matchMedia('(prefers-reduced-motion: reduce)').matches){before.classList.add('right-offstage');return}
+ before.classList.add('right-exit');after.classList.add('right-enter');
+ rightSwapTimer=setTimeout(()=>{before.classList.add('right-offstage');before.classList.remove('right-exit');after.classList.remove('right-enter')},240);
+}
+function resetRightCharacter(){switchRightActor('saiji',true)}
+function characterExpression(id,emotion){const key=ASSETS.emotionOverrides[id]?.[emotion]||(id==='nakako'?'normal':ASSETS.emotionMap[emotion])||'normal';return ASSETS.characters[id]?.[key]?key:'normal'}
+function prunePortraitImages(id,key){const keep=new Set([ASSETS.characters[id]?.[key],...(ASSETS.mouthFrames[id]?.[key]||[]),...(ASSETS.blinkFrames[id]?.[key]||[]),...(ASSETS.wetFrames?.[id]?.[key]||[])]);for(const path of imageCache.keys())if((path.startsWith('assets/characters/'+id+'_')||path.startsWith('assets/characters/talk/'+id+'-')||path.startsWith('assets/characters/blink/'+id+'-'))&&!keep.has(path))imageCache.delete(path)}
 function setCharacterImage(id,emotion,bounce=false){const key=characterExpression(id,emotion),path=ASSETS.characters[id]?.[key];const img=$(id+'Art');if(!img)return;prunePortraitImages(id,key);img.style.display='none';$(id+'Fallback').style.display='';loadImage(path).then(im=>{if(img.dataset.request!==path)return;if(im){const changed=img.dataset.shown!==path;img.src=path;img.dataset.shown=path;img.style.display='block';$(id+'Fallback').style.display='none';if(changed&&bounce&&typeof bounceCharacter==='function')bounceCharacter(id)}});img.dataset.request=path}
 function setSceneBackground(roomId){
  const path=ASSETS.scenes[roomId]?.background,scene=$('scene');
@@ -438,7 +470,7 @@ function advance(){
  cancelTextTimers();state.lineIndex++;
  if(state.lineIndex<state.dialogue.length){displayLine();return}
  const next=state.afterDialogue;state.afterDialogue=null;
- const finish=()=>{state.mode='exploration';if(next)next();else render()};
+ const finish=()=>{state.mode='exploration';if(next)next();else render();if(state.mode==='exploration'&&!deductionActive){resetRightCharacter();render()}};
  if(state.pendingDeduction||deductionActive){finish();return}
  state.mode='dialogue-out';moveOutDialogue(finish);
 }
@@ -507,7 +539,7 @@ function selectSaveSlot(action,slot){
 }
 function restoreSave(saved){if(typeof resetNotebookUI==='function')resetNotebookUI();panelRevision++;
  let checked;try{checked=Saves.validate(saved)}catch(e){saveMessage(e.message);return}
- if(typeof resetPresentation==='function')resetPresentation();if(typeof deductionActive!=='undefined'){deductionActive=false;deductionTransitionGeneration++;$('deductionStage').classList.add('hidden')}
+ if(typeof resetPresentation==='function')resetPresentation();resetRightCharacter();if(typeof deductionActive!=='undefined'){deductionActive=false;deductionTransitionGeneration++;$('deductionStage').classList.add('hidden')}
  // 検証を完了してから置換。入室イベントや訪問回数更新は呼び出さない。
  $('opening').classList.add('hidden');
  closeDialogueLayer();choicesPending=false;typingDone=false;displayedChars=0;
@@ -522,12 +554,13 @@ function restoreSave(saved){if(typeof resetNotebookUI==='function')resetNotebook
 let choicesPending=false;
 
 function resetCharacterExpressions(){
- if(typeof stopTalking==='function')stopTalking();
+ if(typeof stopTalking==='function')stopTalking();resetRightCharacter();
  for(const id of ['haruki','saiji']){$(id+'Emotion').textContent='通常';setCharacterImage(id,'通常')}
 }
 function updateCharacterCards(speaker,emotion){
- for(const [name,id] of [['ハルキ','haruki'],['サイジ','saiji']]){
-  $(id+'Card').classList.toggle('active',name===speaker);
+ const actor=RIGHT_ACTORS.find(entry=>entry.name===speaker);if(actor)switchRightActor(actor.id);
+ for(const [name,id] of [['ハルキ','haruki'],...RIGHT_ACTORS.map(actor=>[actor.name,actor.id])]){
+  if(!$(id+'Card'))continue;$(id+'Card').classList.toggle('active',name===speaker);
   if(name!==speaker)continue;
   const shown=characterExpression(id,emotion)!=='normal'||emotion==='通常'?emotion:'通常';$(id+'Emotion').textContent=shown;setCharacterImage(id,shown,true);
  }
