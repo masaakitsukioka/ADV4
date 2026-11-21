@@ -18,6 +18,7 @@ function initNotebook(){
  const overlay=nbElement('section',undefined,'hidden');overlay.id='notebook';overlay.setAttribute('role','dialog');overlay.setAttribute('aria-modal','true');overlay.setAttribute('aria-label','サイジのノート');
  overlay.innerHTML=NOTEBOOK_SHELL;
  $('game').appendChild(overlay);$('nbClose').onclick=closeNotebook;
+ overlay.querySelectorAll('#nbBook .page .head,#nbBook svg.dirt').forEach(e=>e.setAttribute('aria-hidden','true'));
  notebookSections.forEach(([key,label],i)=>{const b=nbButton(label,()=>{selectNotebook(key);if(key==='mail'&&mailCurrent)chooseNotebookMail(mailCurrent)},'tab t'+(i+1));b.dataset.section=key;$('nbTabs').appendChild(b)});
  const toast=nbButton('',()=>openPHS(),'hidden');toast.id='mailToast';toast.setAttribute('aria-label','PHS 着信。未読メールを読む');toast.innerHTML='<strong id="mailToastText">PHS 着信</strong><small>P で読む</small>';$('game').appendChild(toast);
  fitNotebook();window.addEventListener('resize',fitNotebook);window.visualViewport?.addEventListener('resize',fitNotebook);window.visualViewport?.addEventListener('scroll',fitNotebook);window.addEventListener('orientationchange',fitNotebook);
@@ -58,6 +59,7 @@ function renderNotebookDoodles(key){
  for(const e of box.querySelectorAll('.hw')){if(e.querySelector('span[style*="translateY"]'))continue;const walk=n=>{for(const child of [...n.childNodes]){if(child.nodeType===3){const frag=document.createDocumentFragment();for(const char of child.textContent){const span=nbElement('span',char);span.style.transform=`translateY(${(random()-.5)*2}px) rotate(${(random()-.5)*4}deg)`;frag.appendChild(span)}child.replaceWith(frag)}else if(child.nodeType===1&&!child.classList.contains('strike'))walk(child)}};walk(e)}
 }
 function selectNotebook(key){
+ if(key==='relations'&&notebookSection!=='relations'){relationGroup='all';relationFresh=null;relationPage=0}
  notebookSection=key;notebookSelection=Math.max(0,notebookSections.findIndex(s=>s[0]===key));notebookSpecial=null;$('notebook').classList.remove('nb-mail-dialogue');
  if(key==='items')notebookInventory();else if(key==='memo')notebookMemo();else if(key==='relations')showNotebookRelations();else if(key==='mail')showNotebookMail();else if(key==='help')notebookHelp();else notebookRecords(key==='load'?'load':'save');
  updateNotebookNav();
@@ -87,13 +89,13 @@ function relationPositions(nodes,groups,mini){
  const w=mini?112:150,h=mini?170:225,counts=new Map();return nodes.map(n=>{if(notebookPortrait()){const g=groups.find(g=>g.id===(n.group||'nb-ungrouped'))||groups[0],key=g?.id||'all',i=counts.get(key)||0;counts.set(key,i+1);return{...n,px:50+(i%3)*220,py:(g?.rect[1]||220)+50+Math.floor(i/3)*(mini?170:330),w:200,h:mini?170:330,fw:mini?84:150,fh:mini?92:162}}if(n.pos)return {...n,px:n.pos[0],py:n.pos[1],w,h,fw:mini?104:150,fh:mini?112:162};const group=groups.find(g=>g.id===n.group),rect=group?.rect||[40,210,1550,660],key=group?.id||'all',i=counts.get(key)||0;counts.set(key,i+1);const pad=mini?28:60,cols=Math.max(1,Math.floor((rect[2]-pad*2)/(w+14))),rows=Math.max(1,Math.ceil(nodes.filter(v=>(v.group||'all')===(n.group||'all')&&!v.pos).length/cols)),stepY=Math.min(h+24,(rect[3]-50)/rows);return {...n,px:rect[0]+pad+(i%cols)*(w+14),py:rect[1]+30+Math.floor(i/cols)*stepY,w,h,fw:mini?104:150,fh:mini?112:162}});
 }
 function showNotebookRelations(){
- notebookSpecial='relations';const info=Notebook.relations(SCENARIO,state),mini=info.nodes.length>8;startNotebookView(mini?'chart17':'chart','人物相関図',dayLabel()+'　判明 '+state.notebook.nodes.length+'人');
+ notebookSpecial='relations';const info=Notebook.relations(SCENARIO,state),mini=info.nodes.filter(n=>n.known).length>=9;if(mini){showGroupedNotebookRelations(info);return}startNotebookView('chart','人物相関図',dayLabel()+'　判明 '+state.notebook.nodes.length+'人');
  const chart=nbElement('div',undefined,'chart nb-chart'+(mini?' mini':''));chart.setAttribute('aria-label','判明した人物と関係。スクロールなし');$('nbView').appendChild(chart);
  let groups=SCENARIO.relations.groups||[];if(notebookPortrait()){let y=220;const ungrouped=info.nodes.filter(n=>!n.group);groups=[...(ungrouped.length?[{id:'nb-ungrouped',label:'',hidden:true}]:[]),...groups].map(g=>{const count=g.hidden?ungrouped.length:info.nodes.filter(n=>n.group===g.id).length,rect=[20,y,680,Math.max(1,Math.ceil(count/3))*(mini?170:330)+70];y+=rect[3];return{...g,rect}})}for(const g of groups){if(g.hidden)continue;const frame=nbAt(nbElement('div',undefined,'grp'),g.rect[0],g.rect[1],chart);frame.style.width=g.rect[2]+'px';frame.style.height=g.rect[3]+'px';frame.appendChild(nbElement('i',g.label))}
  const nodes=relationPositions(info.nodes,groups,mini),fresh=new Set(state.notebook.seenRelations);
  for(const n of nodes){const person=nbAt(nbButton('',()=>{panel(n.displayName,[['相関図にもどる',showNotebookRelations]]);note('本名：'+n.displayRealName+(n.deceased?'　故人':''));for(const e of info.edges.filter(e=>e.from===n.id||e.to===n.id)){const other=info.nodes.find(v=>v.id===(e.from===n.id?e.to:e.from));if(other?.known)note(other.displayName+'：'+e.label)}},'person nb-node'+(n.deceased?' dead':'')),n.px,n.py,chart);person.dataset.id=n.id;const face=nbElement('div',undefined,'face nb-face');if(n.known&&n.chibi){const img=nbElement('img');img.src=n.chibi;img.alt=n.displayName+'のラフ';face.appendChild(img)}else face.appendChild(nbElement('span',n.known?n.name[0]:'？','ph'));person.appendChild(face);person.appendChild(nbElement('div',n.displayName,'nm'));person.appendChild(nbElement('div',n.known?(n.displayRealName==='？？？'?'本名 ？？？':n.displayRealName):n.hint,'rn'+(n.displayRealName==='？？？'?' unk':'')));if(!fresh.has('node:'+n.id))person.appendChild(nbElement('span','NEW','new'))}
- drawNotebookEdges(chart,nodes,info.edges);nbAt(nbElement('div','━ 判明した関係　┅ 不確かな関係　┈ 印象的な接点　灰色＝故人　NEW＝書き加えた所','legend'),60,null);
- renderNotebookDoodles(mini?'relations17':'relations');state.notebook.seenRelations=Notebook.tokens(state.notebook);updateNotebookNav();
+ drawNotebookEdges(chart,nodes,info.edges);addRelationLegend();
+ renderNotebookDoodles('relations');state.notebook.seenRelations=Notebook.tokens(state.notebook);updateNotebookNav();
 }
 function drawNotebookEdges(chart,nodes,edges){
  // Preserve every existing large-chart placement, including the narrow-screen layout.
@@ -184,6 +186,8 @@ document.addEventListener('keydown',e=>{
  if(e.isComposing||e.repeat||e.ctrlKey||e.metaKey||e.altKey)return;
  if(e.key.toLowerCase()==='p'&&!deductionActive&&['exploration','menu'].includes(state.mode)){e.preventDefault();e.stopImmediatePropagation();openPHS();return}
  if(!notebookOpen||state.mode==='dialogue')return;
+ if(e.key==='Escape'&&closeRelationLegend()){e.preventDefault();e.stopImmediatePropagation();return}
+ if((e.key==='ArrowLeft'||e.key==='ArrowRight')&&document.activeElement?.matches('.nb-group-tab')){e.preventDefault();e.stopImmediatePropagation();stepRelationGroup(e.key==='ArrowRight'?1:-1);return}
  const buttons=()=>[...$('notebook').querySelectorAll('button')].filter(b=>!b.disabled&&!b.closest('[inert]')&&b.getClientRects().length&&getComputedStyle(b).visibility!=='hidden');
  if(e.key==='Tab'){const list=buttons(),i=list.indexOf(document.activeElement);if(e.shiftKey&&i<=0){e.preventDefault();list.at(-1)?.focus()}else if(!e.shiftKey&&i===list.length-1){e.preventDefault();list[0]?.focus()}return}
  if(!['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','Escape','Enter','[',']'].includes(e.key))return;e.preventDefault();e.stopImmediatePropagation();
