@@ -9,7 +9,19 @@ for(const layer of ['back','front']){const paper=document.createElement('div');p
 const arrow=document.createElementNS('http://www.w3.org/2000/svg','svg');arrow.id='mangaArrow';arrow.setAttribute('viewBox','0 0 1920 1080');arrow.innerHTML='<path d="" fill="none" stroke="#5087c4" stroke-width="2.5"/><path d="" fill="none" stroke="#5087c4" stroke-width="2.5"/>';mangaStage.appendChild(arrow);
 // Grey placeholders only. Never generate or alter artwork when an asset is missing.
 document.addEventListener('error',e=>{if(e.target.tagName==='IMG')e.target.classList.add('manga-missing')},true);
-function fitManga(){mangaStage.style.setProperty('--manga-scale',(innerWidth<=700&&innerHeight>innerWidth?Math.min(innerWidth/900,innerHeight/1950):Math.min(innerWidth/1920,innerHeight/1080)));renderManga()}
+// Measure safe-area insets without drawing a visible element. Keep the landscape stage
+// centred in the visual viewport and use symmetric margins for an asymmetric notch.
+const mangaSafeArea=document.createElement('div');mangaSafeArea.id='mangaSafeArea';mangaSafeArea.setAttribute('aria-hidden','true');mangaSafeArea.style.cssText='position:fixed;left:0;top:0;width:0;height:0;visibility:hidden;pointer-events:none;padding:env(safe-area-inset-top, 0px) env(safe-area-inset-right, 0px) env(safe-area-inset-bottom, 0px) env(safe-area-inset-left, 0px)';document.body.appendChild(mangaSafeArea);
+function fitManga(){
+ const portrait=innerWidth<=700&&innerHeight>innerWidth;
+ if(portrait){mangaStage.style.removeProperty('left');mangaStage.style.removeProperty('top');mangaStage.style.setProperty('--manga-scale',Math.min(innerWidth/900,innerHeight/1950));renderManga();return}
+ const vv=window.visualViewport,w=vv?.width||innerWidth,h=vv?.height||innerHeight,x=vv?.offsetLeft||0,y=vv?.offsetTop||0,s=getComputedStyle(mangaSafeArea);
+ const inset=side=>parseFloat(s.getPropertyValue('padding-'+side))||0;
+ const horizontal=Math.max(0,inset('left')-x,inset('right')-(innerWidth-x-w));
+ const vertical=Math.max(0,inset('top')-y,inset('bottom')-(innerHeight-y-h));
+ const safeWidth=Math.max(0,w-2*horizontal),safeHeight=Math.max(0,h-2*vertical);
+ mangaStage.style.left=(x+w/2)+'px';mangaStage.style.top=(y+h/2)+'px';mangaStage.style.setProperty('--manga-scale',Math.min(safeWidth/1920,safeHeight/1080));renderManga();fitCrowdedCommands();
+}
 function renderManga(){
  const deducing=typeof deductionActive!=='undefined'&&deductionActive;
  const mailDialogue=typeof notebookOpen!=='undefined'&&notebookOpen&&state.mode==='dialogue';
@@ -54,6 +66,17 @@ function decorateMangaChoices(){
  for(const [i,b] of buttons.entries()){b.style.setProperty('--choice-turn',[-1.8,1.3,-.7][i%3]+'deg');b.onmouseenter=()=>select(b);b.onfocus=()=>select(b)}
  if(buttons.length){select(buttons[0]);const lineHeight=parseFloat(getComputedStyle($('messageBody')).lineHeight),scale=parseFloat(mangaStage.style.getPropertyValue('--manga-scale'))||1,range=document.createRange();range.selectNodeContents($('line'));$('dialogueChoices').style.top=($('messageBody').offsetTop+Math.max(lineHeight,range.getBoundingClientRect().height/scale)+16)+'px'}
 }
+// Compact only a list that would run below the stage; the heading and list anchor stay fixed.
+function fitCrowdedCommands(){
+ const box=$('commandChildren'),detail=$('commandDetail');if(!box||!detail)return;
+ box.classList.remove('fit-crowded','fit-compact');box.style.removeProperty('--many-row-max');
+ for(const b of box.children)b.classList.remove('fit-wide','fit-wider');
+ if(!box.classList.contains('many-targets')||!matchMedia('(orientation: landscape)').matches||detail.classList.contains('hidden'))return;
+ const bottom=()=>detail.offsetTop+box.offsetTop+box.offsetHeight-(box.classList.contains('fit-crowded')?8:0);
+ if(bottom()<=1078)return;
+ box.classList.add('fit-crowded');for(const b of box.children){if(b.classList.contains('command-back'))continue;const length=Array.from(b.dataset.itemLabel||b.textContent).length;if(length>=11)b.classList.add('fit-wider');else if(length>=8)b.classList.add('fit-wide')}
+ if(bottom()>1078){box.classList.add('fit-compact');for(let height=140;height>=45;height-=2){box.style.setProperty('--many-row-max',height+'px');if(bottom()<=1078)break}}
+}
 function decorateMangaCommands(enter=false){
  $('commandTitle').textContent='捜査';$('commandHeading').textContent=commandSelection==='investigate'?'調べる先':({move:'移動先',listen:'聞く相手',search:'探す人',show:'見せるもの',showRecipient:'見せる相手'})[commandSelection]||'';
  for(const [i,b] of [...$('commandRoots').children].entries()){
@@ -74,7 +97,7 @@ function decorateMangaCommands(enter=false){
  }
  const selected=$('commandChildren').querySelector('.paper-selected');if(selected&&commandSelection)selectPaper(selected);
  if(enter&&state.mode==='exploration'){const detail=$('commandDetail');detail.classList.remove('list-enter');detail.getBoundingClientRect();detail.classList.add('list-enter');detail.dataset.listGeneration=String(Number(detail.dataset.listGeneration||0)+1)}
- $('commandChildren').onscroll=updateCommandArrow;
+ fitCrowdedCommands();$('commandChildren').onscroll=updateCommandArrow;
 }
 function commandKeyNavigation(e){
  if(state.mode!=='exploration'||!['ArrowDown','ArrowUp','ArrowLeft','ArrowRight'].includes(e.key))return;
@@ -83,5 +106,5 @@ function commandKeyNavigation(e){
 }
 let commandPointer=null;
 
-document.addEventListener('keydown',commandKeyNavigation);window.addEventListener('resize',fitManga);
+document.addEventListener('keydown',commandKeyNavigation);window.addEventListener('resize',fitManga);window.visualViewport?.addEventListener('resize',fitManga);window.visualViewport?.addEventListener('scroll',fitManga);
 fitManga();render();

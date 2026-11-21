@@ -130,7 +130,6 @@ body,#game{background:#f7f5ee;color:#141414}
 #mangaStage #commandChildren p{font-size:max(21px,calc(12.5px / var(--manga-scale)))!important}
 @media(orientation:landscape) and (max-height:460px){
  #mangaStage #messageBody{font-size:max(31px,calc(15px / var(--manga-scale)));height:calc(5.25 * max(31px,calc(15px / var(--manga-scale))));top:calc(1060px - 5.25 * max(31px,calc(15px / var(--manga-scale))))}
- #mangaStage:not(.has-dialogue) #characterStage{visibility:hidden}
 }
 @media(orientation:portrait) and (min-width:701px) and (max-width:900px){
  #mangaStage:not(.has-dialogue) #characterStage{visibility:hidden}
@@ -159,7 +158,6 @@ body,#game{background:#f7f5ee;color:#141414}
 #mangaStage #dialogueChoices button{position:relative;flex:0 1 auto;min-width:180px;max-width:100%;padding:10px 24px;border:0;background:#fff;color:#141414;box-shadow:4px 5px #14141430;transform:rotate(var(--choice-turn,0deg));overflow:visible}
 #mangaStage #dialogueChoices button:hover,#mangaStage #dialogueChoices button:focus-visible{outline:none}
 #mangaStage #dialogueChoices .choice-selected::after{content:'';position:absolute;inset:-12px -18px;background:url('../assets/ui/manga/topic-circle.png') center/100% 100% no-repeat;pointer-events:none}
-@media(orientation:landscape) and (max-height:460px){#mangaStage:not(.has-dialogue) #characterStage{display:none!important}}
 @media(orientation:portrait) and (min-width:701px) and (max-width:900px){#mangaStage:not(.has-dialogue) #characterStage{display:none!important}}
 @media(orientation:portrait) and (max-width:700px){
  #game.deduction-layout #mangaStage #panel{left:40px;top:170px;width:820px;max-height:1120px;padding:24px}
@@ -204,14 +202,6 @@ body,#game{background:#f7f5ee;color:#141414}
  #mangaStage #nextMark{animation:none}
 }
 /* Fixed compact-screen positions keep all six commands above the permanent paper. */
-@media(orientation:landscape) and (max-height:460px){
- #mangaStage #commandMain{top:70px}
- #mangaStage #commandDetail{top:55px}
- #mangaStage #menu{left:1100px;top:120px}
- #mangaStage #commandChildren,#mangaStage #commandChildren.many-targets{gap:0}
- #game #mangaStage .character-card{top:779px!important}
- #game #mangaStage #saijiCard{top:772px!important}
-}
 @media(orientation:portrait) and (min-width:701px) and (max-width:900px){
  #mangaStage #commandMain{top:70px}
  #mangaStage #commandDetail{top:55px}
@@ -229,4 +219,14 @@ body,#game{background:#f7f5ee;color:#141414}
 #questionText{font-family:var(--font-head)!important;font-weight:700!important}
 @media(orientation:portrait) and (max-width:700px){
  #mangaStage #menu.has-mail::after{top:75px;left:-30px}
+}
+
+/* A crowded list keeps its anchor and makes only the rows fit the manuscript. */
+@media(orientation:landscape){
+ #mangaStage #commandChildren.fit-crowded{gap:0}
+ #game #mangaStage #commandChildren.fit-crowded button.fit-wide{left:-20px;max-width:200px;width:200px;letter-spacing:-.08em}
+ #game #mangaStage #commandChildren.fit-crowded button.fit-wider{left:-100px;max-width:280px;width:280px}
+ #game #mangaStage #commandChildren.fit-crowded .command-back{transform:translateY(-8px) rotate(var(--paper-turn,0deg))}
+ #game #mangaStage #commandChildren.fit-crowded.fit-compact button{min-height:min(max(54px,calc(37px / var(--manga-scale))),var(--many-row-max))!important}
+ #game #mangaStage #commandChildren.fit-crowded.fit-compact .command-back{min-height:min(max(36px,calc(37px / var(--manga-scale))),var(--many-row-max))!important}
 }
